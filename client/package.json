@@ -1,0 +1,60 @@
+{
+  "name": "mapf_front",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@dropzone-ui/react": "^6.7.20",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@fontsource/roboto-slab": "^4.5.9",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/lab": "^5.0.0-alpha.103",
+    "@mui/material": "^5.10.8",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.2.1",
+    "bootstrap": "^5.2.2",
+    "chroma-js": "^2.4.2",
+    "d3": "^7.6.1",
+    "line-reader": "^0.4.0",
+    "material-ui-confirm": "^3.0.7",
+    "mui-file-dropzone": "^4.0.2",
+    "papaparse": "^5.3.2",
+    "randomcolor": "^0.6.2",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
+    "react-csv": "^2.2.2",
+    "react-dom": "^18.2.0",
+    "react-mui-confirm": "^1.0.1",
+    "react-router-dom": "^6.4.1",
+    "react-scripts": "5.0.1",
+    "recharts": "^2.1.15",
+    "tss-react": "^4.4.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

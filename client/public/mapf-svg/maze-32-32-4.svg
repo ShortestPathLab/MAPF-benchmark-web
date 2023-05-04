@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width = "1027" height = "1027" viewBox = "-1 -1 1026 1026" preserveAspectRatio = "none" shape-rendering="auto">
+<rect x="0" y="0" width="1024" height="1024" style="fill:rgb(0,0,0);" /><rect x="0" y="0" width="1024" height="1024" style="fill:rgb(229,229,229);" /><g style="fill:rgb(0,0,0);">
+ <rect x="0" y="0" width="32" height="1024"/>
+ <rect x="32" y="0" width="992" height="32"/>
+ <rect x="640" y="32" width="32" height="160"/>
+ <rect x="800" y="32" width="32" height="160"/>
+ <rect x="160" y="160" width="192" height="32"/>
+ <rect x="480" y="160" width="192" height="32"/>
+ <rect x="832" y="160" width="160" height="32"/>
+ <rect x="320" y="192" width="32" height="160"/>
+ <rect x="32" y="320" width="480" height="32"/>
+ <rect x="640" y="320" width="32" height="192"/>
+ <rect x="800" y="320" width="32" height="192"/>
+ <rect x="832" y="320" width="192" height="32"/>
+ <rect x="160" y="480" width="672" height="32"/>
+ <rect x="960" y="480" width="32" height="192"/>
+ <rect x="160" y="640" width="512" height="32"/>
+ <rect x="800" y="640" width="32" height="192"/>
+ <rect x="832" y="640" width="192" height="32"/>
+ <rect x="320" y="672" width="32" height="320"/>
+ <rect x="480" y="672" width="32" height="160"/>
+ <rect x="160" y="800" width="32" height="192"/>
+ <rect x="512" y="800" width="480" height="32"/>
+ <rect x="32" y="960" width="160" height="32"/>
+ <rect x="352" y="960" width="480" height="32"/>
+ <rect x="960" y="960" width="32" height="64"/>
+</g>
+</svg>
