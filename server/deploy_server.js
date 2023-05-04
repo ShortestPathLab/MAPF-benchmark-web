@@ -49,11 +49,11 @@ require("./app/routes/algorithm.routes")(app)
 require("./app/routes/auth.routes")(app)
 require("./app/routes/user.routes")(app)
 require("./app/routes/solution_path.routes")(app)
-app.use(express.static(path.join(__dirname,'../MAPF_frontend/build')));
+app.use(express.static(path.join(__dirname,'../client/build')));
 app.use('/path_results',express.static(path.join(__dirname,'../compressed_path_results')));
 app.use('/path_results', serveIndex(path.join(__dirname,'../compressed_path_results'), { icons: true }));
 app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../MAPF_frontend/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 // set port, listen for requests
