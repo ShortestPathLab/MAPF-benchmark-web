@@ -13,7 +13,7 @@ The implementation requires the external libraries: [CMake](https://cmake.org) a
 Deployment:
 ```shell script
 cd server 
-npm run buildClient 
+npm run build
 node server.js 
 ``` 
 
