@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-// const path = require('path');
+const path = require('path');
 const app = express();
-// const serveIndex = require('serve-index');
+const serveIndex = require('serve-index');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit: 500000 }));
@@ -49,12 +49,12 @@ require("./app/routes/algorithm.routes")(app)
 require("./app/routes/auth.routes")(app)
 require("./app/routes/user.routes")(app)
 require("./app/routes/solution_path.routes")(app)
-// app.use(express.static(path.join(__dirname,'../MAPF_frontend/build')));
-// app.use('/path_results',express.static(path.join(__dirname,'../MAPF_frontend/public/path_results')));
-// app.use('/path_results', serveIndex(path.join(__dirname,'../MAPF_frontend/public/path_results'), { icons: true }));
-// app.get('*', function(req, res) {
-//   res.sendFile(path.join(__dirname, '../MAPF_frontend/build', 'index.html'));
-// });
+app.use(express.static(path.join(__dirname,'../client/build')));
+app.use('/path_results',express.static(path.join(__dirname,'../MAPF_frontend/public/path_results')));
+app.use('/path_results', serveIndex(path.join(__dirname,'../MAPF_frontend/public/path_results'), { icons: true }));
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -4,6 +4,10 @@
   "description": "Node.js Restful CRUD API with Node.js, Express and MongoDB",
   "main": "server.js",
   "scripts": {
+    "client":  "cd ../client; npm run start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "buildClient":  "cd ../client; npm install; npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +19,9 @@
   ],
   "author": "bezkoder",
   "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
