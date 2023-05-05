@@ -33,8 +33,7 @@ npm run build
 node server.js 
 ``` 
 
-Submission
-===========================================================
+## Submission
 To contribute and submit new results: 
 - If you are interesting in submitted results to a particular map:
   - please contact one of organisers, we will create an account for you to upload by yourself.
@@ -42,6 +41,5 @@ To contribute and submit new results:
   - Due to large size of submission files, please contact one of organisers, we will get in touch with you.
 
 
-Contact
-===========================================================
+## Contact
 For any question, please contact Bojie.Shen@monash.edu or Zhe.Chen@monash.edu
