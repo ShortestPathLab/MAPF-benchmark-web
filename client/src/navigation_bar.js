@@ -80,7 +80,7 @@ function ResponsiveAppBar() {
         }else if (page === "Summary"){
             navigate('/summary' );
         }else if (page === "AboutUs"){
-            // navigate('/aboutUs');
+            navigate('/aboutUs');
         }else if (page === "Submissions"){
             navigate('/submissions');
         }else if (page === 'SystemDemo'){

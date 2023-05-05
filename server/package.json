@@ -6,8 +6,15 @@
   "scripts": {
     "client":  "cd ../client; npm run start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "buildClient":  "cd ../client; npm install; npm run build",
+    "installClient": "cd ../client; npm install",
+    "installServer": "npm install",
+    "install_all": "npm run installClient; npm run installServer",
+
+    "buildClient":  "cd ../client; npm run build",
+
+    "dev": "npm run install_all; concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "build": "npm run install_all; npm run buildClient",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

@@ -357,7 +357,7 @@ export default function ScenarioTable() {
                 setData(data)
                 setRows(data)
             },location.state.mapId)
-        }, 30000);
+        }, 1200000);
         return () => clearInterval(interval);
     }, []);
 

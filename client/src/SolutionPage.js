@@ -691,7 +691,7 @@ export default function SolutionPage() {
                 setData(data);
                 setRows(data);
             },location.state.scenId)
-        }, 30000);
+        }, 1200000);
         return () => clearInterval(interval);
     }, []);
 

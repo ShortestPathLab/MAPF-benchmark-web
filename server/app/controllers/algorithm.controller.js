@@ -927,7 +927,7 @@ exports.findBestLowerGroup = (req, res) => {
     var query3 = Algorithm.find({_id:id});
     var query1 = Submission.aggregate(
         [
-            {$match: {best_lower: true, algo_id: {$ne: id}}},
+            {$match: {best_lower: true}},
             {
                 $group: {
                     _id: {"map_id": "$map_id"},
@@ -1052,7 +1052,7 @@ exports.findBestSolutionGroup = async (req, res) => {
     var query3 = Algorithm.find({_id:id});
     var query1 = Submission.aggregate(
         [
-            {$match: {best_solution: true, algo_id: {$ne: id}}},
+            {$match: {best_solution: true}},
             {
                 $group: {
                     _id: {"map_id": "$map_id"},
@@ -1178,7 +1178,7 @@ exports.findBestClosedGroup = (req, res) => {
     var query3 = Algorithm.find({_id:id});
     var query1 = Submission.aggregate(
         [
-            {$match: {$expr: { $eq: [ "$lower_cost", "$solution_cost"] }, algo_id: {$ne: id}}},
+            {$match: {$expr: { $eq: [ "$lower_cost", "$solution_cost"] }}},
             {
                 $group: {
                     _id: {"map_id": "$map_id"},
@@ -1307,7 +1307,7 @@ exports.findBestSolvedGroup = (req, res) => {
     var query3 = Algorithm.find({_id:id});
     var query1 = Submission.aggregate(
         [
-            {$match: {$expr: {  $ne: [ "$solution_cost", null] }, algo_id: {$ne: id}}},
+            {$match: {$expr: {$ne: [ "$solution_cost", null]}}},
             {
                 $group: {
                     _id: {"map_id": "$map_id"},

@@ -315,7 +315,7 @@ export default function Submissions() {
                 setData(data);
                 setRows(data);
             })
-        }, 30000);
+        }, 1200000);
         return () => clearInterval(interval);
     }, []);
 

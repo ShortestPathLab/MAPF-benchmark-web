@@ -766,7 +766,7 @@ export default function UserMapPage() {
                 setData(data);
                 setRows(data);
             },location.state.algo_id)
-        }, 30000);
+        }, 1200000);
         return () => clearInterval(interval);
     }, []);
 
