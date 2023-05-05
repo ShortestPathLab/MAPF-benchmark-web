@@ -23,6 +23,7 @@ import TextField from '@mui/material/TextField';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import {APIConfig} from "./config";
 const settings = ['Dashboard', 'Logout'];
 
@@ -85,7 +86,10 @@ function ResponsiveAppBar() {
             navigate('/submissions');
         }else if (page === 'SystemDemo'){
             navigate('/systemDemo');
-        }
+        }else if (page === 'GitHub'){
+            window.location.href = 'https://github.com/bshen95/MAPF-benchmark-web';
+    }
+
 
 
         // console.log(anchorElNav);
@@ -255,6 +259,15 @@ function ResponsiveAppBar() {
                                 </Button>
                             </MenuItem>
 
+                            <MenuItem key="GitHub" onClick={() =>handleCloseNavMenu("GitHub")}>
+                                <Button
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<GitHubIcon/>}
+                                >
+                                    GitHub
+                                </Button>
+                            </MenuItem>
+
                         </Menu>
                     </Box>
                     {/*<Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>*/}
@@ -341,6 +354,14 @@ function ResponsiveAppBar() {
                             About Us
                         </Button>
 
+                        <Button
+                            key="GitHub"
+                            onClick={() =>handleCloseNavMenu("GitHub")}
+                            sx={{ my: 2, color: 'white',textTransform: "none"}}
+                            startIcon={<GitHubIcon />}
+                        >
+                            GitHub
+                        </Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
