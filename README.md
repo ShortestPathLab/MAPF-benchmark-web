@@ -22,19 +22,18 @@ If the above methods do not work, you can also follow the instructions
 on the [website](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04) and install it manually.
 
 ## Compiling and Running
-The current website can be easily compiled or built using npm 
-
-
+The current website can be easily compiled or built using npm, we provide scripts to set up the website in development/deployment mode:
 For development:
 ```shell script
 cd server 
 npm run dev
 ``` 
-
 For deployment:
 ```shell script
 cd server 
 npm run build
 node server.js 
 ``` 
-
+Contact
+===========================================================
+For any question, please contact Bojie.Shen@monash.edu or Zhe.Chen@monash.edu
