@@ -7,18 +7,34 @@ On the co-solvable instances, CHBP runs faster than CBSH2-RTC with speedups rang
 
  
 ## Requirements 
-The implementation requires the external libraries: [CMake](https://cmake.org) and [Boost](https://www.boost.org/). 
+The implementation requires the external libraries: [nodejs](https://nodejs.org/en). 
+
+If you are using Ubuntu, you can install them simply by:
+```shell script
+sudo apt install nodejs
+sudo apt install npm
+``` 
+If you are using Mac, you can install them simply by:
+```shell script
+brew install node
+```
+If the above methods do not work, you can also follow the instructions
+on the [website](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04) and install it manually.
+
+## Compiling and Running
+The current website can be easily compiled or built using npm 
 
 
-Deployment:
+For development:
+```shell script
+cd server 
+npm run dev
+``` 
+
+For deployment:
 ```shell script
 cd server 
 npm run build
 node server.js 
 ``` 
 
-Development:
-```shell script
-cd server 
-npm run dev
-``` 
