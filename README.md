@@ -23,12 +23,12 @@ on the [website](https://www.digitalocean.com/community/tutorials/how-to-install
 
 ## Compiling and Running
 The current website can be easily compiled or built using npm, we provide scripts to set up the website in development/deployment mode:
-For development:
+-For development:
 ```shell script
 cd server 
 npm run dev
 ``` 
-For deployment:
+-For deployment:
 ```shell script
 cd server 
 npm run build
