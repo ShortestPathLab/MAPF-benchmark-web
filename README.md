@@ -1,9 +1,7 @@
 # MAPF Bechmark Website
-An improvement technique of Conflict-Based Search (CBS) [1] for Multi-Agent Path Finding (MAPF).
-CHBP reasons the conflicts beyond the two agents and allow us to (i) generate stronger heuristics; and (ii) explore more bypasses. 
-CHBP can seamlessly integrate with the current state-of-the-art solver CBSH2-RTC. 
-Experimental results show that CHBP improves CBSH2-RTC by solving more instances. 
-On the co-solvable instances, CHBP runs faster than CBSH2-RTC with speedups ranging from several factors to over one order of magnitude.
+A web-based system for the MAPF community to track and validate the results on [standardised benchmarks](https://movingai.com/benchmarks/mapf/index.html).
+- Our website is accessible at: http://118.138.238.98:8080
+- If you would like to see our system in action, we have a demo video available at: http://118.138.238.98:8080/systemDemo.
 
  
 ## Requirements 
@@ -23,17 +21,27 @@ on the [website](https://www.digitalocean.com/community/tutorials/how-to-install
 
 ## Compiling and Running
 The current website can be easily compiled or built using npm, we provide scripts to set up the website in development/deployment mode:
--For development:
+* For development:
 ```shell script
 cd server 
 npm run dev
 ``` 
--For deployment:
+* For deployment:
 ```shell script
 cd server 
 npm run build
 node server.js 
 ``` 
+
+Submission
+===========================================================
+To contribute and submit new results: 
+- If you are interesting in submitted results to a particular map:
+  - please contact one of organisers, we will create an account for you to upload by yourself.
+- If you are interesting in submitted results for all map:
+  - Due to large size of submission files, please contact one of organisers, we will get in touch with you.
+
+
 Contact
 ===========================================================
 For any question, please contact Bojie.Shen@monash.edu or Zhe.Chen@monash.edu
