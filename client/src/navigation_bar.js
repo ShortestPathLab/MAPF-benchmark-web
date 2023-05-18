@@ -252,15 +252,6 @@ function ResponsiveAppBar() {
                             {/*        Summary*/}
                             {/*    </Button>*/}
                             {/*</MenuItem>*/}
-                            <MenuItem key="AboutUs" onClick={() =>handleCloseNavMenu("AboutUS")}>
-                                <Button
-                                    sx={{ color: 'black',textTransform: "none"}}
-                                    startIcon={<PeopleIcon />}
-                                >
-                                    About Us
-                                </Button>
-                            </MenuItem>
-
                             <MenuItem key="GitHub" onClick={() =>handleCloseNavMenu("GitHub")}>
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
@@ -277,7 +268,14 @@ function ResponsiveAppBar() {
                                     Paper
                                 </Button>
                             </MenuItem>
-
+                            <MenuItem key="AboutUs" onClick={() =>handleCloseNavMenu("AboutUS")}>
+                                <Button
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<PeopleIcon />}
+                                >
+                                    About Us
+                                </Button>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     {/*<Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>*/}
@@ -356,15 +354,6 @@ function ResponsiveAppBar() {
                         </Button>
 
                         <Button
-                            key="AboutUs"
-                            onClick={() =>handleCloseNavMenu("AboutUs")}
-                            sx={{ my: 2, color: 'white',textTransform: "none"}}
-                            startIcon={<PeopleIcon />}
-                        >
-                            About Us
-                        </Button>
-
-                        <Button
                             key="GitHub"
                             onClick={() =>handleCloseNavMenu("GitHub")}
                             sx={{ my: 2, color: 'white',textTransform: "none"}}
@@ -381,7 +370,14 @@ function ResponsiveAppBar() {
                         >
                             Paper
                         </Button>
-
+                        <Button
+                            key="AboutUs"
+                            onClick={() =>handleCloseNavMenu("AboutUs")}
+                            sx={{ my: 2, color: 'white',textTransform: "none"}}
+                            startIcon={<PeopleIcon />}
+                        >
+                            About Us
+                        </Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
