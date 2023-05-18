@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "client":  "cd ../client; npm run start",
-    "server": "nodemon server.js",
+    "server": "NODE_ENV=development nodemon server.js",
     "installClient": "cd ../client; npm install",
     "installServer": "npm install",
     "install_all": "npm run installClient; npm run installServer",

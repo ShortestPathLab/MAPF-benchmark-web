@@ -56,8 +56,24 @@ app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 // set port, listen for requests
-const PORT = process.env.PORT || 80;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+// var PORT = "" || 80;
+// const PORT = process.env.PORT || 80;
+if (process.env.NODE_ENV === 'development') {
+    const PORT = process.env.PORT || 80;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+    });
+} else {
+    const PORT = process.env.PORT || 80;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+    });
+}
+
+if (process.env.NODE_ENV === 'development') {
+    console.log('Development mode');
+} else {
+    console.log('Production mode');
+}
+
 
