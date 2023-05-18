@@ -55,6 +55,8 @@ import randomColor from "randomcolor";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { APIConfig } from './config.js';
+import Link from "@mui/material/Link";
+import InfoIcon from "@mui/icons-material/Info";
 
 const angle = {
     'Warehouse': -40,
@@ -174,6 +176,14 @@ const headCells = [
         disablePadding: false,
         label: '%Instances Closed',
         sortable: true,
+        alignment: 'center'
+    },
+    {
+        id: 'details',
+        numeric: false,
+        disablePadding: false,
+        label: 'Details',
+        sortable: false,
         alignment: 'center'
     },
     {
@@ -320,6 +330,7 @@ export default function MapTable() {
     const csvLinkEl = useRef();
     const [query_id, setQuery_id] = React.useState('');
     const [loading, setLoading] = React.useState(false);
+    const [benchmarkLoading, setBenchmarkLoading] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [searched, setSearched] = React.useState("");
     const [open, setOpen] = React.useState(false);
@@ -356,6 +367,22 @@ export default function MapTable() {
     const [domainAnchorEl, setDomainAnchorEl] = React.useState(null);
     const [domainLoading, setDomainLoading] =  React.useState(true);
 
+    const [openMapDetail, setOpenMapDetail] = React.useState(false);
+    const [scrollMapDetail, setScrollMapDetail] = React.useState('paper');
+    const [mapdata, setMapdata] =  React.useState(true);
+
+
+
+    const handleMapDetailClose = () => {
+        setOpenMapDetail(false);
+    };
+
+    const handleMapDetailClickOpen  = (event,scrollType, map_data)  => {
+        setOpenMapDetail(true);
+        setScrollMapDetail(scrollType);
+        setMapdata(map_data);
+        event.stopPropagation();
+    };
     const requestSearch = (searchedVal) => {
         const filteredRows = data.filter((row) => {
             return row.map_name.toLowerCase().includes(searchedVal.toLowerCase());
@@ -374,6 +401,31 @@ export default function MapTable() {
         setLoading(true);
         setCsvFilename(filename);
         event.stopPropagation();
+    };
+
+    const navigateToDownloadBenchmark =  (event, filename) => {
+        setBenchmarkLoading(true);
+        handleDownload(filename+'.zip');
+        event.stopPropagation();
+    };
+
+    const handleDownload = async (fileName) => {
+        var filePath = require("./assets/download/" + fileName);
+        await fetch(filePath)
+            .then(response => response.blob())
+            .then(async blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        setBenchmarkLoading(false);
     };
 
     React.useEffect(() => {
@@ -959,7 +1011,8 @@ export default function MapTable() {
                             <col style={{minWidth: "100px"}} width="10%" />
                             <col style={{minWidth: "200px"}} width="20%" />
                             <col style={{minWidth: "200px"}} width="20%" />
-                            <col style={{minWidth: "200px"}} width="10%" />
+                            <col style={{minWidth: "100px"}} width="5%" />
+                            <col style={{minWidth: "100px"}} width="5%" />
                         </colgroup>
                         <EnhancedTableHead
                             order={order}
@@ -1008,6 +1061,11 @@ export default function MapTable() {
                                             <TableCell align="center" >
                                                 <BorderLinearProgress value={row.closed_percentage*100} />
                                                 {/*<ProgressBar animated now={row.solution_uploaded/row.problems*100} label={`${row.solution_uploaded/row.problems*100}%`} />*/}
+                                            </TableCell>
+                                            <TableCell align="center" >
+                                                <IconButton onClick={(event) =>handleMapDetailClickOpen(event,'paper', row)}>
+                                                    <InfoIcon />
+                                                </IconButton>
                                             </TableCell>
                                             <TableCell align="center" >
                                                 {/*<Button variant="contained" onClick={routeChange}>View</Button>*/}
@@ -1441,6 +1499,64 @@ export default function MapTable() {
                     {/*</ResponsiveContainer>*/}
                 </DialogContent>
             </Dialog>
+
+            <Dialog
+                open={openMapDetail}
+                onClose={handleMapDetailClose}
+                scroll={scrollMapDetail}
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
+                fullWidth={true}
+                maxWidth={'sm'}
+                disableScrollLock={ true }
+                PaperProps={{
+                    style: { mb: 2,borderRadius: 10 }
+                }}
+                // PaperProps={{ sx: { width: "100%"}}}
+            >
+                <DialogContent dividers={scrollMapDetail === 'paper'}  sx={{width: 550, display : 'flex'}}>
+                    <Table sx={{ width : 550}}>
+                        <colgroup>
+                            {/*<col width="120" />*/}
+                            {/*<col width="150" />*/}
+                            {/*<col width="65" />*/}
+                            {/*<col width="200" />*/}
+                            <col width="150" />
+                            <col width="150" />
+                            <col width="150" />
+                            <col width="50" />
+                        </colgroup>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }} >Name:</TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}> {mapdata.map_name}</TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}> Download Benchmark: </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}>
+                                    <IconButton onClick={(event) =>
+                                        navigateToDownloadBenchmark(event,mapdata.map_name)}
+                                    >
+                                        {benchmarkLoading?  <CircularProgress size={24} />:<DownloadIcon/>}
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}>  Original Link: </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }} colSpan={3}>
+                                    <Link href={mapdata.original_link} underline="hover">
+                                        {mapdata.original_link}
+                                    </Link>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0,verticalAlign: "top" }} > Paper Reference: </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0,verticalAlign: "top" }} colSpan={3} > {mapdata.papers} </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </DialogContent>
+            </Dialog>
+
+
             {/*<FormControlLabel*/}
             {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}
             {/*    label="Dense padding"*/}

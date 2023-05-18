@@ -1,0 +1,57 @@
+.paper-content {
+    padding: 10px;
+}
+
+.code-viewer {
+    position: relative;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.copy-button-container {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.copy-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.copy-success-message {
+    font-size: 14px;
+    color: black;
+    margin-right: 8px;
+}
+
+
+/*.copy-button-tooltip {*/
+/*    margin-left: 5px;*/
+/*    font-size: 14px;*/
+/*    color: #aaa;*/
+/*}*/
+
+.copy-button:hover {
+    color: #ccc;
+}
+
+.react-syntax-highlighter-line-number {
+    user-select: none;
+}
+
+.react-syntax-highlighter-line-number:hover {
+    background-color: #111;
+}
+
+/*.copy-success-message {*/
+/*    color: green;*/
+/*    font-weight: bold;*/
+/*    margin-left: 8px;*/
+/*}*/

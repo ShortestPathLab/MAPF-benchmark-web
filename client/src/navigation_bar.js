@@ -14,7 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import {useLocation, useNavigate} from "react-router-dom";
 import TableViewIcon from '@mui/icons-material/TableView';
 import PeopleIcon from '@mui/icons-material/People';
-import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,6 +23,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ArticleIcon from '@mui/icons-material/Article';
 import {APIConfig} from "./config";
 const settings = ['Dashboard', 'Logout'];
 
@@ -88,7 +88,9 @@ function ResponsiveAppBar() {
             navigate('/systemDemo');
         }else if (page === 'GitHub'){
             window.location.href = 'https://github.com/bshen95/MAPF-benchmark-web';
-    }
+        }else if (page === 'Paper'){
+            window.location.href = 'https://arxiv.org/abs/2305.08446';
+        }
 
 
 
@@ -208,21 +210,21 @@ function ResponsiveAppBar() {
                             }}
                         >
 
-                            <MenuItem key="Benchmark Dataset" onClick={() =>handleCloseNavMenu("BenchmarkDataset")}>
-                                <Button
-                                    key="Benchmark Dataset"
-                                    sx={{ color: 'black',textTransform: "none"}}
-                                    startIcon={<DatasetLinkedIcon />}
-                                >
-                                    Benchmark Dataset
-                                </Button>
-                            </MenuItem>
+                            {/*<MenuItem key="Benchmark Dataset" onClick={() =>handleCloseNavMenu("BenchmarkDataset")}>*/}
+                            {/*    <Button*/}
+                            {/*        key="Benchmark Dataset"*/}
+                            {/*        sx={{ color: 'black',textTransform: "none"}}*/}
+                            {/*        startIcon={<DatasetLinkedIcon />}*/}
+                            {/*    >*/}
+                            {/*        Benchmark Dataset*/}
+                            {/*    </Button>*/}
+                            {/*</MenuItem>*/}
                             <MenuItem key="BenchmarkResults" onClick={() =>handleCloseNavMenu("BenchmarkResults")}>
                                 <Button
                                     sx={{color: 'black',textTransform: "none"}}
                                     startIcon={<TableViewIcon />}
                                 >
-                                    Benchmark Results
+                                    Progress Tracker
                                 </Button>
                             </MenuItem>
                             <MenuItem key="Submissions" onClick={() =>handleCloseNavMenu("Submissions")}>
@@ -267,6 +269,14 @@ function ResponsiveAppBar() {
                                     GitHub
                                 </Button>
                             </MenuItem>
+                            <MenuItem key="Paper" onClick={() =>handleCloseNavMenu("Paper")}>
+                                <Button
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ArticleIcon/>}
+                                >
+                                    Paper
+                                </Button>
+                            </MenuItem>
 
                         </Menu>
                     </Box>
@@ -298,14 +308,14 @@ function ResponsiveAppBar() {
                        MAPF
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Button
-                            key="Benchmark Dataset"
-                            onClick={() =>handleCloseNavMenu("BenchmarkDataset")}
-                            sx={{ my: 2, color: 'white',textTransform: "none"}}
-                            startIcon={<DatasetLinkedIcon />}
-                        >
-                            Benchmark Dataset
-                        </Button>
+                        {/*<Button*/}
+                        {/*    key="Benchmark Dataset"*/}
+                        {/*    onClick={() =>handleCloseNavMenu("BenchmarkDataset")}*/}
+                        {/*    sx={{ my: 2, color: 'white',textTransform: "none"}}*/}
+                        {/*    startIcon={<DatasetLinkedIcon />}*/}
+                        {/*>*/}
+                        {/*    Benchmark Dataset*/}
+                        {/*</Button>*/}
 
 
                         <Button
@@ -314,7 +324,7 @@ function ResponsiveAppBar() {
                             sx={{ my: 2, color: 'white',textTransform: "none"}}
                             startIcon={<TableViewIcon />}
                         >
-                            Benchmark Results
+                            Progress Tracker
                         </Button>
 
                         <Button
@@ -362,6 +372,16 @@ function ResponsiveAppBar() {
                         >
                             GitHub
                         </Button>
+
+                        <Button
+                            key="Paper"
+                            onClick={() =>handleCloseNavMenu("Paper")}
+                            sx={{ my: 2, color: 'white',textTransform: "none"}}
+                            startIcon={<ArticleIcon />}
+                        >
+                            Paper
+                        </Button>
+
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>

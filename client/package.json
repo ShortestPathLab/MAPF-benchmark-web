@@ -14,6 +14,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.1",
+    "bibtex-parser": "^0.0.0",
     "bootstrap": "^5.2.2",
     "chroma-js": "^2.4.2",
     "d3": "^7.6.1",
@@ -29,6 +30,7 @@
     "react-mui-confirm": "^1.0.1",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
     "recharts": "^2.1.15",
     "tss-react": "^4.4.1",
     "web-vitals": "^2.1.4"
