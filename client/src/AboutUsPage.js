@@ -6,17 +6,15 @@ import Avatar from '@mui/material/Avatar';
 import Toolbar from '@mui/material/Toolbar';
 import { Tooltip } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import {useRef} from 'react';
 import {useState} from 'react';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import './BibTex.css'; // Import the CSS file for styling
-
+import ClipboardJS from 'clipboard';
 
 const bibtexEntry = `@misc{MAPF_Tracker,
   doi = {10.48550/arXiv.2305.08446},
   url = {https://arxiv.org/abs/2305.08446},
-  author = {Bojie Shen, Zhe Chen, Muhammad Aamir Cheema, Daniel D. Harabor, Peter J. Stuckey}, 
+  author = {Bojie Shen and Zhe Chen and Muhammad Aamir Cheema and Daniel D. Harabor and Peter J. Stuckey}, 
   title = {Tracking Progress in Multi-Agent Path Finding}, 
   publisher = {arXiv},
   year = {2023}
@@ -25,15 +23,50 @@ export default function AboutUs() {
     const item_width =300;
     const [copySuccess, setCopySuccess] = useState(false);
 
-    const handleCopyClick = async () => {
-        try {
-            await navigator.clipboard.writeText(bibtexEntry);
-            setCopySuccess(true);
-        } catch (error) {
-            console.error('Failed to copy BibTeX code:', error);
-        }
-    };
+    // const handleCopyClick = async () => {
+    //     try {
+    //         await navigator.clipboard.writeText(bibtexEntry);
+    //         setCopySuccess(true);
+    //     } catch (error) {
+    //         console.error('Failed to copy BibTeX code:', error);
+    //     }
+    // };
+    // const handleCopyClick = async () => {
+    //     try {
+    //         await clipboardy.write(bibtexEntry);
+    //         setCopySuccess(true);
+    //     } catch (error) {
+    //         console.error('Failed to copy BibTeX code:', error);
+    //     }
+    // };
 
+    // const handleCopyClick = () => {
+    //     try {
+    //         copyPaste.copy(bibtexEntry);
+    //         setCopySuccess(true);
+    //     } catch (error) {
+    //         console.error('Failed to copy BibTeX code:', error);
+    //     }
+    // };
+
+    const handleCopyClick = () => {
+        const copyButton = document.createElement('button');
+        copyButton.setAttribute('data-clipboard-text', bibtexEntry);
+
+        const clipboard = new ClipboardJS(copyButton);
+
+        clipboard.on('success', () => {
+            setCopySuccess(true);
+            clipboard.destroy();
+        });
+
+        clipboard.on('error', (e) => {
+            console.error('Failed to copy BibTeX code:', e);
+            clipboard.destroy();
+        });
+
+        copyButton.click();
+    };
 
     return (
         <Box
@@ -73,7 +106,7 @@ export default function AboutUs() {
                         </SyntaxHighlighter>
                         <div className="copy-button-container">
                             {copySuccess && <span className="copy-success-message">Copied to clipboard!</span>}
-                            <Tooltip title="Copied !" placement="top" arrow>
+                            <Tooltip title="Click to Copy" placement="top" arrow>
                                 <button className="copy-button" onClick={handleCopyClick}>
                                     <FileCopyIcon />
                                 </button>
