@@ -27,31 +27,31 @@ export default function Contribute() {
                         variant="h6"
                         component="div"
                     >
-                        Submission File Format
+                        Submission File Format (csv)
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
                 <Box
                     sx={{paddingTop: '15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
+                {/*<Typography*/}
+                {/*    sx={{ flex: '1 1 100%' }}*/}
+                {/*    variant="h6"*/}
+                {/*    component="div"*/}
+                {/*    gutterBottom*/}
+                {/*>*/}
+                {/*    File type:*/}
+                {/*</Typography>*/}
+                {/*<Typography*/}
+                {/*    sx={{ flex: '1 1 100%'}}*/}
+                {/*    variant="h7"*/}
+                {/*    component="div"*/}
+                {/*    gutterBottom*/}
+                {/*>*/}
+                {/*    We support uploading .csv file*/}
+                {/*</Typography>*/}
                 <Typography
-                    sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
-                    variant="h6"
-                    component="div"
-                    gutterBottom
-                >
-                    File type:
-                </Typography>
-                <Typography
-                    sx={{ flex: '1 1 100%',paddingLeft :'20px' }}
-                    variant="h7"
-                    component="div"
-                    gutterBottom
-                >
-                    We support uploading .csv file
-                </Typography>
-                <Typography
-                    sx={{ flex: '1 1 100%' ,paddingLeft :'10px'}}
+                    sx={{ flex: '1 1 100%' }}
                     variant="h6"
                     component="div"
                     gutterBottom
@@ -59,7 +59,7 @@ export default function Contribute() {
                     File header:
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%',paddingLeft :'20px' }}
+                    sx={{ flex: '1 1 100%'}}
                     variant="h7"
                     component="div"
                     gutterBottom
@@ -67,15 +67,15 @@ export default function Contribute() {
                     map_name, scen_type, type_id, agents, lower_cost, solution_cost, solution_plan
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                    sx={{ flex: '1 1 100%'}}
                     variant="h6"
                     component="div"
                     gutterBottom
                 >
-                    Solution Path Format:
+                    Solution Plan Format:
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%',paddingLeft :'20px'}}
+                    sx={{ flex: '1 1 100%'}}
                     variant="h7"
                     component="div"
                     gutterBottom
@@ -85,12 +85,12 @@ export default function Contribute() {
                     We use "\n" to separate the paths between different agents.
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%' ,paddingLeft :'10px'}}
+                    sx={{ flex: '1 1 100%'}}
                     variant="h6"
                     component="div"
                     gutterBottom
                 >
-                    Example csv:
+                    Example File:
                 </Typography>
 
                 {/*<Typography*/}
@@ -222,7 +222,7 @@ export default function Contribute() {
                     sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
                     <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                        sx={{ flex: '1 1 100%'}}
                         variant="h6"
                         component="div"
                         gutterBottom
@@ -231,7 +231,7 @@ export default function Contribute() {
                     </Typography>
                     <ul>
                         <Typography
-                            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                            sx={{ flex: '1 1 100%'}}
                             variant="h6"
                             component="li"
                             gutterBottom
@@ -240,7 +240,7 @@ export default function Contribute() {
                         </Typography>
                         <ul>
                             <Typography
-                                sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                                sx={{ flex: '1 1 100%' }}
                                 variant="h6"
                                 component="li"
                                 gutterBottom
@@ -249,7 +249,7 @@ export default function Contribute() {
                             </Typography>
                         </ul>
                         <Typography
-                            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                            sx={{ flex: '1 1 100%' }}
                             variant="h6"
                             component="li"
                             gutterBottom
@@ -258,7 +258,7 @@ export default function Contribute() {
                         </Typography>
                         <ul>
                             <Typography
-                                sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                                sx={{ flex: '1 1 100%' }}
                                 variant="h6"
                                 component="li"
                                 gutterBottom
@@ -268,7 +268,7 @@ export default function Contribute() {
                         </ul>
                     </ul>
                     <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                        sx={{ flex: '1 1 100%' }}
                         variant="h6"
                         component="div"
                         gutterBottom
@@ -277,7 +277,7 @@ export default function Contribute() {
                     </Typography>
                     <ul>
                         <Typography
-                            sx={{ flex: '1 1 100%',paddingLeft :'20px' }}
+                            sx={{ flex: '1 1 100%'}}
                             variant="h6"
                             component="li"
                             gutterBottom
@@ -309,7 +309,7 @@ export default function Contribute() {
                     sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
                     <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                        sx={{ flex: '1 1 100%' }}
                         variant="h6"
                         component="div"
                         gutterBottom

@@ -95,7 +95,7 @@ export default function PaperPage() {
                     }}>
 
                     <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                        sx={{ flex: '1 1 100%' }}
                         variant="h6"
                         component="div"
                     >
@@ -103,14 +103,14 @@ export default function PaperPage() {
                     </Typography>
                     <ul>
                         <Typography
-                            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                            sx={{ flex: '1 1 100%'}}
                             variant="h6"
                             component="li"
                         >
                             The paper can be accessed at  <a href="https://example.com">Add link Later</a>.
                         </Typography>
                         <Typography
-                            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                            sx={{ flex: '1 1 100%' }}
                             variant="h6"
                             component="li"
                         >
@@ -121,7 +121,7 @@ export default function PaperPage() {
 
 
                     <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                        sx={{ flex: '1 1 100%'}}
                         variant="h6"
                         component="div"
                     >
