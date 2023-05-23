@@ -355,7 +355,7 @@ export default function Submissions() {
     React.useEffect(() => {
         if (openAlgoDetail) {
             setDomainLoading(true);
-            fetch(APIConfig.apiUrl+'/algorithm/getSolvedInfoGroup/'+algodata['id'], {method: 'GET'})
+            fetch(APIConfig.apiUrl+'/algorithm/getClosedInfoGroup/'+algodata['id'], {method: 'GET'})
                 .then(res => res.json())
                 .then(data => {
                     data.forEach(function(element){

@@ -24,9 +24,10 @@ import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from '@mui/icons-material/Article';
+import BackupIcon from '@mui/icons-material/Backup';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import {APIConfig} from "./config";
 const settings = ['Dashboard', 'Logout'];
-
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -89,7 +90,10 @@ function ResponsiveAppBar() {
         }else if (page === 'GitHub'){
             window.location.href = 'https://github.com/bshen95/MAPF-benchmark-web';
         }else if (page === 'Paper'){
-            window.location.href = 'https://arxiv.org/abs/2305.08446';
+            // window.location.href = 'https://arxiv.org/abs/2305.08446';
+            navigate('/papers');
+        }else if (page === 'Contribute'){
+            navigate('/contributes');
         }
 
 
@@ -230,9 +234,17 @@ function ResponsiveAppBar() {
                             <MenuItem key="Submissions" onClick={() =>handleCloseNavMenu("Submissions")}>
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
-                                    startIcon={<DriveFolderUploadIcon/>}
+                                    startIcon={<AssignmentIcon/>}
                                 >
                                     Submissions
+                                </Button>
+                            </MenuItem>
+                            <MenuItem key="Contribute" onClick={() =>handleCloseNavMenu("Contribute")}>
+                                <Button
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<BackupIcon />}
+                                >
+                                    Contribute
                                 </Button>
                             </MenuItem>
                             <MenuItem key="SystemDemo" onClick={() =>handleCloseNavMenu("SystemDemo")}>
@@ -252,14 +264,6 @@ function ResponsiveAppBar() {
                             {/*        Summary*/}
                             {/*    </Button>*/}
                             {/*</MenuItem>*/}
-                            <MenuItem key="GitHub" onClick={() =>handleCloseNavMenu("GitHub")}>
-                                <Button
-                                    sx={{ color: 'black',textTransform: "none"}}
-                                    startIcon={<GitHubIcon/>}
-                                >
-                                    GitHub
-                                </Button>
-                            </MenuItem>
                             <MenuItem key="Paper" onClick={() =>handleCloseNavMenu("Paper")}>
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
@@ -274,6 +278,14 @@ function ResponsiveAppBar() {
                                     startIcon={<PeopleIcon />}
                                 >
                                     About Us
+                                </Button>
+                            </MenuItem>
+                            <MenuItem key="GitHub" onClick={() =>handleCloseNavMenu("GitHub")}>
+                                <Button
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<GitHubIcon/>}
+                                >
+                                    GitHub
                                 </Button>
                             </MenuItem>
                         </Menu>
@@ -324,17 +336,22 @@ function ResponsiveAppBar() {
                         >
                             Progress Tracker
                         </Button>
-
                         <Button
                             key="Submissions"
                             onClick={() =>handleCloseNavMenu("Submissions")}
                             sx={{ my: 2, color: 'white',textTransform: "none"}}
-                            startIcon={<DriveFolderUploadIcon/>}
+                            startIcon={<AssignmentIcon/>}
                         >
                             Submissions
                         </Button>
-
-
+                        <Button
+                            key="Contribute"
+                            onClick={() =>handleCloseNavMenu("Contribute")}
+                            sx={{ my: 2, color: 'white',textTransform: "none"}}
+                            startIcon={<BackupIcon />}
+                        >
+                            Contribute
+                        </Button>
 
                         {/*<Button*/}
                         {/*    key="Summary"*/}
@@ -352,16 +369,6 @@ function ResponsiveAppBar() {
                         >
                             System Demo
                         </Button>
-
-                        <Button
-                            key="GitHub"
-                            onClick={() =>handleCloseNavMenu("GitHub")}
-                            sx={{ my: 2, color: 'white',textTransform: "none"}}
-                            startIcon={<GitHubIcon />}
-                        >
-                            GitHub
-                        </Button>
-
                         <Button
                             key="Paper"
                             onClick={() =>handleCloseNavMenu("Paper")}
@@ -377,6 +384,14 @@ function ResponsiveAppBar() {
                             startIcon={<PeopleIcon />}
                         >
                             About Us
+                        </Button>
+                        <Button
+                            key="GitHub"
+                            onClick={() =>handleCloseNavMenu("GitHub")}
+                            sx={{ my: 2, color: 'white',textTransform: "none"}}
+                            startIcon={<GitHubIcon />}
+                        >
+                            GitHub
                         </Button>
                     </Box>
 

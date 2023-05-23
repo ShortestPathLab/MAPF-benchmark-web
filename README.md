@@ -1,7 +1,7 @@
 # MAPF Bechmark Website
 A web-based system for the MAPF community to track and validate the results on [standardised benchmarks](https://movingai.com/benchmarks/mapf/index.html).
-- Our website is accessible at: http://118.138.238.98:8080
-- If you would like to see our system in action, we have a demo video available at: http://118.138.238.98:8080/systemDemo.
+- Our website is accessible at: http://tracker.pathfinding.ai
+- If you would like to see our system in action, we have a demo video available at: http://tracker.pathfinding.ai/systemDemo.
 
  
 ## Requirements 
@@ -31,15 +31,6 @@ npm run dev
 cd server 
 npm run build
 node server.js 
-``` 
-
-## Submission
-To contribute and submit new results: 
-- If you are interesting in submitted results to a particular map:
-  - please contact one of organisers, we will create an account for you to upload by yourself.
-- If you are interesting in submitted results for all map:
-  - Due to large size of submission files, please contact one of organisers, we will get in touch with you.
-
-
+```
 ## Contact
 For any question, please contact Bojie.Shen@monash.edu or Zhe.Chen@monash.edu

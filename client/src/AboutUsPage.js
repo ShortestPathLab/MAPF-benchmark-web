@@ -4,75 +4,15 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Avatar from '@mui/material/Avatar';
 import Toolbar from '@mui/material/Toolbar';
-import { Tooltip } from '@mui/material';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import {useState} from 'react';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import './BibTex.css'; // Import the CSS file for styling
-import ClipboardJS from 'clipboard';
+import Divider from '@mui/material/Divider';
 
-const bibtexEntry = `@misc{MAPF_Tracker,
-  doi = {10.48550/arXiv.2305.08446},
-  url = {https://arxiv.org/abs/2305.08446},
-  author = {Bojie Shen and Zhe Chen and Muhammad Aamir Cheema and Daniel D. Harabor and Peter J. Stuckey}, 
-  title = {Tracking Progress in Multi-Agent Path Finding}, 
-  publisher = {arXiv},
-  year = {2023}
-}`;
 export default function AboutUs() {
     const item_width =300;
-    const [copySuccess, setCopySuccess] = useState(false);
-
-    // const handleCopyClick = async () => {
-    //     try {
-    //         await navigator.clipboard.writeText(bibtexEntry);
-    //         setCopySuccess(true);
-    //     } catch (error) {
-    //         console.error('Failed to copy BibTeX code:', error);
-    //     }
-    // };
-    // const handleCopyClick = async () => {
-    //     try {
-    //         await clipboardy.write(bibtexEntry);
-    //         setCopySuccess(true);
-    //     } catch (error) {
-    //         console.error('Failed to copy BibTeX code:', error);
-    //     }
-    // };
-
-    // const handleCopyClick = () => {
-    //     try {
-    //         copyPaste.copy(bibtexEntry);
-    //         setCopySuccess(true);
-    //     } catch (error) {
-    //         console.error('Failed to copy BibTeX code:', error);
-    //     }
-    // };
-
-    const handleCopyClick = () => {
-        const copyButton = document.createElement('button');
-        copyButton.setAttribute('data-clipboard-text', bibtexEntry);
-
-        const clipboard = new ClipboardJS(copyButton);
-
-        clipboard.on('success', () => {
-            setCopySuccess(true);
-            clipboard.destroy();
-        });
-
-        clipboard.on('error', (e) => {
-            console.error('Failed to copy BibTeX code:', e);
-            clipboard.destroy();
-        });
-
-        copyButton.click();
-    };
-
     return (
         <Box
             sx={{ minWidth : 600, position: "absolute", width: '96%', paddingLeft:"2%", top:"300px",opacity:"0.95"
             }}>
-            {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5 }}>*/}
             <Paper elevation={12} sx={{ width: '100%', mt: 2, mb: 2, borderRadius: 5 }}>
                 <Toolbar
                     sx={{
@@ -85,35 +25,27 @@ export default function AboutUs() {
                         variant="h6"
                         component="div"
                     >
-                        Citation (When using our website, please cite the following)
+                        About Website
                     </Typography>
                 </Toolbar>
-                {/*<Typography*/}
-                {/*    sx={{ flex: '1 1 100%',paddingLeft :'15px' }}*/}
-                {/*    variant="h7"*/}
-                {/*    component="div"*/}
-                {/*>*/}
-                {/*   If you think our website are helpful to your research, please cite the following:*/}
-                {/*</Typography>*/}
-                <div className="paper-content">
-                    <div className="code-viewer">
-                        <SyntaxHighlighter
-                            language="bibtex"
-                            // style={vscDarkPlus}
-                            customStyle={{ marginTop: '0', paddingTop: '0' }}
-                        >
-                            {bibtexEntry}
-                        </SyntaxHighlighter>
-                        <div className="copy-button-container">
-                            {copySuccess && <span className="copy-success-message">Copied to clipboard!</span>}
-                            <Tooltip title="Click to Copy" placement="top" arrow>
-                                <button className="copy-button" onClick={handleCopyClick}>
-                                    <FileCopyIcon />
-                                </button>
-                            </Tooltip>
-                        </div>
-                    </div>
-                </div>
+                <Divider sx={{ borderBottomWidth: '3px' }} />
+                <Typography
+                    sx={{ flex: '1 1 100%',paddingTop:'15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px' }}
+                    variant="h6"
+                    component="div"
+                >
+                    Multi-Agent Path Finding (MAPF) is a combinatorial problem that asks us to compute collision-free paths for teams of
+                    cooperative agents.
+                    Many works appear on this topic each year, and a large number of substantial advancements and improvements have been reported. Yet measuring overall progress in
+                    MAPF is difficult:
+                    there are many potential competitors, and the computational burden for comprehensive experimentation is prohibitively large.
+                    Moreover, detailed data from past experimentation is usually unavailable.
+                    This online platform introduces a set of methodological and visualisation tools which can help the community establish clear indicators for
+                    state-of-the-art MAPF performance and which can facilitate large-scale comparisons between MAPF solvers.
+                    Our objectives are to lower the barrier of entry for new
+                    researchers and to further promote the study of MAPF.
+                </Typography>
+
             </Paper>
                 <Paper elevation={12} sx={{ width: '100%', mt: 2, mb: 2,borderRadius: 5}}>
                     <Toolbar
@@ -130,10 +62,11 @@ export default function AboutUs() {
                             Advisor Board
                         </Typography>
                     </Toolbar>
+                    <Divider sx={{ borderBottomWidth: '3px' }} />
                     {/*<Divider variant="middle" style={{ margin: '1rem 0' }} />*/}
                     <div style={{width: "100%",   display: "grid",
                         gridTemplateColumns: "repeat(auto-fill,minmax(320px, 1fr))",
-                        paddingTop:10
+                        paddingTop:'20px'
 
                     }}>
                         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -252,9 +185,10 @@ export default function AboutUs() {
                             Developer Board
                         </Typography>
                     </Toolbar>
+                    <Divider sx={{ borderBottomWidth: '3px' }} />
                     <div style={{width: "100%",   display: "grid",
                         gridTemplateColumns: "repeat(auto-fill,minmax(320px, 1fr))",
-                        paddingTop:10
+                        paddingTop:20
 
                     }}>
                         <div style={{ display: "flex", justifyContent: "center" }}>
