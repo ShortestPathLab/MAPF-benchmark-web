@@ -25,7 +25,7 @@ export default function AboutUs() {
                         variant="h6"
                         component="div"
                     >
-                        About Website
+                        About the Website
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />

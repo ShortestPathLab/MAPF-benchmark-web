@@ -86,7 +86,7 @@ export default function PaperPage() {
                         variant="h6"
                         component="div"
                     >
-                        Paper and Resources
+                        Papers and Resources
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
