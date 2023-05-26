@@ -91,27 +91,24 @@ export default function PaperPage() {
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
                 <Box
-                    sx={{paddingTop: '15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
+                    sx={{ paddingTop: '15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
 
                     <Typography
-                        sx={{ flex: '1 1 100%' }}
-                        variant="h6"
+                        sx={{fontSize: 16, flex: '1 1 100%' }}
                         component="div"
                     >
                         This web platform is presented at ICAPS 2023 system demo track:
                     </Typography>
                     <ul>
                         <Typography
-                            sx={{ flex: '1 1 100%'}}
-                            variant="h6"
+                            sx={{fontSize: 16, flex: '1 1 100%'}}
                             component="li"
                         >
-                            The paper can be accessed at  <a href="https://example.com">Add link Later</a>.
+                            The paper can be accessed at  <a href="https://icaps23.icaps-conference.org">here</a>.
                         </Typography>
                         <Typography
-                            sx={{ flex: '1 1 100%' }}
-                            variant="h6"
+                            sx={{ fontSize: 16, flex: '1 1 100%' }}
                             component="li"
                         >
                             A demo video giving an overview of the system is also available at <a href="http://tracker.pathfinding.ai/systemDemo"> here</a>.
@@ -121,7 +118,7 @@ export default function PaperPage() {
 
 
                     <Typography
-                        sx={{ flex: '1 1 100%'}}
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
                         variant="h6"
                         component="div"
                     >
@@ -132,7 +129,7 @@ export default function PaperPage() {
                             <SyntaxHighlighter
                                 language="bibtex"
                                 // style={vscDarkPlus}
-                                customStyle={{ marginTop: '0', paddingTop: '0' }}
+                                customStyle={{ fontSize: 16, marginTop: '0', paddingTop: '0' }}
                             >
                                 {bibtexEntry}
                             </SyntaxHighlighter>

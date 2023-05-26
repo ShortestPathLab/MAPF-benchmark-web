@@ -36,7 +36,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import MenuItem from "@mui/material/MenuItem";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
-import { Brush, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area} from 'recharts';
+import { Brush, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area, Label} from 'recharts';
 import { Radar, RadarChart, PolarGrid,  PolarAngleAxis, PolarRadiusAxis} from 'recharts';
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -61,6 +61,19 @@ const angle = {
     'Room' : -110
 }
 
+const infoDescription = {
+    'MonitorSuboptimality':{
+        'description':"some text",
+        'x-axis':"some text",
+        'y-axis':"some text"
+    },
+    'Compare-':{
+        'description':"some text",
+        'x-axis':"some text",
+        'y-axis':"some text"
+    }
+
+}
 function descendingComparator(a, b, orderBy) {
     if (orderBy === 'solution_algos' || orderBy === 'lower_algos'){
         if (b[orderBy] < a[orderBy]) {
@@ -485,6 +498,9 @@ export default function SolutionPage() {
     const [domainLoading, setDomainLoading] =  React.useState(true);
     const [progressLoading, setProgressLoading] =  React.useState(false);
     const [maxAgentResults, setMaxAgentResults] = React.useState(0);
+    const [openMonitorDetail, setOpenMonitorDetail] =  React.useState(false);
+
+
     const [color,setColor] = React.useState(Array(100)
         .fill()
         .map((currElement, index) =>
@@ -762,7 +778,7 @@ export default function SolutionPage() {
     const handleClickOpenComparator  = (event,scrollType)  => {
         setOpenComparator(true);
         setScroll(scrollType);
-
+        setAgentLoading(true);
         var algorithm_API = APIConfig.apiUrl+'/algorithm/';
         fetch( algorithm_API, {method: 'GET'})
             .then(res => res.json())
@@ -793,10 +809,82 @@ export default function SolutionPage() {
         }
     }, [algorithm_name]);
 
+    // React.useEffect(() => {
+    //     if(agentQueryResult.length >0){
+    //         console.log(agentQueryResult)
+    //         var agentChartData = []
+    //         for(var i = 1; i < location.state.numAgents +1; i ++){
+    //             agentChartData.push(
+    //                 {
+    //                     "name" :   i.toString(),
+    //                 }
+    //             )
+    //         }
+    //         const algorithm = new Set();
+    //         for( var i = 0; i < agentQueryResult.length; i ++){
+    //             // iterate map
+    //             var agentIndex = agentQueryResult[i].agents -1;
+    //
+    //             for(var j = 0 ; j < agentQueryResult[i].record.length; j ++){
+    //                 var algo =  agentQueryResult[i].record[j]
+    //                 algorithm.add(algo.algo_name);
+    //                 agentChartData[agentIndex][algo.algo_name] = parseInt(algo.cost);
+    //             }
+    //         }
+    //         var unique_key = [];
+    //         var check_box_state={};
+    //         algorithm.forEach(function(algo){
+    //             unique_key.push(algo);
+    //             check_box_state[algo]= true;
+    //             agentChartData.forEach(function(element){
+    //                 if( element[algo] === undefined){
+    //                     element[algo] = -1;
+    //                 }
+    //             });
+    //         })
+    //         unique_key.sort();
+    //         setAgentFilterState(check_box_state);
+    //         setAgentChartAlgorithms(unique_key);
+    //         setAgentChartDisplayAlgorithms(unique_key);
+    //         var max_value  = 0 ;
+    //
+    //         for( var i = 0; i < data.length; i ++){
+    //             if(agentQuery === "Solution Cost"){
+    //                 unique_key.forEach(function (element) {
+    //                     if(data[i]["solution_cost"] === null || agentChartData[parseInt(data[i]["agents"] )- 1][element] === -1){
+    //                         agentChartData[parseInt(data[i]["agents"] )- 1][element] = -1;
+    //                     }else{
+    //                         agentChartData[parseInt(data[i]["agents"] ) - 1][element] =  (agentChartData[parseInt(data[i]["agents"] ) -1][element]- data[i]["solution_cost"])/ data[i]["solution_cost"];
+    //                         max_value = max_value >  agentChartData[parseInt(data[i]["agents"] ) - 1][element]? max_value :  agentChartData[parseInt(data[i]["agents"] ) - 1][element];
+    //                     }
+    //                 })
+    //             }else{
+    //                 unique_key.forEach(function (element) {
+    //                     if(data[i]["lower_cost"] === null || data[i]["lower_algos"] === 0  || agentChartData[parseInt(data[i]["agents"] )- 1][element] === -1){
+    //                         agentChartData[parseInt(data[i]["agents"] )- 1][element] = -1;
+    //                     }else{
+    //                         agentChartData[parseInt(data[i]["agents"] ) - 1][element] =  ( data[i]["lower_cost"] - agentChartData[parseInt(data[i]["agents"] ) -1][element])/ data[i]["lower_cost"];
+    //                         max_value = max_value >  agentChartData[parseInt(data[i]["agents"] ) - 1][element]? max_value :  agentChartData[parseInt(data[i]["agents"] ) - 1][element];
+    //                     }
+    //                 })
+    //             }
+    //         }
+    //         for( var i = 0; i < agentChartData.length; i ++){
+    //             unique_key.forEach(function (element) {
+    //                 if( agentChartData[i][element]  < 0){
+    //                     agentChartData[i][element] = (1+0.5)* max_value
+    //                 }
+    //             })
+    //         }
+    //         setMaxAgentResults(max_value);
+    //         setAgentChartDisplayData(agentChartData);
+    //         setAgentChartOriData(agentChartData);
+    //         setAgentLoading(false);
+    //     }
+    // }, [agentQueryResult]);
 
     React.useEffect(() => {
         if(agentQueryResult.length >0){
-
             var agentChartData = []
             for(var i = 1; i < location.state.numAgents +1; i ++){
                 agentChartData.push(
@@ -829,8 +917,6 @@ export default function SolutionPage() {
             })
             unique_key.sort();
             setAgentFilterState(check_box_state);
-            setAgentChartAlgorithms(unique_key);
-            setAgentChartDisplayAlgorithms(unique_key);
             var max_value  = 0 ;
 
             for( var i = 0; i < data.length; i ++){
@@ -839,7 +925,7 @@ export default function SolutionPage() {
                        if(data[i]["solution_cost"] === null || agentChartData[parseInt(data[i]["agents"] )- 1][element] === -1){
                            agentChartData[parseInt(data[i]["agents"] )- 1][element] = -1;
                        }else{
-                           agentChartData[parseInt(data[i]["agents"] ) - 1][element] =  (agentChartData[parseInt(data[i]["agents"] ) -1][element]- data[i]["solution_cost"])/ data[i]["solution_cost"];
+                           agentChartData[parseInt(data[i]["agents"] ) - 1][element] =  (agentChartData[parseInt(data[i]["agents"] ) -1][element]- data[i]["lower_cost"])/ data[i]["lower_cost"];
                            max_value = max_value >  agentChartData[parseInt(data[i]["agents"] ) - 1][element]? max_value :  agentChartData[parseInt(data[i]["agents"] ) - 1][element];
                        }
                    })
@@ -861,6 +947,23 @@ export default function SolutionPage() {
                     }
                 })
             }
+            unique_key.sort((a, b) => {
+                var value_a = 0;
+                var value_b = 0;
+                agentChartData.forEach(function (element){
+                    value_a += element[a];
+                    value_b += element[b];
+                })
+                if( value_b < value_a){
+                    return -1;
+                }
+                if( value_b > value_a){
+                    return 1;
+                }
+                return 0;
+            });
+            setAgentChartAlgorithms(unique_key);
+            setAgentChartDisplayAlgorithms(unique_key);
             setMaxAgentResults(max_value);
             setAgentChartDisplayData(agentChartData);
             setAgentChartOriData(agentChartData);
@@ -1317,13 +1420,12 @@ export default function SolutionPage() {
                         style: { mb: 2,borderRadius: 10 }
                     }}
                 >
-                    <DialogContent dividers={scrollOpenChart === 'paper'}
-                                   sx={{width: 850, height : 480}}>
-                        {/*<Paper  elevation={12} sx={{ width: '100%', mb: 2, borderRadius: 5}}>*/}
-                        <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
+                    <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 430, display : 'flex'}}>
+                        <Box sx={{width: '100%'}}>
+                            {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
                             <Toolbar
                                 sx={{
-                                    pl: { sm: 2 },
+                                    pl: { sm: 1 },
                                     pr: { xs: 1, sm: 1 }
                                 }}
                             >
@@ -1345,6 +1447,9 @@ export default function SolutionPage() {
                                         component="div"
                                     >
                                         Suboptimality on #Agents ({capitalizeFirstLetter(location.state.mapName)} {location.state.scenType}-{location.state.scenTypeID} scenario) &nbsp;
+                                        <IconButton>
+                                            <InfoIcon onClick={()=>{setOpenMonitorDetail(true)}}/>
+                                        </IconButton>
                                     </Typography>
                                     {/*<Typography*/}
                                     {/*    sx={{ display: "inline-block", width : 50 ,verticalAlign: "middle"}}*/}
@@ -1359,13 +1464,14 @@ export default function SolutionPage() {
                             </Toolbar>
                             {progressLoading ? <Box display="flex"
                                                   justifyContent="center"
-                                                  alignItems="center" width= {850}  height={400} ><CircularProgress
-                                    size={80} thickness={4}/></Box> :
+                                                  alignItems="center" width= {850}  height={370} ><CircularProgress
+                                    size={80} /></Box> :
                                 <AreaChart
                                     data={progressChartData}
-                                    width= {850}  height={400}
+                                    width= {850}  height={370}
+                                    margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                                 >
-                                    <Legend verticalAlign="top"  height={30} align="center" wrapperStyle={{
+                                    <Legend iconType="square" verticalAlign="top"  height={30} align="center" wrapperStyle={{
                                         fontFamily: "Roboto Slab"
                                     }}/>
                                     <CartesianGrid strokeDasharray="3 3" />
@@ -1376,7 +1482,7 @@ export default function SolutionPage() {
                                            //     dy: 20,
                                            //     style:{fontFamily: "Roboto Slab" }
                                            //  }}
-                                           angle={-60} height={60} textAnchor="end"
+                                           angle={-60} height={70} textAnchor="end"
                                            dy = {30}
                                            dx  = {-5}
                                            // domain={[0,"dataMax"]}
@@ -1384,17 +1490,31 @@ export default function SolutionPage() {
                                            style={{
                                                fontFamily: "Roboto Slab"
                                            }}
-                                    />
-                                    <Brush  y={330} dataKey="name"  height={20} stroke='rgba(0, 0, 0, 0.5)' />
-                                    <YAxis domain={[0, (maxRatio+maxRatio*0.5)]}
+                                    >
+                                        <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                            fontFamily: "Roboto Slab"
+                                        }} fill="#626262" fontSize={18}/>
+                                    </XAxis>
+                                    <Brush  y={290} dataKey="name"  height={20} stroke='rgba(0, 0, 0, 0.5)' />
+                                    <YAxis domain={[0, (maxRatio+maxRatio*0.5) ===0 ? 0.2 : (maxRatio+maxRatio*0.5)]}
                                            interval="preserveEnd"
                                            padding={{ bottom: 20 }}
                                            tickFormatter={(tick) => {
-                                        if(tick === (maxRatio+maxRatio*0.5)){
-                                            return "Inf"
-                                        }
+                                               if((maxRatio+maxRatio*0.5) === 0){
+                                                   if(tick ===0.2){
+                                                       return "Inf"
+                                                   }
+                                               }else{
+                                                   if(tick === (maxRatio+maxRatio*0.5)){
+                                                       return "Inf"
+                                                   }
+                                               }
                                         return `${(tick* 100).toFixed(0)}%`;
-                                    }}/>
+                                    }}>
+                                        <Label value="Suboptimality Ratio" angle={-90} position="insideLeft"
+                                               style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                               fill="#626262" offset={0}  fontSize={18}/>
+                                    </YAxis>
                                     <Tooltip
                                         formatter={(tick) => {
                                             if(tick === (maxRatio+maxRatio*0.5)){
@@ -1408,11 +1528,12 @@ export default function SolutionPage() {
                                         labelFormatter={(tick) => {
                                             return `#Agents: ${tick}`;}}
                                         wrapperStyle={{ fontFamily: "Roboto Slab" ,  backgroundColor: "white", borderStyle: "ridge"}} />
-                                    <Area strokeWidth={4} type="monotone" dataKey="Suboptimality Ratio" stackId="1" stroke="#8884d8" fill="#8884d8" />
+                                    <Area strokeWidth={1} type="monotone" dataKey="Suboptimality Ratio" name="Best Solution" stackId="1" stroke="#8884d8" fill="#8884d8" />
                                     {/*<Area type="monotone" dataKey="Solution Cost" stackId="2" stroke="#82ca9d" fill="#82ca9d" />*/}
                                 </AreaChart>
                             }
-                        </Paper>
+                        {/*</Paper>*/}
+                        </Box>
                     </DialogContent>
                 </Dialog>
                 <Dialog
@@ -1428,10 +1549,10 @@ export default function SolutionPage() {
                 >
                     <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 430, display : 'flex'}}>
                         <Box sx={{width: '100%'}}>
-                            <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
+                            {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
                                 <Toolbar
                                     sx={{
-                                        pl: { sm: 2 },
+                                        pl: { sm: 1 },
                                         pr: { xs: 1, sm: 1 }
                                     }}
                                 >
@@ -1442,6 +1563,9 @@ export default function SolutionPage() {
                                         component="div"
                                     >
                                         Comparison between Algorithms on #Agents
+                                        <IconButton>
+                                            <InfoIcon />
+                                        </IconButton>
                                     </Typography>
 
                                     <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
@@ -1496,42 +1620,54 @@ export default function SolutionPage() {
                                 </Toolbar>
                                 {agentLoading ? <Box display="flex"
                                                      justifyContent="center"
-                                                     alignItems="center" width={850} height={350}><CircularProgress
+                                                     alignItems="center" width={850} height={370}><CircularProgress
                                         size={80}/></Box> :
+                                    // <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <AreaChart
                                         data={agentChartDisplayData}
                                         stackOffset="expand"
-                                        width={850} height={350}
+                                        width={850} height={370}
+                                        margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                                     >
                                         <Legend verticalAlign="top" align="center" wrapperStyle={{
                                             fontFamily: "Roboto Slab"
-                                        }}/>
+                                        }} payload={[...agentChartDisplayAlgorithms].sort().map(name => ({ value: name,
+                                                    // id: item.name,
+                                                    type: "square", color:color[algorithm_name.indexOf(name)] }))}
+                                        />
+
                                         <CartesianGrid strokeDasharray="3 3"/>
-                                        <XAxis dataKey="name" angle={-60} height={50} interval="preserveStartEnd"
+                                        <XAxis dataKey="name" angle={-60} height={70} interval="preserveStartEnd"
                                                textAnchor="end"
                                                dy={30}
                                                dx={-5}
                                                style={{
                                                    fontFamily: "Roboto Slab"
                                                }}
-                                        />
+                                        >
+                                            <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                                fontFamily: "Roboto Slab"
+                                            }} fill="#626262" fontSize={18}/>
+                                        </XAxis>
                                         {/*<YAxis tickFormatter={toPercent} />*/}
                                         <YAxis domain={[0, (maxAgentResults+maxAgentResults*0.5)]}
                                                interval="preserveEnd"
-                                               padding={{ bottom: 20 }}
+                                               // width={40}
+                                               // padding={{ bottom: 20 }}
+                                               // allowDataOverflow={true}
+                                               // ticks={[ -0.05, 0,(maxAgentResults+maxAgentResults*0.5)]}
                                                tickFormatter={(tick) => {
                                                    if(tick === (maxAgentResults+maxAgentResults*0.5)){
                                                        return "Inf"
                                                    }
-                                                   return `${(tick* 100).toFixed(1)}%`;
-                                               }}/>
+                                                   return `${(tick* 100).toFixed(0)}%`;
+                                               }}
+                                        >
+                                            <Label value="Suboptimality Ratio" angle={-90} position="insideLeft"
+                                                   style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                                  fill="#626262" offset={0}  fontSize={18}/>
+                                        </YAxis>
                                         <Brush y={290} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
-                                        {/*<Tooltip labelFormatter={(value) => '#Agents: ' + value} wrapperStyle={{*/}
-                                        {/*    fontFamily: "Roboto Slab",*/}
-                                        {/*    backgroundColor: "white",*/}
-                                        {/*    borderStyle: "ridge"*/}
-                                        {/*}}/>*/}
-
                                         <Tooltip
                                             formatter={(tick) => {
                                                 if(tick === (maxAgentResults+maxAgentResults*0.5)){
@@ -1553,11 +1689,72 @@ export default function SolutionPage() {
                                             )
                                         )}
                                     </AreaChart>
+                                    // </div>
                                 }
-                            </Paper>
+                            {/*</Paper>*/}
                         </Box>
                     </DialogContent>
                 </Dialog>
+
+                <Dialog
+                    open={openMonitorDetail}
+                    onClose={()=>setOpenMonitorDetail(false)}
+                    fullWidth={true}
+                    scroll={scroll}
+                    aria-labelledby="scroll-dialog-title"
+                    aria-describedby="scroll-dialog-description"
+                    maxWidth={'sm'}
+                    disableScrollLock={ true }
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                    // PaperProps={{ sx: { width: "100%"}}}
+                >
+                    <DialogContent  dividers={scroll === 'paper'} sx={{width: 550, display : 'flex'}}>
+                        <Table sx={{ width : 550}}>
+                            <colgroup>
+                                {/*<col width="120" />*/}
+                                {/*<col width="150" />*/}
+                                {/*<col width="65" />*/}
+                                {/*<col width="200" />*/}
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="50" />
+                            </colgroup>
+                            <TableBody>
+                                <TableRow >
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}}>  Description:  </TableCell>
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        Multi-Agent Path Finding (MAPF) is a combinatorial problem that asks us to compute collision-free paths for teams of
+                                        cooperative agents.
+                                        Many works appear on this topic each year, and a large number of substantial advancements and improvements have been reported. Yet measuring overall progress in
+                                        MAPF is difficult:
+                                        there are many potential competitors, and the computational burden for comprehensive experimentation is prohibitively large.
+                                        Moreover, detailed data from past experimentation is usually unavailable.
+                                        This online platform introduces a set of methodological and visualisation tools which can help the community establish clear indicators for
+                                        state-of-the-art MAPF performance and which can facilitate large-scale comparisons between MAPF solvers.
+                                        Our objectives are to lower the barrier of entry for new
+                                        researchers and to further promote the study of MAPF.
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  X-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Y-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </DialogContent>
+                </Dialog>
+
             </Box>
 
     );

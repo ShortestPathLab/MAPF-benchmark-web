@@ -15,6 +15,152 @@ export default function Contribute() {
         <Box
             sx={{ minWidth : 600, position: "absolute", width: '96%', paddingLeft:"2%", top:"300px",opacity:"0.95"
             }}>
+            <Paper elevation={12} sx={{ width: '100%', mt: 2, mb: 2,borderRadius: 5}}>
+                <Toolbar
+                    sx={{
+                        pl: { sm: 2 },
+                        pr: { xs: 1, sm: 1 }
+                    }}
+                >
+                    <Typography
+                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                        variant="h6"
+                        component="div"
+                    >
+                        Call for Submission
+                    </Typography>
+                </Toolbar>
+                <Divider sx={{ borderBottomWidth: '3px' }} />
+                <Box
+                    sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
+                    }}>
+                    <Typography
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        In recent years, the number of publications on the topic of MAPF has exploded as industrial interest continues to grow.
+                        Many works now appear across various venues, and substantial performance improvements have been achieved.
+                        As a community, it is important for us to track the progress made in the field and establish the state-of-the-art together.
+                        Therefore this web-based platform is developed to track different types of algorithms and their progress.
+                        The two important results we collected from different MAPF algorithms are:
+                    </Typography>
+
+                    <ul>
+                        <Typography
+                            sx={{ fontSize: 16, flex: '1 1 100%'}}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            Best (i.e., largest) lower-bound value.
+                        </Typography>
+                        <Typography
+                            sx={{ fontSize: 16, flex: '1 1 100%'}}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            Best (i.e., smallest SIC) solution and its concrete plan.
+                        </Typography>
+                    </ul>
+                    <Typography
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        To contribute new results, please modify your solver to return the CSV file
+                        in accordance with the Submission File Format, following the instructions provided below:
+
+                    </Typography>
+                    <ul>
+                        <Typography
+                            sx={{ fontSize: 16, flex: '1 1 100%'}}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            For the solver that explores only feasible solutions, please report the lower-bound as empty.
+                        </Typography>
+                        <Typography
+                            sx={{ fontSize: 16, flex: '1 1 100%'}}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            For the solver that attempts to prove optimality, please report the lower-bound value when the solver times out.
+                        </Typography>
+                    </ul>
+                    <Typography
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        To upload your results to the platform:
+                    </Typography>
+                    <ul>
+                        <Typography
+                            sx={{ fontSize: 16, flex: '1 1 100%'}}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+
+                            If you are interested in submitting results for all maps:
+                        </Typography>
+                        <ul>
+                            <Typography
+                                sx={{fontSize: 16, flex: '1 1 100%' }}
+                                variant="h6"
+                                component="li"
+                                gutterBottom
+                            >
+                                Please contact one of the organizers, and we will create an account for you to upload the files yourself.
+                            </Typography>
+                        </ul>
+                        <Typography
+                            sx={{fontSize: 16, flex: '1 1 100%' }}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            If you are interested in submitting results for all maps:
+                        </Typography>
+                        <ul>
+                            <Typography
+                                sx={{ fontSize: 16,flex: '1 1 100%' }}
+                                variant="h6"
+                                component="li"
+                                gutterBottom
+                            >
+                                Due to the large size of the submission files, please contact one of the organizers, and we will get in touch with you.
+                            </Typography>
+                        </ul>
+                    </ul>
+                    <Typography
+                        sx={{ fontSize: 16,flex: '1 1 100%' }}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        Current Contactor:
+                    </Typography>
+                    <ul>
+                        <Typography
+                            sx={{ fontSize: 16, flex: '1 1 100%'}}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            For submission, please contact Bojie.Shen@monash.edu or Zhe.Chen@monash.edu.
+                        </Typography>
+
+                    </ul>
+                </Box>
+            </Paper>
             <Paper elevation={12} sx={{ width: '100%', mt: 2, mb: 2, borderRadius: 5 }}>
                 <Toolbar
                     sx={{
@@ -27,7 +173,7 @@ export default function Contribute() {
                         variant="h6"
                         component="div"
                     >
-                        Submission File Format (csv)
+                        Submission File Format (CSV)
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
@@ -51,32 +197,28 @@ export default function Contribute() {
                 {/*    We support uploading .csv file*/}
                 {/*</Typography>*/}
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    variant="h6"
+                    sx={{ fontSize: 16, flex: '1 1 100%' }}
                     component="div"
                     gutterBottom
                 >
                     File header:
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%'}}
-                    variant="h7"
+                    sx={{ fontSize: 16,paddingLeft :'15px',paddingBottom :'15px',flex: '1 1 100%'}}
                     component="div"
                     gutterBottom
                 >
                     map_name, scen_type, type_id, agents, lower_cost, solution_cost, solution_plan
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%'}}
-                    variant="h6"
+                    sx={{ fontSize: 16, flex: '1 1 100%'}}
                     component="div"
                     gutterBottom
                 >
                     Solution Plan Format:
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%'}}
-                    variant="h7"
+                    sx={{fontSize: 16, paddingLeft :'15px',paddingBottom :'15px', flex: '1 1 100%'}}
                     component="div"
                     gutterBottom
                 >
@@ -85,8 +227,7 @@ export default function Contribute() {
                     We use "\n" to separate the paths between different agents.
                 </Typography>
                 <Typography
-                    sx={{ flex: '1 1 100%'}}
-                    variant="h6"
+                    sx={{ fontSize: 16,flex: '1 1 100%'}}
                     component="div"
                     gutterBottom
                 >
@@ -202,92 +343,6 @@ export default function Contribute() {
                 </Table>
             </Box>
             </Paper>
-            <Paper elevation={12} sx={{ width: '100%', mt: 2, mb: 2,borderRadius: 5}}>
-                <Toolbar
-                    sx={{
-                        pl: { sm: 2 },
-                        pr: { xs: 1, sm: 1 }
-                    }}
-                >
-                    <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
-                        variant="h6"
-                        component="div"
-                    >
-                        How to Submit
-                    </Typography>
-                </Toolbar>
-                <Divider sx={{ borderBottomWidth: '3px' }} />
-                <Box
-                    sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
-                    }}>
-                    <Typography
-                        sx={{ flex: '1 1 100%'}}
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                    >
-                        To contribute and submit new results:
-                    </Typography>
-                    <ul>
-                        <Typography
-                            sx={{ flex: '1 1 100%'}}
-                            variant="h6"
-                            component="li"
-                            gutterBottom
-                        >
-                            If you are interesting in submitted results to a particular map:
-                        </Typography>
-                        <ul>
-                            <Typography
-                                sx={{ flex: '1 1 100%' }}
-                                variant="h6"
-                                component="li"
-                                gutterBottom
-                            >
-                                Please contact one of organisers, we will create an account for you to upload by yourself.
-                            </Typography>
-                        </ul>
-                        <Typography
-                            sx={{ flex: '1 1 100%' }}
-                            variant="h6"
-                            component="li"
-                            gutterBottom
-                        >
-                            If you are interesting in submitted results for all map:
-                        </Typography>
-                        <ul>
-                            <Typography
-                                sx={{ flex: '1 1 100%' }}
-                                variant="h6"
-                                component="li"
-                                gutterBottom
-                            >
-                                Due to large size of submission files, please contact one of organisers, we will get in touch with you.
-                            </Typography>
-                        </ul>
-                    </ul>
-                    <Typography
-                        sx={{ flex: '1 1 100%' }}
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                    >
-                        Current Contactor:
-                    </Typography>
-                    <ul>
-                        <Typography
-                            sx={{ flex: '1 1 100%'}}
-                            variant="h6"
-                            component="li"
-                            gutterBottom
-                        >
-                            For submission, please contact <strong>Bojie.Shen@monash.edu</strong> or <strong>Zhe.Chen@monash.edu</strong>.
-                        </Typography>
-
-                    </ul>
-                </Box>
-            </Paper>
 
             <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
                 <Toolbar
@@ -309,12 +364,11 @@ export default function Contribute() {
                     sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
                     <Typography
-                        sx={{ flex: '1 1 100%' }}
-                        variant="h6"
+                        sx={{ fontSize: 16, flex: '1 1 100%' }}
                         component="div"
                         gutterBottom
                     >
-                        To report an issue or bug, please submit an issue to our <a href="https://github.com/bshen95/MAPF-benchmark-web">Github</a>.
+                        To report an issue or bug, please submit it as an issue on our <a href="https://github.com/bshen95/MAPF-benchmark-web">Github</a>.
                     </Typography>
                 </Box>
             </Paper>

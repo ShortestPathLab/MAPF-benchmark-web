@@ -34,7 +34,7 @@ import {
     AreaChart, Bar,
     BarChart,
     Brush,
-    CartesianGrid,
+    CartesianGrid, Label,
     Legend,
     ResponsiveContainer,
     Tooltip,
@@ -54,6 +54,12 @@ import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 import randomColor from "randomcolor";
 import {APIConfig} from "./config";
+import { MenuList, ListItemIcon,Popover } from '@mui/material';
+import InboxIcon from '@mui/icons-material/Inbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import InfoIcon from "@mui/icons-material/Info";
 
 function descendingComparator(a, b, orderBy) {
     if (orderBy === 'map_size'){
@@ -286,7 +292,6 @@ export default function ScenarioTable() {
     const [query_id, setQuery_id] = React.useState('');
     const [rows, setRows] = React.useState([]);
     const [searched, setSearched] = React.useState("");
-    const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState('paper');
     const [progressChartData, setProgressChartData] = React.useState([]);
     const [agentProgressChartData, setAgentProgressChartData] = React.useState([]);
@@ -328,6 +333,15 @@ export default function ScenarioTable() {
     const [progressColor] = React.useState({'Unknown': "#BF0A30", 'Solved': "#F9812A", 'Closed': "#4CBB17"  } )
 
 
+    // const [progressAnchorEl, setProgressAnchorEl] = React.useState(null);
+    const [subAnchorEl, setSubAnchorEl] = React.useState(null);
+    const [openMenuIndex, setOpenMenuIndex] =React.useState(null);
+    const [scenProgressOpen, setScenProgressOpen] = React.useState(false);
+    const [agentProgressOpen, setAgentProgressOpen] = React.useState(false);
+    const [scenCompareOpen, setScenCompareOpen] = React.useState(false);
+    const [agentCompareOpen, setAgentCompareOpen] = React.useState(false);
+    const [scenCompareYLabel, setScenCompareYLabel] = React.useState('');
+    const [agentCompareYLabel, setAgentCompareYLabel] = React.useState('');
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -427,36 +441,6 @@ export default function ScenarioTable() {
         }
     }, [csvData]);
 
-
-    const handleClickOpen  = (event,scrollType)  => {
-        setAgentProgressLoading(true);
-        setOpen(true);
-        setScroll(scrollType);
-        fetch(APIConfig.apiUrl+'/instance/test/'+location.state.mapId, {method: 'GET'})
-            .then(res => res.json())
-            .then(data => {
-                // console.log(data)
-                setAgentProgressLoading(false);
-                setAgentProgressChartData(data);
-            })
-            .catch(err => console.error(err));
-        var progressChartData = [];
-        data.forEach(element=>progressChartData.push({
-            name: (element.scen_type ==="random"? "rand": "even") + " "+ element.type_id,
-            total: element.instances,
-            Closed: element.instances_closed,
-            Solved: element.instances_solved - element.instances_closed,
-            Unknown: element.instances - element.instances_solved,
-        }));
-        setProgressChartData(progressChartData);
-
-        event.stopPropagation();
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
     const toPercent = (decimal, fixed = 0) => `${(decimal * 100).toFixed(fixed)}%`;
     const getPercent = (value, total) => {
         const ratio = total > 0 ? value / total : 0;
@@ -524,36 +508,21 @@ export default function ScenarioTable() {
         }
     };
 
-
-    const handleClickOpenComparator  = (event,scrollType)  => {
-        setOpenComparator(true);
-        setScroll(scrollType);
-
-        var algorithm_API = APIConfig.apiUrl+'/algorithm/';
-        fetch( algorithm_API, {method: 'GET'})
-            .then(res => res.json())
-            .then(data => {
-                var key = [];
-                data.forEach(a => key.push(a.algo_name));
-                key.sort();
-                setAlgorithm_name(key);
-            })
-            .catch(err => console.error(err));
-
-        event.stopPropagation();
-    };
-
     const handleMapChange = (event) => {
         setMapQuery(event.target.value);
         setMapLoading(true);
         var map_API = '';
         if(event.target.value ==='#Instances Closed'){
+            setScenCompareYLabel('Instances Closed')
             map_API = APIConfig.apiUrl+'/algorithm/getScenClosedInfo/' + location.state.mapId;
         }else if (event.target.value === '#Instances Solved'){
+            setScenCompareYLabel('Instances Solved')
             map_API = APIConfig.apiUrl+'/algorithm/getScenSolvedInfo/' + location.state.mapId;
         }else if (event.target.value === '#Best Lower-bounds'){
+            setScenCompareYLabel('Instances with Best LB')
             map_API = APIConfig.apiUrl+'/algorithm/getScenLowerInfo/' + location.state.mapId;
         }else{
+            setScenCompareYLabel('Instances with Best Solution')
             map_API = APIConfig.apiUrl+'/algorithm/getScenSolutionInfo/' + location.state.mapId;
         }
 
@@ -571,12 +540,16 @@ export default function ScenarioTable() {
         setAgentLoading(true);
         var agent_API = '';
         if(event.target.value ==='#Instances Closed'){
+            setAgentCompareYLabel('Instances Closed')
             agent_API = APIConfig.apiUrl+'/algorithm/getAgentClosedInfo/' + location.state.mapId;
         }else if (event.target.value === '#Instances Solved'){
+            setAgentCompareYLabel('Instances Solved')
             agent_API = APIConfig.apiUrl+'/algorithm/getAgentSolvedInfo/' + location.state.mapId;
         }else if (event.target.value === '#Best Lower-bounds'){
+            setAgentCompareYLabel('Instances with Best LB')
             agent_API = APIConfig.apiUrl+'/algorithm/getAgentLowerInfo/' + location.state.mapId;
         }else{
+            setAgentCompareYLabel('Instances with Best Solution')
             agent_API = APIConfig.apiUrl+'/algorithm/getAgentSolutionInfo/' + location.state.mapId;
         }
         fetch(agent_API, {method: 'GET'})
@@ -587,45 +560,6 @@ export default function ScenarioTable() {
             .catch(err => console.error(err));
 
     };
-
-    React.useEffect(() => {
-        if(algorithm_name.length > 0) {
-
-            // var agent_data = [];
-            // data.forEach(
-            //     function(element) {
-            //         var num_of_agents = element.instances;
-            //         for ( var i = 1; i <= num_of_agents; i ++){
-            //             if(agent_data.length < i){
-            //                 agent_data.push({name:i,total : 1})
-            //             }else{
-            //                 agent_data[i-1].total = agent_data[i-1].total +1;
-            //             }
-            //         }
-            //     }
-            // );
-            setAgentLoading(true);
-            setMapLoading(true);
-            setAgentQuery('#Instances Closed');
-            setMapQuery('#Instances Closed');
-            var closed_API = APIConfig.apiUrl+'/algorithm/getScenClosedInfo/' + location.state.mapId;
-            var agent_chart_API = APIConfig.apiUrl+'/algorithm/getAgentClosedInfo/' + location.state.mapId;
-            Promise.all([
-                fetch(closed_API, {method: 'GET'}),
-                fetch(agent_chart_API, {method: 'GET'})
-            ])
-                .then((values) => {
-                    return Promise.all(values.map((r) => r.json()))
-                })
-                .then(([closed_data,
-                           agent_closed_data
-                       ]) => {
-                    setMapQueryResult(closed_data);
-                    setAgentQueryResult(agent_closed_data);
-                }).catch(err => console.error(err));
-        }
-    }, [algorithm_name]);
-
 
 
     React.useEffect(() => {
@@ -782,10 +716,135 @@ export default function ScenarioTable() {
         setAgentChartDisplayData(displayData);
     }, [agentFilterState]);
 
-
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const handleMenuOpen = (event, index) => {
+        setSubAnchorEl(event.currentTarget);
+        setOpenMenuIndex(index);
+    };
+
+    const handleMenuClose = () => {
+        setSubAnchorEl(null);
+        setOpenMenuIndex(null);
+        setMenuAnchorEl(null);
+    };
+
+    const isSubmenuOpen = (index) => {
+        return openMenuIndex === index && Boolean(subAnchorEl);
+    };
+
+
+    const handleClickOpenScenProgress  = (event,scrollType)  => {
+        setScenProgressOpen(true);
+        setScroll(scrollType);
+        var progressChartData = [];
+        data.forEach(element=>progressChartData.push({
+            name: (element.scen_type ==="random"? "rand": "even") + " "+ element.type_id,
+            total: element.instances,
+            Closed: element.instances_closed,
+            Solved: element.instances_solved - element.instances_closed,
+            Unknown: element.instances - element.instances_solved,
+        }));
+        setProgressChartData(progressChartData);
+        event.stopPropagation();
+    };
+
+    const handleClickOpenAgentProgress   = (event,scrollType)  => {
+        setAgentProgressLoading(true);
+        setAgentProgressOpen(true);
+        setScroll(scrollType);
+        fetch(APIConfig.apiUrl+'/instance/test/'+location.state.mapId, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data)
+                setAgentProgressLoading(false);
+                setAgentProgressChartData(data);
+            })
+            .catch(err => console.error(err));
+        event.stopPropagation();
+    };
+
+
+
+    const handleClickOpenScenComparator  = async (event, scrollType) => {
+        setMapLoading(true);
+        setScenCompareOpen(true);
+        setScroll(scrollType);
+        var algorithm_API = APIConfig.apiUrl + '/algorithm/';
+        await fetch(algorithm_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                var key = [];
+                data.forEach(a => key.push(a.algo_name));
+                key.sort();
+                setAlgorithm_name(key);
+            })
+            .catch(err => console.error(err));
+        setMapQuery('#Instances Closed');
+        setScenCompareYLabel('Instances Closed')
+        var closed_API = APIConfig.apiUrl+'/algorithm/getScenClosedInfo/' + location.state.mapId;
+        fetch(closed_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                setMapQueryResult(data);
+            })
+            .catch(err => console.error(err));
+
+        event.stopPropagation();
+    };
+
+    const handleClickOpenAgentComparator  = async (event, scrollType) => {
+        setAgentCompareOpen(true);
+        setAgentLoading(true);
+        setScroll(scrollType);
+        var algorithm_API = APIConfig.apiUrl + '/algorithm/';
+        await fetch(algorithm_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                var key = [];
+                data.forEach(a => key.push(a.algo_name));
+                key.sort();
+                setAlgorithm_name(key);
+            })
+            .catch(err => console.error(err));
+        setAgentQuery('#Instances Closed');
+        setAgentCompareYLabel('Instances Closed')
+        var agent_chart_API = APIConfig.apiUrl+'/algorithm/getAgentClosedInfo/' + location.state.mapId;
+        fetch(agent_chart_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                setAgentQueryResult(data);
+            })
+            .catch(err => console.error(err));
+
+        event.stopPropagation();
+    };
+
+    // React.useEffect(() => {
+    //     if(algorithm_name.length > 0) {
+    //         setAgentLoading(true);
+    //         setMapLoading(true);
+    //         setAgentQuery('#Instances Closed');
+    //         setMapQuery('#Instances Closed');
+    //         var closed_API = APIConfig.apiUrl+'/algorithm/getScenClosedInfo/' + location.state.mapId;
+    //         var agent_chart_API = APIConfig.apiUrl+'/algorithm/getAgentClosedInfo/' + location.state.mapId;
+    //         Promise.all([
+    //             fetch(closed_API, {method: 'GET'}),
+    //             fetch(agent_chart_API, {method: 'GET'})
+    //         ])
+    //             .then((values) => {
+    //                 return Promise.all(values.map((r) => r.json()))
+    //             })
+    //             .then(([closed_data,
+    //                        agent_closed_data
+    //                    ]) => {
+    //                 setMapQueryResult(closed_data);
+    //                 setAgentQueryResult(agent_closed_data);
+    //             }).catch(err => console.error(err));
+    //     }
+    // }, [algorithm_name]);
+
 
     return (
             <Box
@@ -824,7 +883,10 @@ export default function ScenarioTable() {
                         keepMounted
                         open={Boolean(menuAnchorEl)}
                         // onClick ={handleDomainFilterChange}
-                        onClose={()=>{setMenuAnchorEl(null)}}
+                        onClose={()=>{setMenuAnchorEl(null);
+                            setSubAnchorEl(null);
+                            setOpenMenuIndex(null);
+                        }}
                     >
                         <MenuItem key="Dense">
                             <Button
@@ -845,26 +907,114 @@ export default function ScenarioTable() {
                                 key="Progress"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<ShowChartIcon/>}
-                                onClick={(event) =>{handleClickOpen(event,'paper');
-                                    setMenuAnchorEl(null);
+                                onClick={(event) =>{handleMenuOpen(event, 1);
                                 } }
                             >
                                 Monitor Progress
                             </Button>
                         </MenuItem>
+
                         <MenuItem key="Comparator">
                             <Button
                                 key="Comparator"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<CompareIcon />}
-                                onClick={(event) =>{handleClickOpenComparator(event,'paper');
-                                    setMenuAnchorEl(null);
+                                onClick={(event) =>{
+                                    handleMenuOpen(event, 2);
+                                    // handleClickOpenComparator(event,'paper');
+                                    // setMenuAnchorEl(null);
                                 } }
                             >
                                 Compare Algorithms
                             </Button>
                         </MenuItem>
                     </Menu>
+
+                    <Popover
+                        open={isSubmenuOpen(1)}
+                        anchorEl={subAnchorEl}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <MenuList>
+                            <MenuItem key="M_scen">
+                                <Button
+                                    key="M_scen"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{handleClickOpenScenProgress(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    Scenarios
+                                </Button>
+                            </MenuItem>
+                            <MenuItem key="M_agents">
+                                <Button
+                                    key="M_agents"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{handleClickOpenAgentProgress(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    #Agents
+                                </Button>
+                            </MenuItem>
+                        </MenuList>
+                    </Popover>
+
+                    <Popover
+                        open={isSubmenuOpen(2)}
+                        anchorEl={subAnchorEl}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <MenuList>
+                            <MenuItem key="C_scen">
+                                <Button
+                                    key="C_scen"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{handleClickOpenScenComparator(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    Scenarios
+                                </Button>
+                            </MenuItem>
+                            <MenuItem key="C_agents">
+                                <Button
+                                    key="C_agents"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{handleClickOpenAgentComparator(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    #Agents
+                                </Button>
+                            </MenuItem>
+                        </MenuList>
+                    </Popover>
 
 
                     <Typography
@@ -1008,148 +1158,10 @@ export default function ScenarioTable() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                scroll={scroll}
-                disableScrollLock={ true }
-                fullWidth={true}
-                maxWidth={'md'}
-                PaperProps={{
-                    style: { mb: 2,borderRadius: 10 }
-                }}
-            >
-
-                <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 900}}>
-                    {/*<ResponsiveContainer width="98%"  height={400}>*/}
-                    <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
-                    <Toolbar
-                        sx={{
-                            pl: { sm: 2 },
-                            pr: { xs: 1, sm: 1 }
-                        }}
-                    >
-                        <Typography
-                            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
-                            variant="h6"
-                            component="div"
-                        >
-                            Success Rate on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
-                        </Typography>
-                    </Toolbar>
-                    <AreaChart
-                        data={progressChartData}
-                        stackOffset="expand"
-                        width= {850}  height={400}
-                    >
-                        {/*<Legend verticalAlign="top"  align="center" wrapperStyle={{*/}
-                        {/*    fontFamily: "Roboto Slab"*/}
-                        {/*}}/>*/}
-                        <Legend verticalAlign="top"  align="center" height={30} wrapperStyle={{
-                            fontFamily: "Roboto Slab"
-                        }} payload={['Solved','Closed','Unknown'].sort().map(name => ({ value: name,
-                            // id: item.name,
-                            type: "square", color:progressColor[name] }))}/>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" angle={-60} height={100} interval={2}
-                               textAnchor="end"
-                               dy = {30}
-                               dx  = {-5}
-                               style={{
-                                   fontFamily: "Roboto Slab"
-                               }}
-                        />
-                        {/*<YAxis tickFormatter={toPercent} />*/}
-                        <YAxis  tickFormatter={(tick) => {
-                            return `${tick* 100}%`;
-                        }}/>
-                        <Brush y={290} dataKey="name"  height={20} stroke='rgba(0, 0, 0, 0.5)' />
-                        <Tooltip content={renderTooltipContent}  wrapperStyle={{ fontFamily: "Roboto Slab" ,  backgroundColor: "white", borderStyle: "ridge", paddingLeft: "10px", paddingRight: "10px"}} />
-                        <Area type="monotone" dataKey="Closed" stackId="1" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8} />
-                        <Area type="monotone" dataKey="Solved" stackId="1" stroke="#F9812A" fill="#F9812A" fillOpacity={0.8}/>
-                        <Area type="monotone" dataKey="Unknown" stackId="1" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8} />
-                    </AreaChart>
-                    </Paper>
-                    <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
-                    <Toolbar
-                        sx={{
-                            pl: { sm: 2 },
-                            pr: { xs: 1, sm: 1 }
-                        }}
-                    >
-                        <Typography
-                            sx={{ flex: '1 1 100%' ,paddingLeft :'10px'}}
-                            component="div"
-                        >
-
-                            <Typography
-                                sx={{ display: "inline-block",verticalAlign: "middle" }}
-                                variant="h6"
-                                component="div"
-                            >
-                                Success Rate on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
-                            </Typography>
-                            {/*<Typography*/}
-                            {/*    sx={{ display: "inline-block", width : 50 ,verticalAlign: "middle"}}*/}
-                            {/*    component="img"*/}
-                            {/*    src={`${process.env.PUBLIC_URL}/mapf-svg/`+ location.state.mapName+`.svg`}*/}
-                            {/*>*/}
-
-                            {/*</Typography>*/}
-
-                        </Typography>
-
-                    </Toolbar>
-                        {agentProgressLoading ? <Box display="flex"
-                                                     justifyContent="center"
-                                                     alignItems="center" width={850} height={350}><CircularProgress
-                                size={80}/></Box> :
-                            <AreaChart
-                                data={agentProgressChartData}
-                                stackOffset="expand"
-                                width={850} height={350}
-                            >
-                                {/*<Legend verticalAlign="top" align="center" wrapperStyle={{*/}
-                                {/*    fontFamily: "Roboto Slab"*/}
-                                {/*}}/>*/}
-                                <Legend verticalAlign="top"  align="center" height={30} wrapperStyle={{
-                                    fontFamily: "Roboto Slab"
-                                }} payload={['Solved','Closed','Unknown'].sort().map(name => ({ value: name,
-                                    // id: item.name,
-                                    type: "square", color:progressColor[name] }))}/>
-                                <CartesianGrid strokeDasharray="3 3"/>
-                                <XAxis dataKey="name" angle={-60} height={50} interval="preserveStartEnd"
-                                       textAnchor="end"
-                                       dy={30}
-                                       dx={-5}
-                                       style={{
-                                           fontFamily: "Roboto Slab"
-                                       }}
-                                />
-                                {/*<YAxis tickFormatter={toPercent} />*/}
-                                <YAxis tickFormatter={(tick) => {
-                                    return `${tick * 100}%`;
-                                }}/>
-                                <Brush y={290} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
-                                <Tooltip content={renderTooltipContent} wrapperStyle={{
-                                    fontFamily: "Roboto Slab",
-                                    backgroundColor: "white",
-                                    borderStyle: "ridge",
-                                    paddingLeft: "10px",
-                                    paddingRight: "10px"
-                                }}/>
-                                <Area type="monotone" dataKey="Closed" stackId="1" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8}/>
-                                <Area type="monotone" dataKey="Solved" stackId="1" stroke="#F9812A" fill="#F9812A" fillOpacity={0.8}/>
-                                <Area type="monotone" dataKey="Unknown" stackId="1" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8}/>
-                            </AreaChart>
-                        }
-                    </Paper>
-                    {/*</ResponsiveContainer>*/}
-                </DialogContent>
-            </Dialog>
+                {/*Handle open scen progress */}
                 <Dialog
-                    open={openComparator}
-                    onClose={()=>setOpenComparator(false)}
+                    open={scenProgressOpen}
+                    onClose={()=>setScenProgressOpen(false)}
                     scroll={scroll}
                     disableScrollLock={ true }
                     fullWidth={true}
@@ -1158,12 +1170,192 @@ export default function ScenarioTable() {
                         style: { mb: 2,borderRadius: 10 }
                     }}
                 >
-                    <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 550, display : 'flex'}}>
+
+                    <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 450}}>
+                        {/*<ResponsiveContainer width="98%"  height={400}>*/}
+                        <div  sx={{ width: '100%'}}>
+                            <Toolbar
+                                sx={{
+                                    pl: { sm: 1 },
+                                    pr: { xs: 1, sm: 1 }
+                                }}
+                            >
+                                <Typography
+                                    sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
+                                    variant="h6"
+                                    component="div"
+                                >
+                                    Success Rate on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                    <IconButton>
+                                        <InfoIcon />
+                                    </IconButton>
+                                </Typography>
+                            </Toolbar>
+                            <AreaChart
+                                data={progressChartData}
+                                stackOffset="expand"
+                                width= {850}  height={400}
+                                margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
+                            >
+                                {/*<Legend verticalAlign="top"  align="center" wrapperStyle={{*/}
+                                {/*    fontFamily: "Roboto Slab"*/}
+                                {/*}}/>*/}
+                                <Legend verticalAlign="top"  align="center" height={30} wrapperStyle={{
+                                    fontFamily: "Roboto Slab"
+                                }} payload={['Solved','Closed','Unknown'].sort().map(name => ({ value: name,
+                                    // id: item.name,
+                                    type: "square", color:progressColor[name] }))}/>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" angle={-60} height={100} interval={2}
+                                       textAnchor="end"
+                                       dy = {30}
+                                       dx  = {-5}
+                                       style={{
+                                           fontFamily: "Roboto Slab"
+                                       }}
+                                >
+                                    <Label value="Name of Scenarios" position="insideBottom" offset={-15}  style={{
+                                        fontFamily: "Roboto Slab"
+                                    }} fill="#626262" fontSize={18}/>
+                                </XAxis>
+                                {/*<YAxis tickFormatter={toPercent} />*/}
+                                <YAxis  tickFormatter={(tick) => {
+                                    return `${tick* 100}%`;
+                                }}>
+                                    <Label value="Success Rate" angle={-90} position="insideLeft"
+                                           style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                           fill="#626262" offset={0}  fontSize={18}/>
+                                </YAxis>
+                                <Brush y={290} dataKey="name"  height={20} stroke='rgba(0, 0, 0, 0.5)' />
+                                <Tooltip content={renderTooltipContent}  wrapperStyle={{ fontFamily: "Roboto Slab" ,  backgroundColor: "white", borderStyle: "ridge", paddingLeft: "10px", paddingRight: "10px"}} />
+                                <Area type="monotone" dataKey="Closed" stackId="1" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8} />
+                                <Area type="monotone" dataKey="Solved" stackId="1" stroke="#F9812A" fill="#F9812A" fillOpacity={0.8}/>
+                                <Area type="monotone" dataKey="Unknown" stackId="1" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8} />
+                            </AreaChart>
+                        </div>
+                    </DialogContent>
+                </Dialog>
+
+                <Dialog
+                    open={agentProgressOpen}
+                    onClose={()=>setAgentProgressOpen(false)}
+                    scroll={scroll}
+                    disableScrollLock={ true }
+                    fullWidth={true}
+                    maxWidth={'md'}
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                >
+
+                    <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 440}}>
+                        {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
+                        <Toolbar
+                            sx={{
+                                pl: { sm: 1 },
+                                pr: { xs: 1, sm: 1 }
+                            }}
+                        >
+                            <Typography
+                                sx={{ flex: '1 1 100%' ,paddingLeft :'10px'}}
+                                component="div"
+                            >
+
+                                <Typography
+                                    sx={{ display: "inline-block",verticalAlign: "middle" }}
+                                    variant="h6"
+                                    component="div"
+                                >
+                                    Success Rate on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                    <IconButton>
+                                        <InfoIcon />
+                                    </IconButton>
+                                </Typography>
+                                {/*<Typography*/}
+                                {/*    sx={{ display: "inline-block", width : 50 ,verticalAlign: "middle"}}*/}
+                                {/*    component="img"*/}
+                                {/*    src={`${process.env.PUBLIC_URL}/mapf-svg/`+ location.state.mapName+`.svg`}*/}
+                                {/*>*/}
+
+                                {/*</Typography>*/}
+
+                            </Typography>
+
+                        </Toolbar>
+                            {agentProgressLoading ? <Box display="flex"
+                                                         justifyContent="center"
+                                                         alignItems="center" width={850} height={370}><CircularProgress
+                                    size={80}/></Box> :
+                                <AreaChart
+                                    data={agentProgressChartData}
+                                    stackOffset="expand"
+                                    width={850} height={370}
+                                    margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
+                                >
+                                    {/*<Legend verticalAlign="top" align="center" wrapperStyle={{*/}
+                                    {/*    fontFamily: "Roboto Slab"*/}
+                                    {/*}}/>*/}
+                                    <Legend verticalAlign="top"  align="center" height={30} wrapperStyle={{
+                                        fontFamily: "Roboto Slab"
+                                    }} payload={['Solved','Closed','Unknown'].sort().map(name => ({ value: name,
+                                        // id: item.name,
+                                        type: "square", color:progressColor[name] }))}/>
+                                    <CartesianGrid strokeDasharray="3 3"/>
+                                    <XAxis dataKey="name" angle={-60} height={70} interval="preserveStartEnd"
+                                           textAnchor="end"
+                                           dy={30}
+                                           dx={-5}
+                                           style={{
+                                               fontFamily: "Roboto Slab"
+                                           }}
+                                    >
+                                        <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                            fontFamily: "Roboto Slab"
+                                        }} fill="#626262" fontSize={18}/>
+                                    </XAxis>
+                                    {/*<YAxis tickFormatter={toPercent} />*/}
+                                    <YAxis tickFormatter={(tick) => {
+                                        return `${tick * 100}%`;
+                                    }}>
+                                        <Label value="Success Rate" angle={-90} position="insideLeft"
+                                               style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                               fill="#626262" offset={0}  fontSize={18}/>
+                                    </YAxis>
+                                    <Brush y={290} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
+                                    <Tooltip content={renderTooltipContent} wrapperStyle={{
+                                        fontFamily: "Roboto Slab",
+                                        backgroundColor: "white",
+                                        borderStyle: "ridge",
+                                        paddingLeft: "10px",
+                                        paddingRight: "10px"
+                                    }}/>
+                                    <Area type="monotone" dataKey="Closed" stackId="1" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8}/>
+                                    <Area type="monotone" dataKey="Solved" stackId="1" stroke="#F9812A" fill="#F9812A" fillOpacity={0.8}/>
+                                    <Area type="monotone" dataKey="Unknown" stackId="1" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8}/>
+                                </AreaChart>
+                            }
+                        {/*</Paper>*/}
+                        {/*</ResponsiveContainer>*/}
+                    </DialogContent>
+                </Dialog>
+
+                <Dialog
+                    open={scenCompareOpen}
+                    onClose={()=>setScenCompareOpen(false)}
+                    scroll={scroll}
+                    disableScrollLock={ true }
+                    fullWidth={true}
+                    maxWidth={'md'}
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                >
+                    <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 455, display : 'flex'}}>
                         <Box sx={{width: '100%'}}>
-                            <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
+                            {/*<div elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
                                 <Toolbar
                                     sx={{
-                                        pl: { sm: 2 },
+                                        pl: { sm: 1 },
                                         pr: { xs: 1, sm: 1 }
                                     }}
                                 >
@@ -1174,6 +1366,9 @@ export default function ScenarioTable() {
                                         component="div"
                                     >
                                         Comparison between Algorithms on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                        <IconButton>
+                                            <InfoIcon />
+                                        </IconButton>
                                     </Typography>
 
                                     <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
@@ -1183,10 +1378,10 @@ export default function ScenarioTable() {
                                             onChange={handleMapChange}
                                             inputProps={{ 'aria-label': 'Without label' }}
                                         >
-                                            <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                            <MenuItem value={"#Instances Solved"}>#Instances Solved</MenuItem>
-                                            <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                            <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
+                                            <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                            <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                            <MenuItem value={"#Best Lower-bounds"}>Best Lower-Bound</MenuItem>
+                                            <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                         </Select>
                                     </FormControl>
                                     <IconButton
@@ -1230,16 +1425,17 @@ export default function ScenarioTable() {
                                 </Toolbar>
                                 {mapLoading ? <Box width="100%" display="flex"
                                                    justifyContent="center"
-                                                   alignItems="center" height={500}><CircularProgress
+                                                   alignItems="center" height={400}><CircularProgress
                                         size={80}/></Box> :
-                                    <ResponsiveContainer width="100%" height={500}>
+                                    <ResponsiveContainer width="100%" height={400}>
                                         <BarChart
                                             data={mapBarChartDisplayData}
+                                            margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                                         >
                                             <Legend verticalAlign="top" align="center" wrapperStyle={{
                                                 fontFamily: "Roboto Slab"
                                             }}/>
-                                            <Brush y={390} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
+                                            <Brush y={290} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
                                             <CartesianGrid strokeDasharray="3 3"/>
                                             {/*<XAxis dataKey="name" angle={-60} height={80} interval={0} textAnchor="end"*/}
                                             {/*       tickFormatter={(tick) => tick === 0 ? "" : tick.substring(0, 5) + "..."}*/}
@@ -1255,10 +1451,19 @@ export default function ScenarioTable() {
                                                    style={{
                                                        fontFamily: "Roboto Slab"
                                                    }}
-                                            />
+                                            >
+                                                <Label value="Name of Scenarios" position="insideBottom" offset={-15}  style={{
+                                                    fontFamily: "Roboto Slab"
+                                                }} fill="#626262" fontSize={18}/>
+
+                                            </XAxis>
                                             <YAxis tickFormatter={(tick) => {
                                                 return `${tick * 100}%`;
-                                            }}/>
+                                            }}>
+                                                <Label value={scenCompareYLabel} angle={-90} position="insideLeft"
+                                                       style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                                       fill="#626262" offset={0}  fontSize={18}/>
+                                            </YAxis>
                                             <Tooltip content={renderScenTooltipContent} wrapperStyle={{
                                                 backgroundColor: "white",
                                                 borderStyle: "ridge",
@@ -1280,13 +1485,29 @@ export default function ScenarioTable() {
                                         </BarChart>
                                     </ResponsiveContainer>
                                 }
-                            </Paper>
+                            {/*</div>*/}
+                        </Box>
+                    </DialogContent>
+                </Dialog>
 
 
-                            <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
+                <Dialog
+                    open={agentCompareOpen}
+                    onClose={()=>setAgentCompareOpen(false)}
+                    scroll={scroll}
+                    disableScrollLock={ true }
+                    fullWidth={true}
+                    maxWidth={'md'}
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                >
+                    <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 455, display : 'flex'}}>
+                        <Box sx={{width: '100%'}}>
+                            {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
                                 <Toolbar
                                     sx={{
-                                        pl: { sm: 2 },
+                                        pl: { sm: 1 },
                                         pr: { xs: 1, sm: 1 }
                                     }}
                                 >
@@ -1297,6 +1518,9 @@ export default function ScenarioTable() {
                                         component="div"
                                     >
                                         Comparison between Algorithms on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                        <IconButton>
+                                            <InfoIcon />
+                                        </IconButton>
                                     </Typography>
 
                                     <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
@@ -1306,10 +1530,10 @@ export default function ScenarioTable() {
                                             onChange={handleAgentChange}
                                             inputProps={{ 'aria-label': 'Without label' }}
                                         >
-                                            <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                            <MenuItem value={"#Instances Solved"}>#Instances Solved</MenuItem>
-                                            <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                            <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
+                                            <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                            <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                            <MenuItem value={"#Best Lower-bounds"}>Best Lower-Bound</MenuItem>
+                                            <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                         </Select>
                                     </FormControl>
                                     <IconButton
@@ -1353,12 +1577,13 @@ export default function ScenarioTable() {
                                 </Toolbar>
                                 {agentLoading ? <Box  display="flex"
                                                      justifyContent="center"
-                                                     alignItems="center" width={850} height={350}><CircularProgress
+                                                     alignItems="center" width={850} height={400}><CircularProgress
                                         size={80}/></Box> :
                                     <AreaChart
                                         data={agentChartDisplayData}
                                         stackOffset="expand"
-                                        width={850} height={350}
+                                        width={850} height={400}
+                                        margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                                     >
                                         <Legend verticalAlign="top" align="center" wrapperStyle={{
                                             fontFamily: "Roboto Slab"
@@ -1367,19 +1592,27 @@ export default function ScenarioTable() {
                                                     type: "square", color:color[algorithm_name.indexOf(name)] }))}
                                         />
                                         <CartesianGrid strokeDasharray="3 3"/>
-                                        <XAxis dataKey="name" angle={-60} height={50} interval="preserveStartEnd"
+                                        <XAxis dataKey="name" angle={-60} height={70} interval="preserveStartEnd"
                                                textAnchor="end"
                                                dy={30}
                                                dx={-5}
                                                style={{
                                                    fontFamily: "Roboto Slab"
                                                }}
-                                        />
+                                        >
+                                            <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                                fontFamily: "Roboto Slab"
+                                            }} fill="#626262" fontSize={18}/>
+                                        </XAxis>
                                         {/*<YAxis tickFormatter={toPercent} />*/}
                                         <YAxis tickFormatter={(tick) => {
                                             return `${tick * 100}%`;
-                                        }}/>
-                                        <Brush y={290} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
+                                        }}>
+                                            <Label value={agentCompareYLabel} angle={-90} position="insideLeft"
+                                                   style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                                   fill="#626262" offset={0}  fontSize={18}/>
+                                        </YAxis>
+                                        <Brush y={320} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
                                         <Tooltip content={renderAgentTooltipContent} wrapperStyle={{
                                             fontFamily: "Roboto Slab",
                                             backgroundColor: "white",
@@ -1395,7 +1628,7 @@ export default function ScenarioTable() {
                                         )}
                                     </AreaChart>
                                 }
-                            </Paper>
+                            {/*</Paper>*/}
                         </Box>
                     </DialogContent>
                 </Dialog>

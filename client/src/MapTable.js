@@ -35,7 +35,7 @@ import {
     AreaChart, Bar,
     BarChart,
     Brush,
-    CartesianGrid,
+    CartesianGrid, Label,
     Legend, PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart,
     ResponsiveContainer,
     Tooltip,
@@ -57,6 +57,8 @@ import Select from "@mui/material/Select";
 import { APIConfig } from './config.js';
 import Link from "@mui/material/Link";
 import InfoIcon from "@mui/icons-material/Info";
+import {MenuList, Popover} from "@mui/material";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const angle = {
     'Warehouse': -40,
@@ -371,8 +373,13 @@ export default function MapTable() {
     const [scrollMapDetail, setScrollMapDetail] = React.useState('paper');
     const [mapdata, setMapdata] =  React.useState(true);
 
-
-
+    const [subAnchorEl, setSubAnchorEl] = React.useState(null);
+    const [openMenuIndex, setOpenMenuIndex] =React.useState(null);
+    const [domainProgressOpen, setDomainProgressOpen] = React.useState(false);
+    const [mapProgressOpen, setMapProgressOpen] = React.useState(false);
+    const [domainCompareOpen, setDomainCompareOpen] = React.useState(false);
+    const [mapCompareOpen, setMapCompareOpen] = React.useState(false);
+    const [mapCompareYLabel, setMapCompareYLabel] = React.useState('');
     const handleMapDetailClose = () => {
         setOpenMapDetail(false);
     };
@@ -603,44 +610,6 @@ export default function MapTable() {
             );
         }
     };
-    const handleClickOpen  = (event,scrollType)  => {
-        setOpen(true);
-        setScroll(scrollType);
-        var progressChartData = [];
-        var domainChartData = {}
-        data.forEach(function(element){
-                progressChartData.push({name:element.map_name, total:element.instances,
-                    Closed: element.instances_closed,
-                    Solved: element.instances_solved - element.instances_closed,
-                    Unknown: element.instances - element.instances_solved
-                });
-                if(!(element.map_type in domainChartData)){
-                    domainChartData[element.map_type] =  {name:element.map_type.charAt(0).toUpperCase() +element.map_type.slice(1), total:element.instances,
-                        Closed: element.instances_closed,
-                        Solved: element.instances_solved - element.instances_closed,
-                        Unknown: element.instances - element.instances_solved}
-                }else{
-                    domainChartData[element.map_type].total = domainChartData[element.map_type].total + element.instances;
-                    domainChartData[element.map_type].Closed = domainChartData[element.map_type].Closed +  element.instances_closed;
-                    domainChartData[element.map_type].Solved = domainChartData[element.map_type].Solved +  element.instances_solved - element.instances_closed;
-                    domainChartData[element.map_type].Unknown = domainChartData[element.map_type].Unknown + element.instances - element.instances_solved;
-                }
-            }
-
-        );
-        var domain_result = [];
-        for (const key in  domainChartData) {
-            domainChartData[key].Closed  =  domainChartData[key].Closed/ domainChartData[key].total;
-            domainChartData[key].Solved  =  domainChartData[key].Solved/ domainChartData[key].total + domainChartData[key].Closed ;
-            domainChartData[key].Unknown = 1.0;
-            domain_result.push(domainChartData[key]);
-        }
-        console.log(domain_result)
-        setDomainProgressChartData(domain_result);
-        setProgressChartData(progressChartData);
-        event.stopPropagation();
-    };
-
     const handleClose = () => {
         setOpen(false);
     };
@@ -669,12 +638,16 @@ export default function MapTable() {
 
         var map_API = '';
         if(event.target.value ==='#Instances Closed'){
+            setMapCompareYLabel('Instances Closed')
             map_API = APIConfig.apiUrl +'/algorithm/getClosedInfo';
         }else if (event.target.value === '#Instances Solved') {
+            setMapCompareYLabel('Instances Solved')
             map_API = APIConfig.apiUrl +'/algorithm/getSolvedInfo';
         }else if (event.target.value === '#Best Lower-bounds'){
+            setMapCompareYLabel('Instances with Best LB')
             map_API = APIConfig.apiUrl +'/algorithm/getLowerInfo';
         }else{
+            setMapCompareYLabel('Instances with Best Solution')
             map_API = APIConfig.apiUrl +'/algorithm/getSolutionInfo';
         }
 
@@ -898,6 +871,146 @@ export default function MapTable() {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+
+    const handleMenuOpen = (event, index) => {
+        setSubAnchorEl(event.currentTarget);
+        setOpenMenuIndex(index);
+    };
+
+    const handleMenuClose = () => {
+        setSubAnchorEl(null);
+        setOpenMenuIndex(null);
+        setMenuAnchorEl(null);
+    };
+
+    const isSubmenuOpen = (index) => {
+        return openMenuIndex === index && Boolean(subAnchorEl);
+    };
+
+
+    const handleClickOpenDomainProgress  = (event,scrollType)  => {
+        setDomainProgressOpen(true);
+        setScroll(scrollType);
+        var domainChartData = {}
+        data.forEach(function(element){
+                if(!(element.map_type in domainChartData)){
+                    domainChartData[element.map_type] =  {name:element.map_type.charAt(0).toUpperCase() +element.map_type.slice(1), total:element.instances,
+                        Closed: element.instances_closed,
+                        Solved: element.instances_solved - element.instances_closed,
+                        Unknown: element.instances - element.instances_solved}
+                }else{
+                    domainChartData[element.map_type].total = domainChartData[element.map_type].total + element.instances;
+                    domainChartData[element.map_type].Closed = domainChartData[element.map_type].Closed +  element.instances_closed;
+                    domainChartData[element.map_type].Solved = domainChartData[element.map_type].Solved +  element.instances_solved - element.instances_closed;
+                    domainChartData[element.map_type].Unknown = domainChartData[element.map_type].Unknown + element.instances - element.instances_solved;
+                }
+            }
+
+        );
+        var domain_result = [];
+        for (const key in  domainChartData) {
+            domainChartData[key].Closed  =  domainChartData[key].Closed/ domainChartData[key].total;
+            domainChartData[key].Solved  =  domainChartData[key].Solved/ domainChartData[key].total + domainChartData[key].Closed ;
+            domainChartData[key].Unknown = 1.0;
+            domain_result.push(domainChartData[key]);
+        }
+        setDomainProgressChartData(domain_result);
+        event.stopPropagation();
+    };
+
+    const handleClickOpenMapProgress  = (event,scrollType)  => {
+        setMapProgressOpen(true);
+        setScroll(scrollType);
+        var progressChartData = [];
+        data.forEach(function(element){
+                progressChartData.push({name:element.map_name, total:element.instances,
+                    Closed: element.instances_closed,
+                    Solved: element.instances_solved - element.instances_closed,
+                    Unknown: element.instances - element.instances_solved
+                });
+            }
+
+        );
+        setProgressChartData(progressChartData);
+        event.stopPropagation();
+    };
+
+    // React.useEffect(() => {
+    //     if(algorithm_name.length > 0) {
+    //         setDomainLoading(true);
+    //         setMapLoading(true);
+    //         setDomainQuery('#Instances Closed');
+    //         setMapQuery('#Instances Closed');
+    //         var closed_API = APIConfig.apiUrl + '/algorithm/getClosedInfo';
+    //         var domain_chart_API = APIConfig.apiUrl +'/algorithm/getDomainClosedInfo';
+    //         Promise.all([
+    //             fetch(closed_API, {method: 'GET'}),
+    //             fetch(domain_chart_API  , {method: 'GET'})
+    //         ])
+    //             .then((values) => {
+    //                 return Promise.all(values.map((r) => r.json()))
+    //             })
+    //             .then(([closed_data,
+    //                        domain_chart_data
+    //                    ]) => {
+    //                 setMapQueryResult(closed_data);
+    //                 setDomainQueryResult(domain_chart_data);
+    //                 // console.log(domain_chart_data);
+    //             }).catch(err => console.error(err));
+    //     }
+    // }, [algorithm_name]);
+    const handleClickOpenDomainComparator  = async (event, scrollType) => {
+        setDomainCompareOpen(true);
+        setDomainLoading(true);
+        setScroll(scrollType);
+        var algorithm_API = APIConfig.apiUrl + '/algorithm/';
+        await fetch(algorithm_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                var key = [];
+                data.forEach(a => key.push(a.algo_name));
+                key.sort();
+                setAlgorithm_name(key);
+            })
+            .catch(err => console.error(err));
+        setDomainQuery('#Instances Closed');
+        var domain_chart_API = APIConfig.apiUrl +'/algorithm/getDomainClosedInfo';
+        await fetch(domain_chart_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                setDomainQueryResult(data);
+            })
+            .catch(err => console.error(err));
+        event.stopPropagation();
+    };
+
+
+    const handleClickOpenMapComparator  = async (event, scrollType) => {
+        setMapCompareOpen(true);
+        setMapLoading(true);
+        setScroll(scrollType);
+        var algorithm_API = APIConfig.apiUrl + '/algorithm/';
+        await fetch(algorithm_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                var key = [];
+                data.forEach(a => key.push(a.algo_name));
+                key.sort();
+                setAlgorithm_name(key);
+            })
+            .catch(err => console.error(err));
+        setMapQuery('#Instances Closed');
+        setMapCompareYLabel('Instances Closed')
+        var closed_API = APIConfig.apiUrl + '/algorithm/getClosedInfo';
+        await fetch(closed_API, {method: 'GET'})
+            .then(res => res.json())
+            .then(data => {
+                setMapQueryResult(data);
+            })
+            .catch(err => console.error(err));
+        event.stopPropagation();
+    };
+
     return (
         <Box
             sx={{ minWidth : 600, position: "absolute", width: '96%', paddingLeft:"2%", top:"300px",opacity:"0.95"
@@ -943,8 +1056,9 @@ export default function MapTable() {
                                 key="Progress"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<ShowChartIcon/>}
-                                onClick={(event) =>{handleClickOpen(event,'paper');
-                                    setMenuAnchorEl(null);
+                                onClick={(event) =>{
+                                    handleMenuOpen(event, 1);
+                                    // handleClickOpen(event,'paper');
                                 } }
                             >
                                 Monitor Progress
@@ -955,14 +1069,108 @@ export default function MapTable() {
                                 key="Comparator"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<CompareIcon />}
-                                onClick={(event) =>{handleClickOpenComparator(event,'paper');
-                                    setMenuAnchorEl(null);
+                                onClick={(event) =>{
+                                    handleMenuOpen(event, 2);
+                                    // handleClickOpenComparator(event,'paper');
                                 } }
                             >
                                 Compare Algorithms
                             </Button>
                         </MenuItem>
                     </Menu>
+
+                    <Popover
+                        open={isSubmenuOpen(1)}
+                        anchorEl={subAnchorEl}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <MenuList>
+                            <MenuItem key="M_domains">
+                                <Button
+                                    key="M_domains"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{
+                                        handleClickOpenDomainProgress(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    Domains
+                                </Button>
+                            </MenuItem>
+                            <MenuItem key="M_maps">
+                                <Button
+                                    key="M_maps"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{
+                                        handleClickOpenMapProgress(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    Maps
+                                </Button>
+                            </MenuItem>
+                        </MenuList>
+                    </Popover>
+
+                    <Popover
+                        open={isSubmenuOpen(2)}
+                        anchorEl={subAnchorEl}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <MenuList>
+                            <MenuItem key="C_domains">
+                                <Button
+                                    key="C_domains"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{
+                                        // handleClickOpenScenComparator(event,'paper');
+                                        handleClickOpenDomainComparator(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    Domains
+                                </Button>
+                            </MenuItem>
+                            <MenuItem key="C_maps">
+                                <Button
+                                    key="C_maps"
+                                    sx={{ color: 'black',textTransform: "none"}}
+                                    startIcon={<ChevronRightIcon />}
+                                    onClick={(event) =>{
+                                        // handleClickOpenAgentComparator(event,'paper');
+                                        handleClickOpenMapComparator(event,'paper');
+                                        setMenuAnchorEl(null);
+                                        setSubAnchorEl(null);
+                                    } }
+                                >
+                                    Maps
+                                </Button>
+                            </MenuItem>
+                        </MenuList>
+                    </Popover>
+
 
                     <Typography
                         sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
@@ -1112,22 +1320,162 @@ export default function MapTable() {
                 />
             </Paper>
 
-
             <Dialog
-                open={openComparator}
-                onClose={()=>setOpenComparator(false)}
+                open={domainCompareOpen}
+                onClose={()=>setDomainCompareOpen(false)}
                 scroll={scroll}
                 disableScrollLock={ true }
-                fullWidth={true}
-                maxWidth={'xl'}
+                // fullWidth={true}
+                // maxWidth={'300px'}
+                maxWidth={false}
+                // sx={{ maxWidth: '800px' }}
                 PaperProps={{
                     style: { mb: 2,borderRadius: 10 }
                 }}
             >
-                <DialogContent dividers={scroll === 'paper'} sx={{width: 1800, height : 550, display : 'flex'}}>
-                    <Box sx={{width: '58%'}}>
+                <DialogContent dividers={scroll === 'paper'} sx={{width: 750, height : 500, display : 'flex'}}>
+                    <Box sx={{  width: '100%'}}>
+                        {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
+                            <Toolbar
+                                sx={{
+                                    pl: { sm: 1 },
+                                    pr: { xs: 1, sm: 1 }
+                                }}
+                            >
+                                <Typography
+                                    sx={{ flex: '1 1 100%' }}
+                                    variant="h6"
+                                    id="tableTitle"
+                                    component="div"
+                                >
+                                    Comparison between Algorithms on Domains
+                                    <IconButton>
+                                        <InfoIcon />
+                                    </IconButton>
+                                </Typography>
+                                <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
+                                    <Select
+                                        displayEmpty = {true}
+                                        value={domainQuery}
+                                        onChange={handleDomainQueryChange}
+                                        inputProps={{ 'aria-label': 'Without label' }}
+                                    >
+                                        <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                        <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                        <MenuItem value={"#Best Lower-bounds"}>Best Lower-Bound</MenuItem>
+                                        <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                <IconButton
+                                    aria-controls="domain-filter-menu"
+                                    aria-haspopup="true"
+                                    onClick={(event)=>{setDomainAnchorEl(event.currentTarget)}}
+                                >
+                                    <FilterListIcon />
+                                </IconButton>
+                                <Menu
+                                    id="simple-menu"
+                                    anchorEl={domainAnchorEl}
+                                    keepMounted
+                                    open={Boolean(domainAnchorEl)}
+                                    // onClick ={handleDomainFilterChange}
+                                    onClick={()=>{setDomainAnchorEl(null)}}
+                                >
+                                    {domainBarChartAlgorithms.map((algo) => (
+                                        <MenuItem key = {algo} value={algo} onClick ={(event) => {
+                                            setDomainFilterState({
+                                                ...domainFilterState,
+                                                [event.currentTarget.innerText]: !domainFilterState[event.currentTarget.innerText],
+                                            });
+                                        }} >
+                                            <Checkbox
+                                                checked={domainFilterState[algo]}
+                                                onChange={(event) => {
+                                                    setDomainFilterState({
+                                                        ...domainFilterState,
+                                                        [event.target.name]: event.target.checked,
+                                                    });
+                                                }}
+                                                name={algo}
+                                            />
+                                            <ListItemText primary={algo} />
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </Toolbar>
+                            {domainLoading ? <Box width="100%" display="flex"
+                                                  justifyContent="center"
+                                                  alignItems="center" height={445}><CircularProgress size={80}/></Box> :
+                                <ResponsiveContainer width="100%" height={445}>
+                                    <RadarChart cx="50%" cy="55%" outerRadius="80%" data={domainBarChartDisplayData}>
+                                        {/*<text x="50%" y="0" dominantBaseline="hanging" fontSize="20"  textAnchor={'middle'} style = {{ fontFamily: "Roboto Slab" }}>Solution</text>*!/*/}
+                                        <Legend verticalAlign="top" align="center" wrapperStyle={{
+                                            fontFamily: "Roboto Slab"
+                                        }}  payload={[...domainBarChartDisplayAlgorithms].sort().map(name => ({ value: name,
+                                            // id: item.name,
+                                            type: "square", color:color[algorithm_name.indexOf(name)] }))}/>
+                                        <Tooltip content={renderDomainTooltipContent}
+                                                 itemSorter={item => item.name}
+                                                 wrapperStyle={{
+                                                     fontFamily: "Roboto Slab",
+                                                     backgroundColor: "white",
+                                                     borderStyle: "ridge"
+                                                 }} formatter={(tick) => {
+                                            var value = tick * 100
+                                            return `${value.toFixed(2)}%`;
+                                        }}
+                                        />
+                                        {domainBarChartDisplayAlgorithms.map((algo) => (
+                                                <Radar key={algo} dataKey={algo}
+                                                       stroke={color[algorithm_name.indexOf(algo)]}
+                                                    // stackId="1"
+                                                       fill={color[algorithm_name.indexOf(algo)]} fillOpacity={0.6}/>
+                                            )
+                                        )}
+                                        <PolarRadiusAxis angle={38.5}
+                                                         domain={[0, domainBarChartDisplayAlgorithms.length > 0 ? 'dataMax' : 1]}
+                                                         stroke={'black'}
+                                                         tickFormatter={(tick) => {
+                                                             var value = tick * 100
+                                                             return `${value.toFixed(0)}%`;
+                                                         }}
+                                                         style={{
+                                                             fontFamily: "Roboto Slab",
+                                                             opacity: "0.3"
+                                                         }}
+                                        />
+                                        <PolarGrid  stroke={'black'} style={{
+                                            fontFamily: "Roboto Slab",
+                                            opacity: "0.3"
+                                        }}/>
+                                        <PolarAngleAxis dataKey="name"
+                                                        tick={<CustomizedLabel/>}
+                                            // stroke={'black'}
+                                                        style={{
+                                                            fontFamily: "Roboto Slab"
+                                                        }}/>
+                                    </RadarChart>
+                                </ResponsiveContainer>
+                            }
+                        {/*</Paper>*/}
+                    </Box>
+                </DialogContent>
+            </Dialog>
 
-                        <Paper elevation={12} sx={{width: '100%', mb: 2, borderRadius: 5}}>
+            <Dialog
+                open={mapCompareOpen}
+                onClose={()=>setMapCompareOpen(false)}
+                scroll={scroll}
+                disableScrollLock={ true }
+                fullWidth={true}
+                maxWidth={'md'}
+                PaperProps={{
+                    style: { mb: 2,borderRadius: 10 }
+                }}
+            >
+                <DialogContent dividers={scroll === 'paper'} sx={{width: 850,  height : 500, display : 'flex'}}>
+                    <Box sx={{width: '100%'}}>
+                        {/*<Paper elevation={12} sx={{width: '100%', mb: 2, borderRadius: 5}}>*/}
                             <Toolbar
                                 sx={{
                                     pl: {sm: 2},
@@ -1141,6 +1489,9 @@ export default function MapTable() {
                                     component="div"
                                 >
                                     Comparison between Algorithms on Maps
+                                    <IconButton>
+                                        <InfoIcon />
+                                    </IconButton>
                                 </Typography>
 
                                 <FormControl sx={{m: 1, minWidth: 120, width: 300}} size='small'>
@@ -1150,10 +1501,10 @@ export default function MapTable() {
                                         onChange={handleMapChange}
                                         inputProps={{'aria-label': 'Without label'}}
                                     >
-                                        <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                        <MenuItem value={"#Instances Solved"}>#Instances Solved</MenuItem>
-                                        <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                        <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
+                                        <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                        <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                        <MenuItem value={"#Best Lower-bounds"}>Best Lower-Bound</MenuItem>
+                                        <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                     </Select>
                                 </FormControl>
                                 <IconButton
@@ -1199,26 +1550,34 @@ export default function MapTable() {
                             </Toolbar>
                             {mapLoading ?  <Box width="100%" display="flex"
                                                 justifyContent="center"
-                                                alignItems="center" height={500}><CircularProgress size={80}/></Box>:
-                                <ResponsiveContainer width="100%" height={500}>
+                                                alignItems="center" height={440}><CircularProgress size={80}/></Box>:
+                                <ResponsiveContainer width="100%" height={440}>
                                     <BarChart
                                         data={mapBarChartDisplayData}
+                                        margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                                     >
                                         <Legend verticalAlign="top" align="center" wrapperStyle={{
                                             fontFamily: "Roboto Slab"
                                         }}/>
-                                        <Brush y={410} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
+                                        <Brush y={330} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
                                         <CartesianGrid strokeDasharray="3 3"/>
-                                        <XAxis dataKey="name" angle={-60} height={80} interval={0} textAnchor="end"
+                                        <XAxis dataKey="name" angle={-60} height={100} interval={0} textAnchor="end"
                                                tickFormatter={(tick) => tick === 0 ? "" : tick.substring(0, 5) + "..."}
                                                dy={30}
                                                style={{
                                                    fontFamily: "Roboto Slab"
                                                }}
-                                        />
+                                        ><Label value="Name of Maps" position="insideBottom" offset={-15}  style={{
+                                            fontFamily: "Roboto Slab"
+                                        }} fill="#626262" fontSize={18}/>
+                                        </XAxis>
                                         <YAxis tickFormatter={(tick) => {
                                             return `${tick * 100}%`;
-                                        }}/>
+                                        }}>
+                                            <Label value={mapCompareYLabel} angle={-90} position="insideLeft"
+                                                   style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                                   fill="#626262" offset={0}  fontSize={18}/>
+                                        </YAxis>
                                         <Tooltip content={renderMapTooltipContent} wrapperStyle={{
                                             fontFamily: "Roboto Slab",
                                             backgroundColor: "white",
@@ -1238,15 +1597,28 @@ export default function MapTable() {
                                     </BarChart>
                                 </ResponsiveContainer>
                             }
-                        </Paper>
+                        {/*</Paper>*/}
                     </Box>
-                    <Box sx={{width: '2%'}}>
-                    </Box>
-                    <Box sx={{  width: '40%'}}>
-                        <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog
+                open={domainProgressOpen}
+                onClose={()=>setDomainProgressOpen(false)}
+                scroll={scroll}
+                disableScrollLock={ true }
+                // fullWidth={true}
+                maxWidth={false}
+                PaperProps={{
+                    style: { mb: 2,borderRadius: 10 }
+                }}
+            >
+                <DialogContent dividers={scroll === 'paper'} sx={{width: 700, height : 500, display : 'flex'}}>
+                    <Box sx={{  width: '100%'}}>
+                        {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
                             <Toolbar
                                 sx={{
-                                    pl: { sm: 2 },
+                                    pl: { sm: 1 },
                                     pr: { xs: 1, sm: 1 }
                                 }}
                             >
@@ -1256,136 +1628,84 @@ export default function MapTable() {
                                     id="tableTitle"
                                     component="div"
                                 >
-                                    Comparison between Algorithms on Domains
+                                    Success Rate on Domains
+                                    <IconButton>
+                                        <InfoIcon />
+                                    </IconButton>
                                 </Typography>
-                                <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
-                                    <Select
-                                        displayEmpty = {true}
-                                        value={domainQuery}
-                                        onChange={handleDomainQueryChange}
-                                        inputProps={{ 'aria-label': 'Without label' }}
-                                    >
-                                        <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                        <MenuItem value={"#Instances Solved"}>#Instances Solved</MenuItem>
-                                        <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                        <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <IconButton
-                                    aria-controls="domain-filter-menu"
-                                    aria-haspopup="true"
-                                    onClick={(event)=>{setDomainAnchorEl(event.currentTarget)}}
-                                >
-                                    <FilterListIcon />
-                                </IconButton>
-                                <Menu
-                                    id="simple-menu"
-                                    anchorEl={domainAnchorEl}
-                                    keepMounted
-                                    open={Boolean(domainAnchorEl)}
-                                    // onClick ={handleDomainFilterChange}
-                                    onClick={()=>{setDomainAnchorEl(null)}}
-                                >
-                                    {domainBarChartAlgorithms.map((algo) => (
-                                        <MenuItem key = {algo} value={algo} onClick ={(event) => {
-                                            setDomainFilterState({
-                                                ...domainFilterState,
-                                                [event.currentTarget.innerText]: !domainFilterState[event.currentTarget.innerText],
-                                            });
-                                        }} >
-                                            <Checkbox
-                                                checked={domainFilterState[algo]}
-                                                onChange={(event) => {
-                                                    setDomainFilterState({
-                                                        ...domainFilterState,
-                                                        [event.target.name]: event.target.checked,
-                                                    });
-                                                }}
-                                                name={algo}
-                                            />
-                                            <ListItemText primary={algo} />
-                                        </MenuItem>
-                                    ))}
-                                </Menu>
+
                             </Toolbar>
-                            {domainLoading ? <Box width="100%" display="flex"
-                                                  justifyContent="center"
-                                                  alignItems="center" height={500}><CircularProgress size={80}/></Box> :
-                                <ResponsiveContainer width="100%" height={500}>
-                                    <RadarChart cx="50%" cy="60%" outerRadius="80%" data={domainBarChartDisplayData}>
-                                        {/*<text x="50%" y="0" dominantBaseline="hanging" fontSize="20"  textAnchor={'middle'} style = {{ fontFamily: "Roboto Slab" }}>Solution</text>*!/*/}
-                                        <Legend verticalAlign="top" align="center" wrapperStyle={{
-                                            fontFamily: "Roboto Slab"
-                                        }}  payload={[...domainBarChartDisplayAlgorithms].sort().map(name => ({ value: name,
-                                            // id: item.name,
-                                            type: "square", color:color[algorithm_name.indexOf(name)] }))}/>
-                                        <Tooltip content={renderDomainTooltipContent}
-                                                 itemSorter={item => item.name}
-                                                 wrapperStyle={{
-                                                     fontFamily: "Roboto Slab",
-                                                     backgroundColor: "white",
-                                                     borderStyle: "ridge"
-                                                 }} formatter={(tick) => {
-                                            var value = tick * 100
-                                            return `${value.toFixed(2)}%`;
-                                        }}
-                                        />
-                                        {domainBarChartDisplayAlgorithms.map((algo) => (
-                                                <Radar key={algo} dataKey={algo}
-                                                       stroke={color[algorithm_name.indexOf(algo)]}
-                                                    // stackId="1"
-                                                       fill={color[algorithm_name.indexOf(algo)]} fillOpacity={0.6}/>
-                                            )
-                                        )}
-                                        <PolarRadiusAxis angle={38.5}
-                                                         domain={[0, domainBarChartDisplayAlgorithms.length > 0 ? 'dataMax' : 1]}
-                                                         stroke={'black'}
-                                                         tickFormatter={(tick) => {
-                                                             var value = tick * 100
-                                                             return `${value.toFixed(0)}%`;
-                                                         }}
-                                                         style={{
-                                                             fontFamily: "Roboto Slab",
-                                                             opacity: "0.3"
-                                                         }}
-                                        />
-                                        <PolarGrid  stroke={'black'} style={{
+                            <ResponsiveContainer width="100%" height={445}>
+                                <RadarChart cx="50%" cy="55%" outerRadius="80%" data={domainProgressChartData}>
+                                    {/*<text x="50%" y="0" dominantBaseline="hanging" fontSize="20"  textAnchor={'middle'} style = {{ fontFamily: "Roboto Slab" }}>Solution</text>*!/*/}
+                                    <Legend verticalAlign="top"  align="center" wrapperStyle={{
+                                        fontFamily: "Roboto Slab"
+                                    }} payload={['Solved','Closed','Unknown'].sort().map(name => ({ value: name,
+                                        // id: item.name,
+                                        type: "square", color:progressColor[name] }))}/>
+                                    <Tooltip content={renderDomainProgressTooltipContent}
+                                             itemSorter={item => item.name}
+                                             wrapperStyle={{
+                                                 fontFamily: "Roboto Slab",
+                                                 backgroundColor: "white",
+                                                 borderStyle: "ridge"
+                                             }} formatter={(tick) => {
+                                        var value = tick * 100
+                                        return `${value.toFixed(2)}%`;
+                                    }}
+                                    />
+                                    <Radar type="monotone" dataKey="Unknown" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8}/>
+                                    <Radar type="monotone" dataKey="Solved"  stroke="#F9812A" fill="#F9812A" fillOpacity={0.8}/>
+                                    <Radar type="monotone" dataKey="Closed" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8}/>
+                                    <PolarRadiusAxis angle={38.5}
+                                                     domain={[0, 1]}
+                                                     tickFormatter={(tick) => {
+                                                         var value = tick * 100
+                                                         return `${value.toFixed(0)}%`;
+                                                     }}
+                                                     stroke={"black"}
+                                                     style={{
+                                                         fontFamily: "Roboto Slab",
+                                                         opacity: "0.3"
+                                                     }}
+                                    />
+                                    <PolarAngleAxis dataKey="name"
+                                                    tick={<CustomizedLabel/>}
+                                                    style={{
+                                                        fontFamily: "Roboto Slab"
+                                                    }}/>
+                                    <PolarGrid
+                                        stroke={"black"}
+                                        style={{
                                             fontFamily: "Roboto Slab",
                                             opacity: "0.3"
                                         }}/>
-                                        <PolarAngleAxis dataKey="name"
-                                                        tick={<CustomizedLabel/>}
-                                                        // stroke={'black'}
-                                                        style={{
-                                                            fontFamily: "Roboto Slab"
-                                                        }}/>
-                                    </RadarChart>
-                                </ResponsiveContainer>
-                            }
-                        </Paper>
+                                </RadarChart>
+                            </ResponsiveContainer>
+                        {/*</Paper>*/}
                     </Box>
+                    {/*</ResponsiveContainer>*/}
                 </DialogContent>
             </Dialog>
 
-
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={mapProgressOpen}
+                onClose={()=>setMapProgressOpen(false)}
                 scroll={scroll}
                 disableScrollLock={ true }
                 fullWidth={true}
-                maxWidth={'xl'}
+                maxWidth={'md'}
                 PaperProps={{
                     style: { mb: 2,borderRadius: 10 }
                 }}
             >
-                <DialogContent dividers={scroll === 'paper'} sx={{width: 1500, height : 500, display : 'flex'}}>
+                <DialogContent dividers={scroll === 'paper'} sx={{width: 850, height : 500, display : 'flex'}}>
                     {/*<ResponsiveContainer width="98%"  height={400}>*/}
-                    <Box sx={{width: '58%'}}>
-                    <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
+                    <Box sx={{width: '100%'}}>
+                    {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
                         <Toolbar
                             sx={{
-                                pl: { sm: 2 },
+                                pl: { sm: 1 },
                                 pr: { xs: 1, sm: 1 }
                             }}
                         >
@@ -1395,12 +1715,16 @@ export default function MapTable() {
                                 component="div"
                             >
                                 Success Rate on Maps
+                                <IconButton>
+                                    <InfoIcon />
+                                </IconButton>
                             </Typography>
                         </Toolbar>
                         <AreaChart
                             data={progressChartData}
                             stackOffset="expand"
-                            width= {850}  height={420}
+                            width= {850}  height={440}
+                            margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                         >
                             <Legend verticalAlign="top"  align="center" height={30} wrapperStyle={{
                                 fontFamily: "Roboto Slab"
@@ -1416,85 +1740,26 @@ export default function MapTable() {
                                    style={{
                                        fontFamily: "Roboto Slab"
                                    }}
-                            />
+                            >
+                                <Label value="Name of Maps" position="insideBottom" offset={-15}  style={{
+                                    fontFamily: "Roboto Slab"
+                                }} fill="#626262" fontSize={18}/>
+                            </XAxis>
                             {/*<YAxis tickFormatter={toPercent} />*/}
                             <YAxis  tickFormatter={(tick) => {
                                 return `${tick* 100}%`;
-                            }}/>
-                            <Brush  y={310} dataKey="name"  height={20} stroke='rgba(0, 0, 0, 0.5)' />
+                            }}>
+                                <Label value="Success Rate" angle={-90} position="insideLeft"
+                                       style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
+                                       fill="#626262" offset={0}  fontSize={18}/>
+                            </YAxis>
+                            <Brush  y={330} dataKey="name"  height={20} stroke='rgba(0, 0, 0, 0.5)' />
                             <Tooltip content={renderTooltipContent}  wrapperStyle={{ fontFamily: "Roboto Slab" , backgroundColor: "white", borderStyle: "ridge", paddingLeft: "10px", paddingRight: "10px"}} />
                             <Area type="monotone" dataKey="Closed" stackId="1" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8}/>
                             <Area type="monotone" dataKey="Solved" stackId="1" stroke="#F9812A" fill="#F9812A" fillOpacity={0.8} />
                             <Area type="monotone" dataKey="Unknown" stackId="1" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8}/>
                         </AreaChart>
-                    </Paper>
-                    </Box>
-                    <Box sx={{width: '2%'}}/>
-                    <Box sx={{  width: '40%'}}>
-                        <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
-                            <Toolbar
-                                sx={{
-                                    pl: { sm: 2 },
-                                    pr: { xs: 1, sm: 1 }
-                                }}
-                            >
-                                <Typography
-                                    sx={{ flex: '1 1 100%' }}
-                                    variant="h6"
-                                    id="tableTitle"
-                                    component="div"
-                                >
-                                    Success Rate on Domains
-                                </Typography>
-                            </Toolbar>
-                                <ResponsiveContainer width="100%" height={420}>
-                                    <RadarChart cx="50%" cy="60%" outerRadius="80%" data={domainProgressChartData}>
-                                        {/*<text x="50%" y="0" dominantBaseline="hanging" fontSize="20"  textAnchor={'middle'} style = {{ fontFamily: "Roboto Slab" }}>Solution</text>*!/*/}
-                                        <Legend verticalAlign="top"  align="center" wrapperStyle={{
-                                            fontFamily: "Roboto Slab"
-                                        }} payload={['Solved','Closed','Unknown'].sort().map(name => ({ value: name,
-                                            // id: item.name,
-                                            type: "square", color:progressColor[name] }))}/>
-                                        <Tooltip content={renderDomainProgressTooltipContent}
-                                                 itemSorter={item => item.name}
-                                                 wrapperStyle={{
-                                                     fontFamily: "Roboto Slab",
-                                                     backgroundColor: "white",
-                                                     borderStyle: "ridge"
-                                                 }} formatter={(tick) => {
-                                            var value = tick * 100
-                                            return `${value.toFixed(2)}%`;
-                                        }}
-                                        />
-                                        <Radar type="monotone" dataKey="Unknown" stroke="#BF0A30" fill="#BF0A30" fillOpacity={0.8}/>
-                                        <Radar type="monotone" dataKey="Solved"  stroke="#F9812A" fill="#F9812A" fillOpacity={0.8}/>
-                                        <Radar type="monotone" dataKey="Closed" stroke="#4CBB17" fill="#4CBB17" fillOpacity={0.8}/>
-                                        <PolarRadiusAxis angle={38.5}
-                                                         domain={[0, 1]}
-                                                         tickFormatter={(tick) => {
-                                                             var value = tick * 100
-                                                             return `${value.toFixed(0)}%`;
-                                                         }}
-                                                         stroke={"black"}
-                                                         style={{
-                                                             fontFamily: "Roboto Slab",
-                                                             opacity: "0.3"
-                                                         }}
-                                        />
-                                        <PolarAngleAxis dataKey="name"
-                                                        tick={<CustomizedLabel/>}
-                                                        style={{
-                                                            fontFamily: "Roboto Slab"
-                                                        }}/>
-                                        <PolarGrid
-                                            stroke={"black"}
-                                            style={{
-                                            fontFamily: "Roboto Slab",
-                                            opacity: "0.3"
-                                        }}/>
-                                    </RadarChart>
-                                </ResponsiveContainer>
-                        </Paper>
+                    {/*</Paper>*/}
                     </Box>
                     {/*</ResponsiveContainer>*/}
                 </DialogContent>

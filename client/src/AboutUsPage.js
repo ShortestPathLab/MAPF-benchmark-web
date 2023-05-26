@@ -30,8 +30,9 @@ export default function AboutUs() {
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
                 <Typography
-                    sx={{ flex: '1 1 100%',paddingTop:'15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px' }}
+                    sx={{fontSize: 16, flex: '1 1 100%',paddingTop:'15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px' }}
                     variant="h6"
+
                     component="div"
                 >
                     Multi-Agent Path Finding (MAPF) is a combinatorial problem that asks us to compute collision-free paths for teams of
@@ -82,16 +83,14 @@ export default function AboutUs() {
                                     sx={{ width : item_width-100,  height: item_width-100 }}
                                 />
                                 <Typography
-                                    sx={{ width: item_width, m: 2,  textAlign: 'center'}}
-                                    variant="h6"
+                                    sx={{ fontSize: 16, width: item_width, m: 2,  textAlign: 'center'}}
                                     id="tableTitle"
                                     component="div"
                                 >
                                     Daniel Harabor (Lab Leader)
                                 </Typography>
                                 <Typography
-                                    sx={{ width: item_width, m: 2,  textAlign: 'center' }}
-                                    variant="h6"
+                                    sx={{ fontSize: 16, width: item_width, mb: 2,  textAlign: 'center' }}
                                     id="tableTitle"
                                     component="div"
                                 >
@@ -116,16 +115,14 @@ export default function AboutUs() {
                                 />
 
                                 <Typography
-                                    sx={{ width : item_width,  m: 2,  textAlign: 'center'}}
-                                    variant="h6"
+                                    sx={{ fontSize: 16,width : item_width,  m: 2,  textAlign: 'center'}}
                                     id="tableTitle"
                                     component="div"
                                 >
                                     Peter Stuckey
                                 </Typography>
                                 <Typography
-                                    sx={{ width : item_width,  m: 2,  textAlign: 'center' }}
-                                    variant="h6"
+                                    sx={{ fontSize: 16, width : item_width,  mb: 2, textAlign: 'center' }}
                                     id="tableTitle"
                                     component="div"
                                 >
@@ -148,16 +145,14 @@ export default function AboutUs() {
                                     sx={{ width: item_width-100, height: item_width-100}}
                                 />
                                 <Typography
-                                    sx={{ width : item_width,  m: 2,  textAlign: 'center'}}
-                                    variant="h6"
+                                    sx={{ fontSize: 16,width : item_width,  m: 2,  textAlign: 'center'}}
                                     id="tableTitle"
                                     component="div"
                                 >
                                     Muhammad Aamir Cheema
                                 </Typography>
                                 <Typography
-                                    sx={{ width : item_width,  m: 2,  textAlign: 'center' }}
-                                    variant="h6"
+                                    sx={{fontSize: 16, width : item_width, mb: 2,   textAlign: 'center' }}
                                     id="tableTitle"
                                     component="div"
                                 >
@@ -202,16 +197,14 @@ export default function AboutUs() {
                                         sx={{width: item_width-100, height: item_width-100 }}
                                 />
                                 <Typography
-                                    sx={{ width :item_width,  m: 2,  textAlign: 'center'}}
-                                    variant="h6"
+                                    sx={{ fontSize: 16, width :item_width,  m: 2,  textAlign: 'center'}}
                                     id="tableTitle"
                                     component="div"
                                 >
                                     Bojie Shen
                                 </Typography>
                                 <Typography
-                                    sx={{ width :item_width,  m: 2,  textAlign: 'center' }}
-                                    variant="h6"
+                                    sx={{ fontSize: 16, width :item_width, mb: 2, textAlign: 'center' }}
                                     id="tableTitle"
                                     component="div"
                                 >
@@ -233,16 +226,14 @@ export default function AboutUs() {
                                     sx={{ width: item_width-100, height: item_width-100 }}
                                 />
                                 <Typography
-                                    sx={{ width : item_width,  m: 2,  textAlign: 'center'}}
-                                    variant="h6"
+                                    sx={{ fontSize: 16,width : item_width,  m: 2,  textAlign: 'center'}}
                                     id="tableTitle"
                                     component="div"
                                 >
                                     Zhe Chen
                                 </Typography>
                                 <Typography
-                                    sx={{ width : item_width,  m: 2,  textAlign: 'center' }}
-                                    variant="h6"
+                                    sx={{fontSize: 16, width : item_width, mb: 2, textAlign: 'center' }}
                                     id="tableTitle"
                                     component="div"
                                 >
