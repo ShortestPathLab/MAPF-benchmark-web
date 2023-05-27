@@ -61,6 +61,119 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InfoIcon from "@mui/icons-material/Info";
 
+
+const infoDescriptionText = {
+    'scenProgress':{
+        'description':
+            "This plot tracks the progress made by the state-of-the-art (i.e., all algorithms together) in each scenario of the given map. " +
+            "The figure shows the success rate (i.e., percentage) of closed, solved, and unknown instances in each scenario. " +
+            "The objective here is to identify the scenarios that are hard to solve with existing MAPF algorithms, so that more attention can be paid to these. " ,
+        'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
+        'y_axis': "The y-axis shows the success rate (i.e., percentage) of closed, solved, and unknown instances in each scenario. " +
+            "The success rate is calculated according to the total number of instances in each scenario.",
+        'comment': "To indicate the progress, all instances in each scenario are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
+                "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
+            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+    },
+    'agentProgress':{
+        'description':
+            "This plot tracks the progress made by the state-of-the-art (i.e., all algorithms together) for different numbers of agents within the given map. " +
+            "The figure shows the success rate (i.e., percentage) of closed, solved, and unknown instances for different number of agents. " +
+            "The objective here is to understand the scalability of MAPF algorithms across all scenarios (i.e., at what number of agents we stop making progress)." ,
+
+        'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
+        'y_axis': "The y-axis shows the success rate (percentage) of closed, solved, and unknown instances for different numbers of agents. " +
+            "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
+            "The success rate is calculated based on the number of instances available for each different number of agents.",
+        'comment':  "To indicate the progress, all instances in each scenario are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
+                "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
+            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+    },
+
+
+    'scenCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed by MAPF algorithms for each scenario within the given map. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The purpose of this plot is to compare optimal algorithms and identify challenging scenarios. " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
+        'y_axis': "The y-axis displays the number of instances closed for each scenario. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each scenario."
+    },
+    'scenCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved by MAPF algorithms for each scenario within the given map. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging scenarios.",
+        'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
+        'y_axis': "The y-axis displays the number of instances solved for each scenario. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each scenario."
+    },
+    'scenCompare-#Best Lower-bounds':{
+        'description':"This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) among MAPF algorithms for each scenario in the given map. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The purpose of this plot is to compare these algorithms and identify challenging scenarios. " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
+        'y_axis': "The y-axis displays the number of instances that have achieved the best lower bound for each scenario. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each scenario. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'scenCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) among MAPF algorithms for each scenario in the given map. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging scenarios.",
+        'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
+        'y_axis': "The y-axis displays the number of instances that have achieved the best solution for each scenario. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each scenario. " +
+           "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+    },
+
+    'agentCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed by MAPF algorithms " +
+            "for different numbers of agents within the given map. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The purpose of this plot is to compare optimal algorithms and identify challenging scenarios. " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
+        'y_axis': "The y-axis displays the number of instances closed for different numbers of agents. " +
+            "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents."
+    },
+    'agentCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved by MAPF algorithms " +
+            "for different numbers of agents within the given map. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging scenarios.",
+        'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
+        'y_axis': "The y-axis displays the number of instances solved for different numbers of agents. " +
+            "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents."
+    },
+    'agentCompare-#Best Lower-bounds':{
+        'description':"This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) among MAPF algorithms " +
+            "for different numbers of agents within the given map. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The purpose of this plot is to compare these algorithms and identify challenging scenarios. " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
+        'y_axis': "The y-axis displays the number of instances that have achieved the best lower bound for different numbers of agents. " +
+            "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'agentCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) among MAPF algorithms " +
+            "for different numbers of agents within the given map. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging scenarios.",
+        'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
+        'y_axis': "The y-axis displays the number of instances that have achieved the best solution for different numbers of agents. " +
+            "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best solution in such cases."
+    },
+}
+
 function descendingComparator(a, b, orderBy) {
     if (orderBy === 'map_size'){
         var string_a = a[orderBy].split("x");
@@ -342,6 +455,15 @@ export default function ScenarioTable() {
     const [agentCompareOpen, setAgentCompareOpen] = React.useState(false);
     const [scenCompareYLabel, setScenCompareYLabel] = React.useState('');
     const [agentCompareYLabel, setAgentCompareYLabel] = React.useState('');
+
+    const [openMonitorDetail, setOpenMonitorDetail] =  React.useState(false);
+    const [infoDescription, setInfoDescription] = React.useState(0);
+
+    const handleOpenInfo = (key)  => {
+        setInfoDescription(infoDescriptionText[key]);
+        setOpenMonitorDetail(true);
+    };
+
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
@@ -678,12 +800,11 @@ export default function ScenarioTable() {
                 }
                 return 0;
             });
-
+            setAgentLoading(false);
             setAgentChartAlgorithms(unique_key);
             setAgentChartDisplayAlgorithms(unique_key);
             setAgentChartDisplayData(agent_data);
             setAgentChartOriData(agent_data);
-            setAgentLoading(false);
             // console.log("print data ");
             // console.log(agent_data);
         }
@@ -1186,7 +1307,7 @@ export default function ScenarioTable() {
                                     component="div"
                                 >
                                     Success Rate on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
-                                    <IconButton>
+                                    <IconButton onClick={()=>{handleOpenInfo('scenProgress')}}>
                                         <InfoIcon />
                                     </IconButton>
                                 </Typography>
@@ -1267,7 +1388,7 @@ export default function ScenarioTable() {
                                     component="div"
                                 >
                                     Success Rate on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
-                                    <IconButton>
+                                    <IconButton onClick={()=>{handleOpenInfo('agentProgress')}}>
                                         <InfoIcon />
                                     </IconButton>
                                 </Typography>
@@ -1366,7 +1487,7 @@ export default function ScenarioTable() {
                                         component="div"
                                     >
                                         Comparison between Algorithms on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
-                                        <IconButton>
+                                        <IconButton onClick={()=>{handleOpenInfo('scenCompare-'+mapQuery)}}>
                                             <InfoIcon />
                                         </IconButton>
                                     </Typography>
@@ -1380,7 +1501,7 @@ export default function ScenarioTable() {
                                         >
                                             <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
                                             <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
-                                            <MenuItem value={"#Best Lower-bounds"}>Best Lower-Bound</MenuItem>
+                                            <MenuItem value={"#Best Lower-bounds"}>Best Lower Bound</MenuItem>
                                             <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                         </Select>
                                     </FormControl>
@@ -1518,7 +1639,7 @@ export default function ScenarioTable() {
                                         component="div"
                                     >
                                         Comparison between Algorithms on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
-                                        <IconButton>
+                                        <IconButton onClick={()=>{handleOpenInfo('agentCompare-'+ agentQuery)}}>
                                             <InfoIcon />
                                         </IconButton>
                                     </Typography>
@@ -1532,7 +1653,7 @@ export default function ScenarioTable() {
                                         >
                                             <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
                                             <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
-                                            <MenuItem value={"#Best Lower-bounds"}>Best Lower-Bound</MenuItem>
+                                            <MenuItem value={"#Best Lower-bounds"}>Best Lower Bound</MenuItem>
                                             <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                         </Select>
                                     </FormControl>
@@ -1632,7 +1753,68 @@ export default function ScenarioTable() {
                         </Box>
                     </DialogContent>
                 </Dialog>
-        </Box>
+
+                <Dialog
+                    open={openMonitorDetail}
+                    onClose={()=>setOpenMonitorDetail(false)}
+                    fullWidth={true}
+                    scroll={scroll}
+                    aria-labelledby="scroll-dialog-title"
+                    aria-describedby="scroll-dialog-description"
+                    maxWidth={'sm'}
+                    disableScrollLock={ true }
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                    // PaperProps={{ sx: { width: "100%"}}}
+                >
+                    <DialogContent  dividers={scroll === 'paper'} sx={{width: 550, display : 'flex'}}>
+                        <Table sx={{ width : 550}}>
+                            <colgroup>
+                                {/*<col width="120" />*/}
+                                {/*<col width="150" />*/}
+                                {/*<col width="65" />*/}
+                                {/*<col width="200" />*/}
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="50" />
+                            </colgroup>
+                            <TableBody>
+                                <TableRow >
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}}>  Description:  </TableCell>
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.description}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  X-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.x_axis}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Y-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.y_axis}
+                                    </TableCell>
+                                </TableRow>
+                                {infoDescription.comment != null ?
+                                    <TableRow>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}> Comments:  </TableCell>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                            {infoDescription.comment}
+                                        </TableCell>
+                                    </TableRow>
+                                    : null
+                                }
+
+                            </TableBody>
+                        </Table>
+                    </DialogContent>
+                </Dialog>
+
+            </Box>
 
     );
 }

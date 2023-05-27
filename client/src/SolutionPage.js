@@ -61,18 +61,74 @@ const angle = {
     'Room' : -110
 }
 
-const infoDescription = {
+const infoDescriptionText = {
     'MonitorSuboptimality':{
-        'description':"some text",
-        'x-axis':"some text",
-        'y-axis':"some text"
+        'description':"This plot tracks the suboptimality gap between the cost of the best-known solution and the best-known lower bound. " +
+            "The figure is supposed to show the solution quality of the state-of-the-art (i.e., all algorithms together) as the number of agents increases." ,
+        'x_axis':"Each instance contains a different number of agents, and the x-axis shows the number of agents in increasing order. ",
+        'y_axis': "The suboptimality is computed as (S - LB) / LB, where S is the best-known solution cost and LB is the best-known lower bound. " +
+            "The y-axis shows the suboptimality ratio. \"0%\" indicates that the solution reported is optimal and \"Inf\" indicates that no solution has been reported. " +
+            "For instances where no lower bound is reported, the LB is set to a trivial lower bound. "+
+            "(i.e, the SIC of each agent follows the shortest path by ignoring other agents)."
     },
-    'Compare-':{
-        'description':"some text",
-        'x-axis':"some text",
-        'y-axis':"some text"
-    }
+    'Compare-Solution Cost':{
+        'description':"This plot compares the suboptimality gap (i.e., lower the better) between the solutions reported by MAPF algorithms w.r.t. the best-known lower bound. " +
+            "The figure is intended to compare the solution quality of different MAPF algorithms as the number of agents increases.",
+        'x_axis':"Each instance contains a different number of agents, and the x-axis shows the number of agents in increasing order.",
+        'y_axis':"The suboptimality is computed as (S' - LB) / LB, where S' is the solution cost reported by each individual algorithm, and LB is the best-known lower bound. " +
+            "The y-axis shows the suboptimality ratio. \"0%\" indicates that the algorithm has reported optimal solution and \"Inf\" indicates that the algorithm has reported no solution. "+
+            "For instances where no lower bound is reported, the LB is set to a trivial lower bound. "+
+            "(i.e, the SIC of each agent follows the shortest path by ignoring other agents)."
+    },
+    'Compare-Lower Bound':{
+        'description':"This plot compares the suboptimality gap (i.e., lower the better) between the lower bounds reported by MAPF algorithms w.r.t. the best-known lower bound. " +
+            " The figure is intended to compare the quality of lower bounds reported by different MAPF algorithms as the number of agents increases.",
+        'x_axis':"Each instance contains a different number of agents, and the x-axis shows the number of agents in increasing order.",
+        'y_axis':"The suboptimality is computed as (LB - LB') / LB, where LB' is the lower bound reported by each individual algorithm, and LB is the best-known lower bound. " +
+            "The y-axis shows the suboptimality ratio. \"0%\" indicates that the algorithm has reported the best lower bound, " +
+            "while \"Inf\" indicates that the algorithm has reported no lower bound."
 
+    },
+    'domainCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances closed for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better).",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances solved for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Best Lower-bounds':{
+        'description': "This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best lower bound for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'domainCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). ",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best solution for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+    },
 }
 function descendingComparator(a, b, orderBy) {
     if (orderBy === 'solution_algos' || orderBy === 'lower_algos'){
@@ -499,6 +555,12 @@ export default function SolutionPage() {
     const [progressLoading, setProgressLoading] =  React.useState(false);
     const [maxAgentResults, setMaxAgentResults] = React.useState(0);
     const [openMonitorDetail, setOpenMonitorDetail] =  React.useState(false);
+    const [infoDescription, setInfoDescription] = React.useState(0);
+
+    const handleOpenInfo = (key)  => {
+        setInfoDescription(infoDescriptionText[key]);
+        setOpenMonitorDetail(true);
+    };
 
 
     const [color,setColor] = React.useState(Array(100)
@@ -1355,6 +1417,9 @@ export default function SolutionPage() {
                                     component="div"
                                 >
                                    Summary
+                                    <IconButton onClick={()=>{handleOpenInfo('domainCompare-'+domainQuery)}}>
+                                        <InfoIcon />
+                                    </IconButton>
                                 </Typography>
                                 <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
                                     <Select
@@ -1363,10 +1428,10 @@ export default function SolutionPage() {
                                         onChange={handleDomainQueryChange}
                                         inputProps={{ 'aria-label': 'Without label' }}
                                     >
-                                        <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                        <MenuItem value={"#Instances Solved"}>#Instances Solved</MenuItem>
-                                        <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                        <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
+                                        <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                        <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                        <MenuItem value={"#Best Lower-bounds"}>Best Lower Bound</MenuItem>
+                                        <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                     </Select>
 
                                 </FormControl>
@@ -1447,8 +1512,8 @@ export default function SolutionPage() {
                                         component="div"
                                     >
                                         Suboptimality on #Agents ({capitalizeFirstLetter(location.state.mapName)} {location.state.scenType}-{location.state.scenTypeID} scenario) &nbsp;
-                                        <IconButton>
-                                            <InfoIcon onClick={()=>{setOpenMonitorDetail(true)}}/>
+                                        <IconButton onClick={()=>{handleOpenInfo('MonitorSuboptimality')}}>
+                                            <InfoIcon/>
                                         </IconButton>
                                     </Typography>
                                     {/*<Typography*/}
@@ -1563,8 +1628,8 @@ export default function SolutionPage() {
                                         component="div"
                                     >
                                         Comparison between Algorithms on #Agents
-                                        <IconButton>
-                                            <InfoIcon />
+                                        <IconButton onClick={()=>{handleOpenInfo('Compare-'+agentQuery)}}>
+                                            <InfoIcon/>
                                         </IconButton>
                                     </Typography>
 
@@ -1726,35 +1791,48 @@ export default function SolutionPage() {
                                 <TableRow >
                                     <TableCell  style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}}>  Description:  </TableCell>
                                     <TableCell  style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
-                                        Multi-Agent Path Finding (MAPF) is a combinatorial problem that asks us to compute collision-free paths for teams of
-                                        cooperative agents.
-                                        Many works appear on this topic each year, and a large number of substantial advancements and improvements have been reported. Yet measuring overall progress in
-                                        MAPF is difficult:
-                                        there are many potential competitors, and the computational burden for comprehensive experimentation is prohibitively large.
-                                        Moreover, detailed data from past experimentation is usually unavailable.
-                                        This online platform introduces a set of methodological and visualisation tools which can help the community establish clear indicators for
-                                        state-of-the-art MAPF performance and which can facilitate large-scale comparisons between MAPF solvers.
-                                        Our objectives are to lower the barrier of entry for new
-                                        researchers and to further promote the study of MAPF.
+                                        {infoDescription.description}
                                     </TableCell>
                                 </TableRow>
-                                <TableRow>
+                                {infoDescription.c_axis != null ?<TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  Category-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.c_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.v_axis != null ? <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Value-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.v_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+
+                                {infoDescription.x_axis != null ?<TableRow>
                                     <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  X-axis:  </TableCell>
                                     <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
-
+                                        {infoDescription.x_axis}
                                     </TableCell>
-                                </TableRow>
-                                <TableRow>
+                                </TableRow>: null}
+                                {infoDescription.y_axis != null ? <TableRow>
                                     <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Y-axis:  </TableCell>
                                     <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
-
+                                        {infoDescription.y_axis}
                                     </TableCell>
-                                </TableRow>
+                                </TableRow>: null}
+                                {infoDescription.comment != null ?
+                                    <TableRow>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}> Comments:  </TableCell>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                            {infoDescription.comment}
+                                        </TableCell>
+                                    </TableRow>
+                                    : null
+                                }
+
                             </TableBody>
                         </Table>
                     </DialogContent>
                 </Dialog>
-
             </Box>
 
     );

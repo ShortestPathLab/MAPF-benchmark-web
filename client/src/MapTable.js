@@ -70,6 +70,119 @@ const angle = {
     'Room' : -110
 }
 
+const infoDescriptionText = {
+    'domainProgress':{
+        'description':
+            "This plot tracks the progress made by the state-of-the-art (i.e., all algorithms together) in each domain of the benchmark. " +
+            "The figure shows the success rate (i.e., percentage) of closed, solved, and unknown instances in each domain. " +
+            "The objective here is to identify the domains that are hard to solve with existing MAPF algorithms, so that more attention can be paid to these. " ,
+        'c_axis': "The benchmark contains many different maps, each map is associate with a domain (see Type column). " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis shows the success rate (i.e., percentage) of closed, solved, and unknown instances in each map. " +
+            "The success rate is calculated according to the total number of instances in each domain.",
+        'comment':  "To indicate the progress, all instances in each map are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
+            "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
+            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+    },
+    'domainCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed by MAPF algorithms for each domain of the benchmark. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The purpose of this plot is to compare optimal algorithms and identify challenging domains. " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with a domain (see Type column). " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances closed for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved by MAPF algorithms for each domain of the benchmark. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging domains.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with a domain (see Type column). " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances solved for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Best Lower-bounds':{
+        'description':"This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) " +
+            "among MAPF algorithms for each domain of the benchmark. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The purpose of this plot is to compare these algorithms and identify challenging domains. " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with a domain (see Type column). " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best lower bound for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'domainCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) " +
+            "among MAPF algorithms for each domain of the benchmark. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging scenarios.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain (see Type column). " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best solution for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+    },
+
+
+    'mapProgress':{
+        'description':
+            "This plot tracks the progress made by the state-of-the-art (i.e., all algorithms together) for each map of the benchmark " +
+            "The figure shows the success rate (i.e., percentage) of closed, solved, and unknown instances for different maps. " +
+            "The objective here is to allow the researchers to focus MAPF research on the map that are challenging.",
+        'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
+        'y_axis': "The y-axis shows the success rate (percentage) of closed, solved, and unknown instances for different maps. " +
+            "The success rate is calculated according to the total number of instances in each map.",
+        'comment':  "To indicate the progress, all instances in each map are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
+            "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
+            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+    },
+
+
+    'mapCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed by MAPF algorithms " +
+            "for different maps in the benchmark. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The purpose of this plot is to compare optimal algorithms and identify challenging maps. " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
+        'y_axis': "The y-axis displays the number of instances closed for different maps. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each map."
+    },
+    'mapCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved by MAPF algorithms " +
+            "for different maps in the benchmark. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging maps.",
+        'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
+        'y_axis': "The y-axis displays the number of instances solved for different maps. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each map."
+    },
+    'mapCompare-#Best Lower-bounds':{
+        'description':"This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) among MAPF algorithms " +
+            "for different maps in the benchmark. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The purpose of this plot is to compare these algorithms and identify challenging maps. " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
+        'y_axis': "The y-axis displays the number of instances that have achieved the best lower bound for different maps. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each map. "+
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'mapCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) among MAPF algorithms " +
+            "for different maps in the benchmark. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
+            "The figure compare between different algorithms and identify challenging maps.",
+        'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
+        'y_axis': "The y-axis displays the number of instances that have achieved the best solution for different maps. " +
+            "The percentage ratio is shown, calculated based on the number of instances available for each map. "+
+            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+    },
+}
 
 function descendingComparator(a, b, orderBy) {
     if (orderBy === 'map_size'){
@@ -380,6 +493,16 @@ export default function MapTable() {
     const [domainCompareOpen, setDomainCompareOpen] = React.useState(false);
     const [mapCompareOpen, setMapCompareOpen] = React.useState(false);
     const [mapCompareYLabel, setMapCompareYLabel] = React.useState('');
+
+    const [openMonitorDetail, setOpenMonitorDetail] =  React.useState(false);
+    const [infoDescription, setInfoDescription] = React.useState(0);
+
+    const handleOpenInfo = (key)  => {
+        setInfoDescription(infoDescriptionText[key]);
+        setOpenMonitorDetail(true);
+    };
+
+
     const handleMapDetailClose = () => {
         setOpenMapDetail(false);
     };
@@ -1349,7 +1472,7 @@ export default function MapTable() {
                                     component="div"
                                 >
                                     Comparison between Algorithms on Domains
-                                    <IconButton>
+                                    <IconButton onClick={()=>{handleOpenInfo('domainCompare-'+domainQuery)}}>
                                         <InfoIcon />
                                     </IconButton>
                                 </Typography>
@@ -1489,7 +1612,7 @@ export default function MapTable() {
                                     component="div"
                                 >
                                     Comparison between Algorithms on Maps
-                                    <IconButton>
+                                    <IconButton onClick={()=>{handleOpenInfo('mapCompare-'+mapQuery)}}>
                                         <InfoIcon />
                                     </IconButton>
                                 </Typography>
@@ -1629,7 +1752,7 @@ export default function MapTable() {
                                     component="div"
                                 >
                                     Success Rate on Domains
-                                    <IconButton>
+                                    <IconButton onClick={()=>{handleOpenInfo('domainProgress')}}>
                                         <InfoIcon />
                                     </IconButton>
                                 </Typography>
@@ -1715,7 +1838,7 @@ export default function MapTable() {
                                 component="div"
                             >
                                 Success Rate on Maps
-                                <IconButton>
+                                <IconButton onClick={()=>{handleOpenInfo('mapProgress')}}>
                                     <InfoIcon />
                                 </IconButton>
                             </Typography>
@@ -1821,6 +1944,78 @@ export default function MapTable() {
                 </DialogContent>
             </Dialog>
 
+            <Dialog
+                open={openMonitorDetail}
+                onClose={()=>setOpenMonitorDetail(false)}
+                fullWidth={true}
+                scroll={scroll}
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
+                maxWidth={'sm'}
+                disableScrollLock={ true }
+                PaperProps={{
+                    style: { mb: 2,borderRadius: 10 }
+                }}
+                // PaperProps={{ sx: { width: "100%"}}}
+            >
+                <DialogContent  dividers={scroll === 'paper'} sx={{width: 550, display : 'flex'}}>
+                    <Table sx={{ width : 550}}>
+                        <colgroup>
+                            {/*<col width="120" />*/}
+                            {/*<col width="150" />*/}
+                            {/*<col width="65" />*/}
+                            {/*<col width="200" />*/}
+                            <col width="150" />
+                            <col width="150" />
+                            <col width="150" />
+                            <col width="50" />
+                        </colgroup>
+                        <TableBody>
+                            <TableRow >
+                                <TableCell  style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}}>  Description:  </TableCell>
+                                <TableCell  style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                    {infoDescription.description}
+                                </TableCell>
+                            </TableRow>
+                            {infoDescription.c_axis != null ?<TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  Category-axis:  </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                    {infoDescription.c_axis}
+                                </TableCell>
+                            </TableRow>: null}
+                            {infoDescription.v_axis != null ? <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Value-axis:  </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                    {infoDescription.v_axis}
+                                </TableCell>
+                            </TableRow>: null}
+
+                            {infoDescription.x_axis != null ?<TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  X-axis:  </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                    {infoDescription.x_axis}
+                                </TableCell>
+                            </TableRow>: null}
+                            {infoDescription.y_axis != null ? <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Y-axis:  </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                    {infoDescription.y_axis}
+                                </TableCell>
+                            </TableRow>: null}
+                            {infoDescription.comment != null ?
+                                <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}> Comments:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.comment}
+                                    </TableCell>
+                                </TableRow>
+                                : null
+                            }
+
+                        </TableBody>
+                    </Table>
+                </DialogContent>
+            </Dialog>
 
             {/*<FormControlLabel*/}
             {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}

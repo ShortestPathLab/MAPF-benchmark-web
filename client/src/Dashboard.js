@@ -35,8 +35,51 @@ import Button from "@mui/material/Button";
 import { useConfirm } from "material-ui-confirm";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import {APIConfig} from "./config";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
+const infoDescriptionText = {
+    'domainCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances closed for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better).",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances solved for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Best Lower-bounds':{
+        'description': "This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best lower bound for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'domainCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). ",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best solution for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+    },
+}
 const angle = {
     'Warehouse': -40,
     'City' : 0,
@@ -342,7 +385,14 @@ export default function Dashboard() {
     const [algodata, setAlgodata] = React.useState([]);
     const [algoChartData, setAlgoChartData] = React.useState([]);
     const [openAlgoCreate, setOpenAlgoCreate] = React.useState(false);
+    const [domainLoading, setDomainLoading] =  React.useState(true);
+    const [openMonitorDetail, setOpenMonitorDetail] =  React.useState(false);
+    const [infoDescription, setInfoDescription] = React.useState(0);
 
+    const handleOpenInfo = (key)  => {
+        setInfoDescription(infoDescriptionText[key]);
+        setOpenMonitorDetail(true);
+    };
     const confirm = useConfirm();
 
     const requestSearch = (searchedVal) => {
@@ -547,10 +597,6 @@ export default function Dashboard() {
         event.stopPropagation();
     };
 
-    const handleAlgoDetailClose = () => {
-        setOpenAlgoDetail(false);
-        setDomainQuery('#Instances Closed');
-    };
 
     const handleAlgoModifyClickOpen  = (event,scrollType, algo_data)  => {
         setOpenAlgoModify(true);
@@ -562,11 +608,14 @@ export default function Dashboard() {
         setOpenAlgoModify(false);
     };
 
-
-
+    const handleAlgoDetailClose = () => {
+        setOpenAlgoDetail(false);
+        setDomainQuery('#Instances Closed');
+    };
     React.useEffect(() => {
         if (openAlgoDetail) {
-            fetch(APIConfig.apiUrl+'/algorithm/getSolvedInfoGroup/'+algodata['id'], {method: 'GET'})
+            setDomainLoading(true);
+            fetch(APIConfig.apiUrl+'/algorithm/getClosedInfoGroup/'+algodata['id'], {method: 'GET'})
                 .then(res => res.json())
                 .then(data => {
                     data.forEach(function(element){
@@ -576,6 +625,7 @@ export default function Dashboard() {
                         element.name =  element.name.charAt(0).toUpperCase() +element.name.slice(1)
                     })
                     setAlgoChartData(data);
+                    setDomainLoading(false);
                 })
                 .catch(err => console.error(err));
 
@@ -584,13 +634,18 @@ export default function Dashboard() {
 
 
 
+
+
     const handleDomainQueryChange = (event) => {
         setDomainQuery(event.target.value);
-
+        setDomainLoading(true);
         var domain_API = '';
         if(event.target.value ==='#Instances Closed'){
+            domain_API = APIConfig.apiUrl+'/algorithm/getClosedInfoGroup/'+algodata['id'];
+        }else if(event.target.value ==='#Instances Solved'){
             domain_API = APIConfig.apiUrl+'/algorithm/getSolvedInfoGroup/'+algodata['id'];
-        }else if (event.target.value === '#Best Lower-bounds'){
+        }
+        else if (event.target.value === '#Best Lower-bounds'){
             domain_API = APIConfig.apiUrl+'/algorithm/getLowerInfoGroup/'+algodata['id'];
         }else{
             domain_API = APIConfig.apiUrl+'/algorithm/getSolutionInfoGroup/'+algodata['id'];
@@ -605,9 +660,11 @@ export default function Dashboard() {
                     element.name =  element.name.charAt(0).toUpperCase() +element.name.slice(1)
                 })
                 setAlgoChartData(data);
+                setDomainLoading(false);
             })
             .catch(err => console.error(err));
     }
+
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -772,122 +829,126 @@ export default function Dashboard() {
                     aria-describedby="scroll-dialog-description"
                     fullWidth={true}
                     maxWidth={'md'}
-                    disableScrollLock={true}
+                    disableScrollLock={ true }
                     PaperProps={{
-                        style: {mb: 2, borderRadius: 10}
+                        style: { mb: 2,borderRadius: 10 }
                     }}
                     // PaperProps={{ sx: { width: "100%"}}}
                 >
-                    <DialogContent dividers={scrollAlgoDetail === 'paper'} sx={{width: 850, display: 'flex'}}>
+                    <DialogContent dividers={scrollAlgoDetail === 'paper'}  sx={{width: 850, display : 'flex'}}>
 
-                        <Table sx={{width: 500}}>
+                        <Table sx={{ width : 500}}>
                             <colgroup>
                                 {/*<col width="120" />*/}
                                 {/*<col width="150" />*/}
                                 {/*<col width="65" />*/}
                                 {/*<col width="200" />*/}
-                                <col width="120"/>
-                                <col width="150"/>
-                                <col width="50"/>
-                                <col width="150"/>
+                                <col width="120" />
+                                <col width="150" />
+                                <col width="50" />
+                                <col width="150" />
                             </colgroup>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell style={{paddingRight: 0, paddingLeft: 0}}>Algorithm Name:</TableCell>
-                                    <TableCell
-                                        style={{paddingRight: 0, paddingLeft: 0}}> {algodata.algo_name}</TableCell>
-                                    <TableCell style={{paddingRight: 0, paddingLeft: 0}}> Authors: </TableCell>
-                                    <TableCell
-                                        style={{paddingRight: 0, paddingLeft: 0}}> {algodata.authors}</TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 }} >Algorithm Name:</TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 }}> {algodata.algo_name}</TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 }}> Authors: </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 }}> {algodata.authors}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell style={{paddingRight: 0, paddingLeft: 0}}> Github Link: </TableCell>
-                                    <TableCell style={{paddingRight: 0, paddingLeft: 0}} colSpan={3}>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 }}>  Github Link: </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 }} colSpan={3}>
                                         <Link href={algodata.github} underline="hover">
                                             {algodata.github}
                                         </Link>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell
-                                        style={{paddingRight: 0, paddingLeft: 0, verticalAlign: "top"}}> Paper
-                                        Reference: </TableCell>
-                                    <TableCell style={{paddingRight: 0, paddingLeft: 0, verticalAlign: "top"}}
-                                               colSpan={3}> {algodata.papers} </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0,verticalAlign: "top" }} > Paper Reference: </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0,verticalAlign: "top" }} colSpan={3} > {algodata.papers} </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell style={{
-                                        paddingRight: 0,
-                                        paddingLeft: 0,
-                                        verticalAlign: "top"
-                                    }}> Comments: </TableCell>
-                                    <TableCell style={{paddingRight: 0, paddingLeft: 0, verticalAlign: "top"}}
-                                               colSpan={3}> {algodata.comments}</TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: "top"}}> Comments: </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0,verticalAlign: "top" }} colSpan={3}> {algodata.comments}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
                         {/*<ResponsiveContainer width={500} height={380}>*/}
-                        <div style={{width: 30}}/>
+                        <div style={{width:30}}/>
                         {/*<Paper  elevation={12} sx={{  width : 350, height: 464, mb: 2, borderRadius: 5}}>*/}
-                        <Box sx={{width: 350, height: 464}}>
+                        <Box sx={{ width : 350, height: 464}}>
                             <Toolbar
                                 sx={{
-                                    pl: {sm: 2},
-                                    pr: {xs: 1, sm: 1}
+                                    pl: { sm: 2 },
+                                    pr: { xs: 1, sm: 1 }
                                 }}
                             >
                                 <Typography
-                                    sx={{flex: '1 1 100%'}}
+                                    sx={{ flex: '1 1 100%' }}
                                     variant="h8"
                                     id="tableTitle"
                                     component="div"
                                 >
                                     Summary
+                                    <IconButton onClick={()=>{handleOpenInfo('domainCompare-'+domainQuery)}}>
+                                        <InfoIcon />
+                                    </IconButton>
                                 </Typography>
-                                <FormControl sx={{m: 1, minWidth: 120, width: 300}} size='small'>
+                                <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
                                     <Select
-                                        displayEmpty={true}
+                                        displayEmpty = {true}
                                         value={domainQuery}
                                         onChange={handleDomainQueryChange}
-                                        inputProps={{'aria-label': 'Without label'}}
+                                        inputProps={{ 'aria-label': 'Without label' }}
                                     >
-                                        <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                        <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                        <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
+                                        <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                        <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                        <MenuItem value={"#Best Lower-bounds"}>Best Lower Bound</MenuItem>
+                                        <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                     </Select>
 
                                 </FormControl>
                             </Toolbar>
-                            <RadarChart width={350} height={400} cx="50%" cy="60%" outerRadius="80%"
-                                        data={algoChartData}>
-                                {/*<text x="50%" y="0" dominantBaseline="hanging" fontSize="20"  textAnchor={'middle'} style = {{ fontFamily: "Roboto Slab" }}>Solution</text>*!/*/}
-                                <Legend verticalAlign="top" align="center" wrapperStyle={{
-                                    fontFamily: "Roboto Slab"
-                                }}/>
-                                <PolarGrid/>
-                                <PolarAngleAxis dataKey="name"
-                                                tick={<CustomizedLabel/>}
-                                                style={{
-                                                    fontFamily: "Roboto Slab"
-                                                }}/>
-                                <Tooltip wrapperStyle={{fontFamily: "Roboto Slab"}} formatter={(tick) => {
-                                    var value = tick * 100
-                                    return `${value.toFixed(2)}%`;
-                                }}
-                                />
-                                <PolarRadiusAxis angle={38.5} domain={[0, algoChartData.length > 0 ? 'dataMax' : 1]}
-                                                 tickFormatter={(tick) => {
-                                                     var value = tick * 100
-                                                     return `${value.toFixed(0)}%`;
-                                                 }}
-                                />
-                                <Radar key={'State of The Art'} dataKey={'State of The Art'} fillOpacity={0.6}
-                                       stroke={`#87ceeb`} fill={`#87ceeb`}/>
-                                <Radar key={algodata.algo_name} dataKey={algodata.algo_name} fillOpacity={0.6}
-                                       stroke={`#ff4500`} fill={`#ff4500`}/>
-                            </RadarChart>
+                            {domainLoading ? <Box display="flex"
+                                                  justifyContent="center"
+                                                  alignItems="center" width={350} height={400}><CircularProgress
+                                    size={80}/></Box> :
+                                <RadarChart width={350} height={400} cx="50%" cy="60%" outerRadius="80%"
+                                            data={algoChartData}>
+                                    {/*<text x="50%" y="0" dominantBaseline="hanging" fontSize="20"  textAnchor={'middle'} style = {{ fontFamily: "Roboto Slab" }}>Solution</text>*!/*/}
+                                    <Legend verticalAlign="top" align="center" wrapperStyle={{
+                                        fontFamily: "Roboto Slab"
+                                    }}/>
+                                    <PolarGrid/>
+                                    <PolarAngleAxis dataKey="name"
+                                                    tick={<CustomizedLabel/>}
+                                                    style={{
+                                                        fontFamily: "Roboto Slab"
+                                                    }}/>
+                                    <Tooltip wrapperStyle={{fontFamily: "Roboto Slab"}} formatter={(tick) => {
+                                        var value = tick * 100
+                                        return `${value.toFixed(2)}%`;
+                                    }}
+                                    />
+                                    <PolarRadiusAxis angle={38.5} domain={[0, algoChartData.length > 0 ? 'dataMax' : 1]}
+                                                     tickFormatter={(tick) => {
+                                                         var value = tick * 100
+                                                         return `${value.toFixed(0)}%`;
+                                                     }}
+                                    />
+                                    <Radar key={'State of The Art'} dataKey={'State of The Art'} fillOpacity={0.6}
+                                           stroke={`#87ceeb`} fill={`#87ceeb`}/>
+                                    <Radar key={algodata.algo_name} dataKey={algodata.algo_name} fillOpacity={0.6}
+                                           stroke={`#ff4500`} fill={`#ff4500`}/>
+                                </RadarChart>
+                            }
                         </Box>
+                        {/*</Paper>*/}
+                        {/*</ResponsiveContainer>*/}
                     </DialogContent>
+                    {/*<DialogActions>*/}
+                    {/*    <Button onClick={handleAlgoDetailClose}>Cancel</Button>*/}
+                    {/*</DialogActions>*/}
                 </Dialog>
 
                 <Dialog
@@ -1167,6 +1228,77 @@ export default function Dashboard() {
                                 Create Algorithm
                             </Button>
                         </Box>
+                    </DialogContent>
+                </Dialog>
+                <Dialog
+                    open={openMonitorDetail}
+                    onClose={()=>setOpenMonitorDetail(false)}
+                    fullWidth={true}
+                    aria-labelledby="scroll-dialog-title"
+                    aria-describedby="scroll-dialog-description"
+                    maxWidth={'sm'}
+                    disableScrollLock={ true }
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                    // PaperProps={{ sx: { width: "100%"}}}
+                >
+                    <DialogContent sx={{width: 550, display : 'flex'}}>
+                        <Table sx={{ width : 550}}>
+                            <colgroup>
+                                {/*<col width="120" />*/}
+                                {/*<col width="150" />*/}
+                                {/*<col width="65" />*/}
+                                {/*<col width="200" />*/}
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="50" />
+                            </colgroup>
+                            <TableBody>
+                                <TableRow >
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}}>  Description:  </TableCell>
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.description}
+                                    </TableCell>
+                                </TableRow>
+                                {infoDescription.c_axis != null ?<TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  Category-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.c_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.v_axis != null ? <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Value-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.v_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+
+                                {infoDescription.x_axis != null ?<TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  X-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.x_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.y_axis != null ? <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Y-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.y_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.comment != null ?
+                                    <TableRow>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}> Comments:  </TableCell>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                            {infoDescription.comment}
+                                        </TableCell>
+                                    </TableRow>
+                                    : null
+                                }
+
+                            </TableBody>
+                        </Table>
                     </DialogContent>
                 </Dialog>
             </Paper>

@@ -42,6 +42,49 @@ const angle = {
     'Room' : -110
 }
 
+const infoDescriptionText = {
+    'domainCompare-#Instances Closed':{
+        'description':"This plot compares the number of instances closed " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
+            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances closed for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Instances Solved':{
+        'description':"This plot compares the number of instances solved " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better).",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances solved for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain."
+    },
+    'domainCompare-#Best Lower-bounds':{
+        'description': "This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
+            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best lower bound for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+    },
+    'domainCompare-#Best Solutions':{
+        'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) " +
+            "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
+            "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). ",
+        'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
+            "The category-axis displays the names of the domains available in the benchmark.",
+        'v_axis': "The value-axis displays the number of instances that have achieved the best solution for each domain. " +
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
+            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+    },
+}
+
 function CustomizedLabel(props) {
     const { x, y, cx,cy, payload } = props;
     return (
@@ -288,7 +331,13 @@ export default function Submissions() {
     const [algodata, setAlgodata] = React.useState([]);
     const [algoChartData, setAlgoChartData] = React.useState([]);
     const [domainLoading, setDomainLoading] =  React.useState(true);
+    const [openMonitorDetail, setOpenMonitorDetail] =  React.useState(false);
+    const [infoDescription, setInfoDescription] = React.useState(0);
 
+    const handleOpenInfo = (key)  => {
+        setInfoDescription(infoDescriptionText[key]);
+        setOpenMonitorDetail(true);
+    };
     const requestSearch = (searchedVal) => {
         const filteredRows = data.filter((row) => {
             return row.algo_name.toLowerCase().includes(searchedVal.toLowerCase());
@@ -604,6 +653,9 @@ export default function Submissions() {
                                     component="div"
                                 >
                                     Summary
+                                    <IconButton onClick={()=>{handleOpenInfo('domainCompare-'+domainQuery)}}>
+                                        <InfoIcon />
+                                    </IconButton>
                                 </Typography>
                                 <FormControl sx={{ m: 1, minWidth: 120, width:300}}  size = 'small' >
                                     <Select
@@ -612,10 +664,10 @@ export default function Submissions() {
                                         onChange={handleDomainQueryChange}
                                         inputProps={{ 'aria-label': 'Without label' }}
                                     >
-                                        <MenuItem value={"#Instances Closed"}>#Instances Closed</MenuItem>
-                                        <MenuItem value={"#Instances Solved"}>#Instances Solved</MenuItem>
-                                        <MenuItem value={"#Best Lower-bounds"}>#Best Lower-bounds</MenuItem>
-                                        <MenuItem value={"#Best Solutions"}>#Best Solutions</MenuItem>
+                                        <MenuItem value={"#Instances Closed"}>Instances Closed</MenuItem>
+                                        <MenuItem value={"#Instances Solved"}>Instances Solved</MenuItem>
+                                        <MenuItem value={"#Best Lower-bounds"}>Best Lower Bound</MenuItem>
+                                        <MenuItem value={"#Best Solutions"}>Best Solution</MenuItem>
                                     </Select>
 
                                 </FormControl>
@@ -660,6 +712,77 @@ export default function Submissions() {
                     {/*<DialogActions>*/}
                     {/*    <Button onClick={handleAlgoDetailClose}>Cancel</Button>*/}
                     {/*</DialogActions>*/}
+                </Dialog>
+                <Dialog
+                    open={openMonitorDetail}
+                    onClose={()=>setOpenMonitorDetail(false)}
+                    fullWidth={true}
+                    aria-labelledby="scroll-dialog-title"
+                    aria-describedby="scroll-dialog-description"
+                    maxWidth={'sm'}
+                    disableScrollLock={ true }
+                    PaperProps={{
+                        style: { mb: 2,borderRadius: 10 }
+                    }}
+                    // PaperProps={{ sx: { width: "100%"}}}
+                >
+                    <DialogContent sx={{width: 550, display : 'flex'}}>
+                        <Table sx={{ width : 550}}>
+                            <colgroup>
+                                {/*<col width="120" />*/}
+                                {/*<col width="150" />*/}
+                                {/*<col width="65" />*/}
+                                {/*<col width="200" />*/}
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="150" />
+                                <col width="50" />
+                            </colgroup>
+                            <TableBody>
+                                <TableRow >
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}}>  Description:  </TableCell>
+                                    <TableCell  style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.description}
+                                    </TableCell>
+                                </TableRow>
+                                {infoDescription.c_axis != null ?<TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  Category-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.c_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.v_axis != null ? <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Value-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.v_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+
+                                {infoDescription.x_axis != null ?<TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}}>  X-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.x_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.y_axis != null ? <TableRow>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}>  Y-axis:  </TableCell>
+                                    <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                        {infoDescription.y_axis}
+                                    </TableCell>
+                                </TableRow>: null}
+                                {infoDescription.comment != null ?
+                                    <TableRow>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0, verticalAlign: 'top' }}> Comments:  </TableCell>
+                                        <TableCell style={{paddingRight:0,paddingLeft:0 , verticalAlign: 'top'}} colSpan={3}>
+                                            {infoDescription.comment}
+                                        </TableCell>
+                                    </TableRow>
+                                    : null
+                                }
+
+                            </TableBody>
+                        </Table>
+                    </DialogContent>
                 </Dialog>
             </Paper>
             {/*<FormControlLabel*/}
