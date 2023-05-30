@@ -1156,14 +1156,22 @@ export default function MapTable() {
                     >
                         <MenuIcon />
                     </IconButton>
+
                     <Menu
-                        id="simple-menu"
                         anchorEl={menuAnchorEl}
                         keepMounted
                         open={Boolean(menuAnchorEl)}
                         // onClick ={handleDomainFilterChange}
-                        onClose={()=>{setMenuAnchorEl(null)}}
+                        onClose={()=>{
+                            setMenuAnchorEl(null);
+                            setSubAnchorEl(null);
+                            setOpenMenuIndex(null);
+                        }}
                     >
+                        <MenuItem style={{ display: 'none' }}>
+                            {/* Dummy option to prevent automatic selection */}
+                            Select an option
+                        </MenuItem>
                         <MenuItem key="Dense" onClick={() =>{
                             setDense(!dense);
                             setMenuAnchorEl(null);
@@ -1179,10 +1187,7 @@ export default function MapTable() {
                                 { dense ? "Sparse Margin":"Densify Margin " }
                             </Button>
                         </MenuItem>
-
-                        <MenuItem key="Progress"    onClick={(event) =>{
-                            handleMenuOpen(event, 1);
-                            // handleClickOpen(event,'paper');
+                        <MenuItem key="Progress"   onClick={(event) =>{handleMenuOpen(event, 1);
                         } }>
                             <Button
                                 key="Progress"
@@ -1195,9 +1200,11 @@ export default function MapTable() {
                                 Monitor Progress
                             </Button>
                         </MenuItem>
-                        <MenuItem key="Comparator" onClick={(event) =>{
+
+                        <MenuItem key="Comparator"  onClick={(event) =>{
                             handleMenuOpen(event, 2);
                             // handleClickOpenComparator(event,'paper');
+                            // setMenuAnchorEl(null);
                         } }>
                             <Button
                                 key="Comparator"
