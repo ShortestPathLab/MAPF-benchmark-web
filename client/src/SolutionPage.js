@@ -1511,7 +1511,7 @@ export default function SolutionPage() {
                                         variant="h6"
                                         component="div"
                                     >
-                                        Suboptimality on #Agents ({capitalizeFirstLetter(location.state.mapName)} {location.state.scenType}-{location.state.scenTypeID} scenario) &nbsp;
+                                        Suboptimality on #Agents ({capitalizeFirstLetter(location.state.mapName)} {location.state.scenType}-{location.state.scenTypeID} scenario)
                                         <IconButton onClick={()=>{handleOpenInfo('MonitorSuboptimality')}}>
                                             <InfoIcon/>
                                         </IconButton>
@@ -1556,7 +1556,7 @@ export default function SolutionPage() {
                                                fontFamily: "Roboto Slab"
                                            }}
                                     >
-                                        <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                        <Label value="Number of Agents" position="insideBottom" offset={-20}  style={{
                                             fontFamily: "Roboto Slab"
                                         }} fill="#626262" fontSize={18}/>
                                     </XAxis>
@@ -1627,7 +1627,8 @@ export default function SolutionPage() {
                                         id="tableTitle"
                                         component="div"
                                     >
-                                        Comparison between Algorithms on #Agents
+                                        Comparison between Algorithms on #Agents<br/>
+                                        ({capitalizeFirstLetter(location.state.mapName)} {location.state.scenType}-{location.state.scenTypeID} scenario)
                                         <IconButton onClick={()=>{handleOpenInfo('Compare-'+agentQuery)}}>
                                             <InfoIcon/>
                                         </IconButton>
@@ -1710,7 +1711,7 @@ export default function SolutionPage() {
                                                    fontFamily: "Roboto Slab"
                                                }}
                                         >
-                                            <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                            <Label value="Number of Agents" position="insideBottom" offset={-20}  style={{
                                                 fontFamily: "Roboto Slab"
                                             }} fill="#626262" fontSize={18}/>
                                         </XAxis>

@@ -1690,7 +1690,7 @@ export default function MapTable() {
                                                style={{
                                                    fontFamily: "Roboto Slab"
                                                }}
-                                        ><Label value="Name of Maps" position="insideBottom" offset={-15}  style={{
+                                        ><Label value="Name of Maps" position="insideBottom" offset={-20}  style={{
                                             fontFamily: "Roboto Slab"
                                         }} fill="#626262" fontSize={18}/>
                                         </XAxis>
@@ -1864,7 +1864,7 @@ export default function MapTable() {
                                        fontFamily: "Roboto Slab"
                                    }}
                             >
-                                <Label value="Name of Maps" position="insideBottom" offset={-15}  style={{
+                                <Label value="Name of Maps" position="insideBottom" offset={-20}  style={{
                                     fontFamily: "Roboto Slab"
                                 }} fill="#626262" fontSize={18}/>
                             </XAxis>

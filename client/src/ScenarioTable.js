@@ -1306,7 +1306,7 @@ export default function ScenarioTable() {
                                     variant="h6"
                                     component="div"
                                 >
-                                    Success Rate on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                    Success Rate on Scenarios ({capitalizeFirstLetter(location.state.mapName)})
                                     <IconButton onClick={()=>{handleOpenInfo('scenProgress')}}>
                                         <InfoIcon />
                                     </IconButton>
@@ -1387,7 +1387,7 @@ export default function ScenarioTable() {
                                     variant="h6"
                                     component="div"
                                 >
-                                    Success Rate on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                    Success Rate on #Agents ({capitalizeFirstLetter(location.state.mapName)})
                                     <IconButton onClick={()=>{handleOpenInfo('agentProgress')}}>
                                         <InfoIcon />
                                     </IconButton>
@@ -1430,7 +1430,7 @@ export default function ScenarioTable() {
                                                fontFamily: "Roboto Slab"
                                            }}
                                     >
-                                        <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                        <Label value="Number of Agents" position="insideBottom" offset={-20}  style={{
                                             fontFamily: "Roboto Slab"
                                         }} fill="#626262" fontSize={18}/>
                                     </XAxis>
@@ -1486,7 +1486,8 @@ export default function ScenarioTable() {
                                         id="tableTitle"
                                         component="div"
                                     >
-                                        Comparison between Algorithms on Scenarios ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                        Comparison between Algorithms on Scenarios <br/>
+                                        ({capitalizeFirstLetter(location.state.mapName)})
                                         <IconButton onClick={()=>{handleOpenInfo('scenCompare-'+mapQuery)}}>
                                             <InfoIcon />
                                         </IconButton>
@@ -1638,7 +1639,8 @@ export default function ScenarioTable() {
                                         id="tableTitle"
                                         component="div"
                                     >
-                                        Comparison between Algorithms on #Agents ({capitalizeFirstLetter(location.state.mapName)})&nbsp;
+                                        Comparison between Algorithms on #Agents<br/>
+                                        ({capitalizeFirstLetter(location.state.mapName)})
                                         <IconButton onClick={()=>{handleOpenInfo('agentCompare-'+ agentQuery)}}>
                                             <InfoIcon />
                                         </IconButton>
@@ -1698,12 +1700,12 @@ export default function ScenarioTable() {
                                 </Toolbar>
                                 {agentLoading ? <Box  display="flex"
                                                      justifyContent="center"
-                                                     alignItems="center" width={850} height={400}><CircularProgress
+                                                     alignItems="center" width={850} height={390}><CircularProgress
                                         size={80}/></Box> :
                                     <AreaChart
                                         data={agentChartDisplayData}
                                         stackOffset="expand"
-                                        width={850} height={400}
+                                        width={850} height={390}
                                         margin={{ top: 5, right: 5, bottom: 5,left: 10 }}
                                     >
                                         <Legend verticalAlign="top" align="center" wrapperStyle={{
@@ -1721,7 +1723,7 @@ export default function ScenarioTable() {
                                                    fontFamily: "Roboto Slab"
                                                }}
                                         >
-                                            <Label value="Number of Agents" position="insideBottom" offset={-15}  style={{
+                                            <Label value="Number of Agents" position="insideBottom" offset={-20}  style={{
                                                 fontFamily: "Roboto Slab"
                                             }} fill="#626262" fontSize={18}/>
                                         </XAxis>
@@ -1733,7 +1735,7 @@ export default function ScenarioTable() {
                                                    style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
                                                    fill="#626262" offset={0}  fontSize={18}/>
                                         </YAxis>
-                                        <Brush y={320} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
+                                        <Brush y={310} dataKey="name" height={20} stroke='rgba(0, 0, 0, 0.5)'/>
                                         <Tooltip content={renderAgentTooltipContent} wrapperStyle={{
                                             fontFamily: "Roboto Slab",
                                             backgroundColor: "white",
