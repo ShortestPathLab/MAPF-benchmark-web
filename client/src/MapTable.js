@@ -80,15 +80,16 @@ const infoDescriptionText = {
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis shows the success rate (i.e., percentage) of closed, solved, and unknown instances in each map. " +
             "The success rate is calculated according to the total number of instances in each domain.",
-        'comment':  "To indicate the progress, all instances in each map are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
+        'comment':  "To indicate the progress, all instances in each map are categorised into three types: " +
+            "(i) closed instance: the instance has the same best lower bound and best solution cost " +
             "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
-            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+            "is less than the best solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
     },
     'domainCompare-#Instances Closed':{
         'description':"This plot compares the number of instances closed by MAPF algorithms for each domain of the benchmark. " +
-            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
-            "The purpose of this plot is to compare optimal algorithms and identify challenging domains. " +
-            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+            "For a particular algorithm, the instance is closed if the algorithm reports the same lower bound and solution cost. "+
+            "Algorithms that do not report lower bound data are omitted from this plot. " +
+            "The number of instances closed indicates the performance of algorithms for finding and proving optimal solution (i.e., higher the better). ",
         'c_axis': "The benchmark contains many different maps, each map is associate with a domain (see Type column). " +
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis displays the number of instances closed for each domain. " +
@@ -108,23 +109,24 @@ const infoDescriptionText = {
             "among MAPF algorithms for each domain of the benchmark. " +
             "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
             "The purpose of this plot is to compare these algorithms and identify challenging domains. " +
-            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+            "Algorithms that do not report lower bound data are omitted from this plot.",
         'c_axis': "The benchmark contains many different maps, each map is associate with a domain (see Type column). " +
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis displays the number of instances that have achieved the best lower bound for each domain. " +
-            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
-            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. "
+            // "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
     },
     'domainCompare-#Best Solutions':{
         'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) " +
             "among MAPF algorithms for each domain of the benchmark. " +
             "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
-            "The figure compare between different algorithms and identify challenging scenarios.",
+            "The figure compare between different algorithms and identify challenging scenarios. " +
+            "Algorithms that do not report solution data are omitted from this plot.",
         'c_axis': "The benchmark contains many different maps, each map is associate with domain (see Type column). " +
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis displays the number of instances that have achieved the best solution for each domain. " +
-            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
-            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. "
+            // "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
     },
 
 
@@ -136,18 +138,19 @@ const infoDescriptionText = {
         'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
         'y_axis': "The y-axis shows the success rate (percentage) of closed, solved, and unknown instances for different maps. " +
             "The success rate is calculated according to the total number of instances in each map.",
-        'comment':  "To indicate the progress, all instances in each map are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
+        'comment':  "To indicate the progress, all instances in each map are categorised into three types: " +
+            "(i) closed instance: the instance has the same best lower bound and best solution cost " +
             "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
-            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+            "is less than the best solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
     },
 
 
     'mapCompare-#Instances Closed':{
         'description':"This plot compares the number of instances closed by MAPF algorithms " +
             "for different maps in the benchmark. " +
-            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
-            "The purpose of this plot is to compare optimal algorithms and identify challenging maps. " +
-            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+            "For a particular algorithm, the instance is closed if the algorithm reports the same lower bound and solution cost. "+
+            "Algorithms that do not report lower bound data are omitted from this plot. " +
+            "The number of instances closed indicates the performance of algorithms for finding and proving optimal solution (i.e., higher the better). ",
         'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
         'y_axis': "The y-axis displays the number of instances closed for different maps. " +
             "The percentage ratio is shown, calculated based on the number of instances available for each map."
@@ -166,21 +169,22 @@ const infoDescriptionText = {
             "for different maps in the benchmark. " +
             "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
             "The purpose of this plot is to compare these algorithms and identify challenging maps. " +
-            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+            "Algorithms that do not report lower bound data are omitted from this plot.",
         'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
         'y_axis': "The y-axis displays the number of instances that have achieved the best lower bound for different maps. " +
-            "The percentage ratio is shown, calculated based on the number of instances available for each map. "+
-            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+            "The percentage ratio is shown, calculated based on the number of instances available for each map. "
+            // "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
     },
     'mapCompare-#Best Solutions':{
         'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) among MAPF algorithms " +
             "for different maps in the benchmark. " +
             "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
-            "The figure compare between different algorithms and identify challenging maps.",
+            "The figure compare between different algorithms and identify challenging maps. " +
+            "Algorithms that do not report solution data are omitted from this plot.",
         'x_axis': "The x-axis displays the names of the maps available in the benchmark.",
         'y_axis': "The y-axis displays the number of instances that have achieved the best solution for different maps. " +
-            "The percentage ratio is shown, calculated based on the number of instances available for each map. "+
-            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+            "The percentage ratio is shown, calculated based on the number of instances available for each map. "
+            // "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
     },
 }
 
@@ -1160,42 +1164,48 @@ export default function MapTable() {
                         // onClick ={handleDomainFilterChange}
                         onClose={()=>{setMenuAnchorEl(null)}}
                     >
-                        <MenuItem key="Dense">
+                        <MenuItem key="Dense" onClick={() =>{
+                            setDense(!dense);
+                            setMenuAnchorEl(null);
+                        }}>
                             <Button
                                 key="Dense"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={ dense ? <ZoomOutMapIcon/>:<ZoomInMapIcon /> }
-                                onClick={() =>{
-                                    setDense(!dense);
-                                    setMenuAnchorEl(null);
-                                }}
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 { dense ? "Sparse Margin":"Densify Margin " }
                             </Button>
                         </MenuItem>
 
-                        <MenuItem key="Progress">
+                        <MenuItem key="Progress"    onClick={(event) =>{
+                            handleMenuOpen(event, 1);
+                            // handleClickOpen(event,'paper');
+                        } }>
                             <Button
                                 key="Progress"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<ShowChartIcon/>}
-                                onClick={(event) =>{
-                                    handleMenuOpen(event, 1);
-                                    // handleClickOpen(event,'paper');
-                                } }
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 Monitor Progress
                             </Button>
                         </MenuItem>
-                        <MenuItem key="Comparator">
+                        <MenuItem key="Comparator" onClick={(event) =>{
+                            handleMenuOpen(event, 2);
+                            // handleClickOpenComparator(event,'paper');
+                        } }>
                             <Button
                                 key="Comparator"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<CompareIcon />}
-                                onClick={(event) =>{
-                                    handleMenuOpen(event, 2);
-                                    // handleClickOpenComparator(event,'paper');
-                                } }
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 Compare Algorithms
                             </Button>
@@ -1216,30 +1226,34 @@ export default function MapTable() {
                         }}
                     >
                         <MenuList>
-                            <MenuItem key="M_domains">
+                            <MenuItem key="M_domains"  onClick={(event) =>{
+                                handleClickOpenDomainProgress(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="M_domains"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{
-                                        handleClickOpenDomainProgress(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Domains
                                 </Button>
                             </MenuItem>
-                            <MenuItem key="M_maps">
+                            <MenuItem key="M_maps"  onClick={(event) =>{
+                                handleClickOpenMapProgress(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="M_maps"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{
-                                        handleClickOpenMapProgress(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Maps
                                 </Button>
@@ -1261,32 +1275,36 @@ export default function MapTable() {
                         }}
                     >
                         <MenuList>
-                            <MenuItem key="C_domains">
+                            <MenuItem key="C_domains" onClick={(event) =>{
+                                // handleClickOpenScenComparator(event,'paper');
+                                handleClickOpenDomainComparator(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="C_domains"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{
-                                        // handleClickOpenScenComparator(event,'paper');
-                                        handleClickOpenDomainComparator(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Domains
                                 </Button>
                             </MenuItem>
-                            <MenuItem key="C_maps">
+                            <MenuItem key="C_maps" onClick={(event) =>{
+                                // handleClickOpenAgentComparator(event,'paper');
+                                handleClickOpenMapComparator(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="C_maps"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{
-                                        // handleClickOpenAgentComparator(event,'paper');
-                                        handleClickOpenMapComparator(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Maps
                                 </Button>

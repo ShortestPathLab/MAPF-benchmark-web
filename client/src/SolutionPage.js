@@ -75,25 +75,34 @@ const infoDescriptionText = {
         'description':"This plot compares the suboptimality gap (i.e., lower the better) between the solutions reported by MAPF algorithms w.r.t. the best-known lower bound. " +
             "The figure is intended to compare the solution quality of different MAPF algorithms as the number of agents increases.",
         'x_axis':"Each instance contains a different number of agents, and the x-axis shows the number of agents in increasing order.",
-        'y_axis':"The suboptimality is computed as (S' - LB) / LB, where S' is the solution cost reported by each individual algorithm, and LB is the best-known lower bound. " +
-            "The y-axis shows the suboptimality ratio. \"0%\" indicates that the algorithm has reported optimal solution and \"Inf\" indicates that the algorithm has reported no solution. "+
+        // 'y_axis':"The suboptimality is computed as (S' - LB) / LB, where S' is the solution cost reported by each individual algorithm, and LB is the best-known lower bound. " +
+        //     "The y-axis shows the suboptimality ratio. \"0%\" indicates that the algorithm has reported optimal solution and \"Inf\" indicates that the algorithm has reported no solution. "+
+        //     "For instances where no lower bound is reported, the LB is set to a trivial lower bound. "+
+        //     "(i.e, the SIC of each agent follows the shortest path by ignoring other agents)."
+        'y_axis': "The y-axis shows the percentage gap between a reported solution from a particular algorithm vs. the best known bound for that problem." +
+            " The gap is computed as (S' - LB) / LB, where S' is the reported solution cost and LB is the best-known lower bound. " +
+            "\"0%\" indicates that the algorithm has reported optimal solution and \"Inf\" indicates that the algorithm has reported no solution. "+
             "For instances where no lower bound is reported, the LB is set to a trivial lower bound. "+
             "(i.e, the SIC of each agent follows the shortest path by ignoring other agents)."
     },
     'Compare-Lower Bound':{
         'description':"This plot compares the suboptimality gap (i.e., lower the better) between the lower bounds reported by MAPF algorithms w.r.t. the best-known lower bound. " +
-            " The figure is intended to compare the quality of lower bounds reported by different MAPF algorithms as the number of agents increases.",
+            "The figure compares the quality of lower bounds reported by different MAPF algorithms, as the number of agents increases.",
         'x_axis':"Each instance contains a different number of agents, and the x-axis shows the number of agents in increasing order.",
-        'y_axis':"The suboptimality is computed as (LB - LB') / LB, where LB' is the lower bound reported by each individual algorithm, and LB is the best-known lower bound. " +
-            "The y-axis shows the suboptimality ratio. \"0%\" indicates that the algorithm has reported the best lower bound, " +
-            "while \"Inf\" indicates that the algorithm has reported no lower bound."
+        // 'y_axis':"The suboptimality is computed as (LB - LB') / LB, where LB' is the lower bound reported by each individual algorithm, and LB is the best-known lower bound. " +
+        //     "The y-axis shows the suboptimality ratio. \"0%\" indicates that the algorithm has reported the best lower bound, " +
+        //     "while \"Inf\" indicates that the algorithm has reported no lower bound."
+        'y_axis': "The y-axis shows the percentage gap between a reported lower-bound from a particular algorithm vs. the best known bound for that problem." +
+                " The gap is computed as (LB - LB') / LB, where LB' is the reported lower bound and LB is the best-known lower bound. " +
+            "Note that the best known bound always has a gap of zero percent."
 
     },
     'domainCompare-#Instances Closed':{
         'description':"This plot compares the number of instances closed " +
             "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
-            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
-            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+            "For a particular algorithm, the instance is closed if the algorithm reports the same lower bound and solution cost. "+
+            "Algorithms that do not report lower bound data are omitted from this plot. " +
+            "The number of instances closed indicates the performance of algorithms for finding and proving optimal solution (i.e., higher the better). ",
         'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis displays the number of instances closed for each domain. " +
@@ -111,13 +120,13 @@ const infoDescriptionText = {
     'domainCompare-#Best Lower-bounds':{
         'description': "This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) " +
             "between selected algorithm and the state-of-the-art (i.e., all algorithms together) across different domains of the benchmark. " +
-            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
-            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+            "The number of instances that achieve the best lower bound reflects the availability of algorithms for proving optimality (i.e., higher the better). " +
+            "Algorithms that do not report lower bound data are omitted from this plot.",
         'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis displays the number of instances that have achieved the best lower bound for each domain. " +
-            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
-            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. "
+            // "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
     },
     'domainCompare-#Best Solutions':{
         'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) " +
@@ -126,8 +135,8 @@ const infoDescriptionText = {
         'c_axis': "The benchmark contains many different maps, each map is associate with domain. " +
             "The category-axis displays the names of the domains available in the benchmark.",
         'v_axis': "The value-axis displays the number of instances that have achieved the best solution for each domain. " +
-            "The percentage ratio is shown, calculated based on the total number of instances in each domain. " +
-            "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+            "The percentage ratio is shown, calculated based on the total number of instances in each domain. "
+            // "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
     },
 }
 function descendingComparator(a, b, orderBy) {
@@ -1109,40 +1118,46 @@ export default function SolutionPage() {
                             // onClick ={handleDomainFilterChange}
                             onClose={()=>{setMenuAnchorEl(null)}}
                         >
-                            <MenuItem key="Dense">
+                            <MenuItem key="Dense"  onClick={() =>{
+                                setDense(!dense);
+                                setMenuAnchorEl(null);
+                            }}>
                                 <Button
                                     key="Dense"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={ dense ? <ZoomOutMapIcon/>:<ZoomInMapIcon /> }
-                                    onClick={() =>{
-                                        setDense(!dense);
-                                        setMenuAnchorEl(null);
-                                    }}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     { dense ? "Sparse Margin":"Densify Margin " }
                                 </Button>
                             </MenuItem>
 
-                            <MenuItem key="Progress">
+                            <MenuItem key="Progress"   onClick={(event) =>{handleChartClickOpen(event,'paper');
+                                setMenuAnchorEl(null);
+                            } }>
                                 <Button
                                     key="Progress"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ShowChartIcon/>}
-                                    onClick={(event) =>{handleChartClickOpen(event,'paper');
-                                        setMenuAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Monitor Progress
                                 </Button>
                             </MenuItem>
-                            <MenuItem key="Comparator">
+                            <MenuItem key="Comparator" onClick={(event) =>{handleClickOpenComparator(event,'paper');
+                                setMenuAnchorEl(null);
+                            } }>
                                 <Button
                                     key="Comparator"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<CompareIcon />}
-                                    onClick={(event) =>{handleClickOpenComparator(event,'paper');
-                                        setMenuAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Compare Algorithms
                                 </Button>
@@ -1576,7 +1591,7 @@ export default function SolutionPage() {
                                                }
                                         return `${(tick* 100).toFixed(0)}%`;
                                     }}>
-                                        <Label value="Suboptimality Ratio" angle={-90} position="insideLeft"
+                                        <Label value="Gap to Best LB" angle={-90} position="insideLeft"
                                                style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
                                                fill="#626262" offset={0}  fontSize={18}/>
                                     </YAxis>
@@ -1729,7 +1744,7 @@ export default function SolutionPage() {
                                                    return `${(tick* 100).toFixed(0)}%`;
                                                }}
                                         >
-                                            <Label value="Suboptimality Ratio" angle={-90} position="insideLeft"
+                                            <Label value="Gap to Best LB" angle={-90} position="insideLeft"
                                                    style={{ textAnchor: 'middle',fontFamily: "Roboto Slab" }}
                                                   fill="#626262" offset={0}  fontSize={18}/>
                                         </YAxis>

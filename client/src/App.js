@@ -58,7 +58,7 @@ export default function App() {
                     Tracking Progress in MAPF
                 </Typography>
                 <Typography variant="body1" color="white" opacity={0.8} mt={1} mb={3}>
-                  <i>A repository maintains the results of MAPF benchmarks</i>
+                  <i>A database for benchmark results in Multi-Agent Path Finding</i>
                 </Typography>
               </div>
               <Routes>

@@ -71,9 +71,10 @@ const infoDescriptionText = {
         'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
         'y_axis': "The y-axis shows the success rate (i.e., percentage) of closed, solved, and unknown instances in each scenario. " +
             "The success rate is calculated according to the total number of instances in each scenario.",
-        'comment': "To indicate the progress, all instances in each scenario are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
-                "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
-            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+        'comment': "To indicate the progress, all instances in each scenario are categorised into three types: " +
+            "(i) closed instance: the instance has the same best lower bound and best solution cost " +
+            "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
+            "is less than the best solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
     },
     'agentProgress':{
         'description':
@@ -85,17 +86,18 @@ const infoDescriptionText = {
         'y_axis': "The y-axis shows the success rate (percentage) of closed, solved, and unknown instances for different numbers of agents. " +
             "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
             "The success rate is calculated based on the number of instances available for each different number of agents.",
-        'comment':  "To indicate the progress, all instances in each scenario are categorised into three types: (i) closed instance: the instance has the same best lower bound and solution cost " +
-                "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
-            "is less than the solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
+        'comment':  "To indicate the progress, all instances in each scenario are categorised into three types: " +
+            "(i) closed instance: the instance has the same best lower bound and best solution cost " +
+            "(indicating that the solution cannot be further improved); (ii) solved instance: the instance has a feasible solution reported, but the current best lower bound " +
+            "is less than the best solution cost (i.e., improvement may be possible); and (iii) unknown instance: the instance has no solution reported."
     },
 
 
     'scenCompare-#Instances Closed':{
         'description':"This plot compares the number of instances closed by MAPF algorithms for each scenario within the given map. " +
-            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
-            "The purpose of this plot is to compare optimal algorithms and identify challenging scenarios. " +
-            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+            "For a particular algorithm, the instance is closed if the algorithm reports the same lower bound and solution cost. "+
+            "Algorithms that do not report lower bound data are omitted from this plot. " +
+            "The number of instances closed indicates the performance of algorithms for finding and proving optimal solution (i.e., higher the better). ",
         'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
         'y_axis': "The y-axis displays the number of instances closed for each scenario. " +
             "The percentage ratio is shown, calculated based on the total number of instances in each scenario."
@@ -110,30 +112,30 @@ const infoDescriptionText = {
     },
     'scenCompare-#Best Lower-bounds':{
         'description':"This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) among MAPF algorithms for each scenario in the given map. " +
-            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
-            "The purpose of this plot is to compare these algorithms and identify challenging scenarios. " +
-            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+            "The number of instances that achieve the best lower bound reflects the availability of algorithms for proving optimality (i.e., higher the better). " +
+            "Algorithms that do not report lower bound data are omitted from this plot. "+
+            "The purpose of this plot is to compare these algorithms and identify challenging scenarios. ",
         'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
         'y_axis': "The y-axis displays the number of instances that have achieved the best lower bound for each scenario. " +
-            "The percentage ratio is shown, calculated based on the total number of instances in each scenario. " +
-            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+            "The percentage ratio is shown, calculated based on the total number of instances in each scenario. ",
+            // "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
     },
     'scenCompare-#Best Solutions':{
         'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) among MAPF algorithms for each scenario in the given map. " +
             "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
-            "The figure compare between different algorithms and identify challenging scenarios.",
+            "The figure compare between different algorithms and identify challenging scenarios. ",
         'x_axis': "Each map contains many different scenarios, and the x-axis shows the scenarios grouped by their type and ordered by the ID.",
         'y_axis': "The y-axis displays the number of instances that have achieved the best solution for each scenario. " +
-            "The percentage ratio is shown, calculated based on the total number of instances in each scenario. " +
-           "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
+            "The percentage ratio is shown, calculated based on the total number of instances in each scenario. "
+           // "For instances where no solution is reported, no algorithm can achieve the best solution in such cases."
     },
 
     'agentCompare-#Instances Closed':{
         'description':"This plot compares the number of instances closed by MAPF algorithms " +
             "for different numbers of agents within the given map. " +
-            "The number of instances closed indicates the performance of optimal algorithms (i.e., higher the better). " +
-            "The purpose of this plot is to compare optimal algorithms and identify challenging scenarios. " +
-            "The unbounded-suboptimal and bounded suboptimal algorithms are ignored as they cannot close any instance.",
+            "For a particular algorithm, the instance is closed if the algorithm reports the same lower bound and solution cost. "+
+            "Algorithms that do not report lower bound data are omitted from this plot. " +
+            "The number of instances closed indicates the performance of algorithms for finding and proving optimal solution (i.e., higher the better). ",
         'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
         'y_axis': "The y-axis displays the number of instances closed for different numbers of agents. " +
             "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
@@ -143,7 +145,7 @@ const infoDescriptionText = {
         'description':"This plot compares the number of instances solved by MAPF algorithms " +
             "for different numbers of agents within the given map. " +
             "The number of instances solved indicates the performance of algorithms while ignoring solution quality (i.e., higher the better). " +
-            "The figure compare between different algorithms and identify challenging scenarios.",
+            "The figure compare between different algorithms and identify challenging instances.",
         'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
         'y_axis': "The y-axis displays the number of instances solved for different numbers of agents. " +
             "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
@@ -152,25 +154,25 @@ const infoDescriptionText = {
     'agentCompare-#Best Lower-bounds':{
         'description':"This plot compares the number of instances that have achieved the best lower bound (reported by any algorithm) among MAPF algorithms " +
             "for different numbers of agents within the given map. " +
-            "The number of instances achieving the best lower bound reflects the availability of optimal and bounded-suboptimal algorithms for proving optimality (i.e., higher the better). " +
-            "The purpose of this plot is to compare these algorithms and identify challenging scenarios. " +
-            "The unbounded-suboptimal algorithms are ignored as they do not report lower bounds.",
+            "The number of instances that achieve the best lower bound reflects the availability of algorithms for proving optimality (i.e., higher the better). " +
+            "Algorithms that do not report lower bound data are omitted from this plot. " +
+            "The purpose of this plot is to compare these algorithms and identify challenging instances. ",
         'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
         'y_axis': "The y-axis displays the number of instances that have achieved the best lower bound for different numbers of agents. " +
             "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
-            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents. " +
-            "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
+            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents. "
+            // "For instances where no lower bound is reported, no algorithm can achieve the best lower bound in such cases."
     },
     'agentCompare-#Best Solutions':{
         'description':"This plot compares the number of instances that have achieved the best solution (reported by any algorithm) among MAPF algorithms " +
             "for different numbers of agents within the given map. " +
             "The number of instances achieving the best solution reflects the solution quality reported by different algorithms (i.e., higher the better). " +
-            "The figure compare between different algorithms and identify challenging scenarios.",
+            "The figure compare between different algorithms and identify challenging instances. ",
         'x_axis': "Each scenario contains instances with different numbers of agents. The x-axis shows the number of agents available in all scenarios in increasing order.",
         'y_axis': "The y-axis displays the number of instances that have achieved the best solution for different numbers of agents. " +
             "For each different number of agents, we first count the number of instances that have the same number of agents in all scenarios. " +
-            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents. " +
-            "For instances where no lower bound is reported, no algorithm can achieve the best solution in such cases."
+            "The percentage ratio is shown, calculated based on the number of instances available for each different number of agents. "
+            // "For instances where no lower bound is reported, no algorithm can achieve the best solution in such cases."
     },
 }
 
@@ -1009,42 +1011,48 @@ export default function ScenarioTable() {
                             setOpenMenuIndex(null);
                         }}
                     >
-                        <MenuItem key="Dense">
+                        <MenuItem key="Dense" onClick={() =>{
+                            setDense(!dense);
+                            setMenuAnchorEl(null);
+                        }}>
                             <Button
                                 key="Dense"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={ dense ? <ZoomOutMapIcon/>:<ZoomInMapIcon /> }
-                                onClick={() =>{
-                                    setDense(!dense);
-                                    setMenuAnchorEl(null);
-                                }}
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 { dense ? "Sparse Margin":"Densify Margin " }
                             </Button>
                         </MenuItem>
 
-                        <MenuItem key="Progress">
+                        <MenuItem key="Progress"   onClick={(event) =>{handleMenuOpen(event, 1);
+                        } }>
                             <Button
                                 key="Progress"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<ShowChartIcon/>}
-                                onClick={(event) =>{handleMenuOpen(event, 1);
-                                } }
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 Monitor Progress
                             </Button>
                         </MenuItem>
 
-                        <MenuItem key="Comparator">
+                        <MenuItem key="Comparator"  onClick={(event) =>{
+                            handleMenuOpen(event, 2);
+                            // handleClickOpenComparator(event,'paper');
+                            // setMenuAnchorEl(null);
+                        } }>
                             <Button
                                 key="Comparator"
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<CompareIcon />}
-                                onClick={(event) =>{
-                                    handleMenuOpen(event, 2);
-                                    // handleClickOpenComparator(event,'paper');
-                                    // setMenuAnchorEl(null);
-                                } }
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 Compare Algorithms
                             </Button>
@@ -1065,28 +1073,32 @@ export default function ScenarioTable() {
                         }}
                     >
                         <MenuList>
-                            <MenuItem key="M_scen">
+                            <MenuItem key="M_scen" onClick={(event) =>{handleClickOpenScenProgress(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="M_scen"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{handleClickOpenScenProgress(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Scenarios
                                 </Button>
                             </MenuItem>
-                            <MenuItem key="M_agents">
+                            <MenuItem key="M_agents" onClick={(event) =>{handleClickOpenAgentProgress(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="M_agents"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{handleClickOpenAgentProgress(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     #Agents
                                 </Button>
@@ -1108,28 +1120,32 @@ export default function ScenarioTable() {
                         }}
                     >
                         <MenuList>
-                            <MenuItem key="C_scen">
+                            <MenuItem key="C_scen" onClick={(event) =>{handleClickOpenScenComparator(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="C_scen"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{handleClickOpenScenComparator(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Scenarios
                                 </Button>
                             </MenuItem>
-                            <MenuItem key="C_agents">
+                            <MenuItem key="C_agents" onClick={(event) =>{handleClickOpenAgentComparator(event,'paper');
+                                setMenuAnchorEl(null);
+                                setSubAnchorEl(null);
+                            } }>
                                 <Button
                                     key="C_agents"
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ChevronRightIcon />}
-                                    onClick={(event) =>{handleClickOpenAgentComparator(event,'paper');
-                                        setMenuAnchorEl(null);
-                                        setSubAnchorEl(null);
-                                    } }
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     #Agents
                                 </Button>

@@ -227,6 +227,9 @@ function ResponsiveAppBar() {
                                 <Button
                                     sx={{color: 'black',textTransform: "none"}}
                                     startIcon={<TableViewIcon />}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Progress Tracker
                                 </Button>
@@ -235,6 +238,9 @@ function ResponsiveAppBar() {
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<AssignmentIcon/>}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Submissions
                                 </Button>
@@ -243,6 +249,9 @@ function ResponsiveAppBar() {
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<BackupIcon />}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Contribute
                                 </Button>
@@ -251,6 +260,9 @@ function ResponsiveAppBar() {
                             <Button
                                 sx={{ color: 'black',textTransform: "none"}}
                                 startIcon={<PlayCircleOutlineIcon/>}
+                                style={{ backgroundColor: 'transparent' }}
+                                disableElevation
+                                disableRipple
                             >
                                 System Demo
                             </Button>
@@ -268,6 +280,9 @@ function ResponsiveAppBar() {
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<ArticleIcon/>}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     Paper
                                 </Button>
@@ -276,6 +291,9 @@ function ResponsiveAppBar() {
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<PeopleIcon />}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     About Us
                                 </Button>
@@ -284,6 +302,9 @@ function ResponsiveAppBar() {
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<GitHubIcon/>}
+                                    style={{ backgroundColor: 'transparent' }}
+                                    disableElevation
+                                    disableRipple
                                 >
                                     GitHub
                                 </Button>

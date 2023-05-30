@@ -50,8 +50,8 @@ require("./app/routes/auth.routes")(app)
 require("./app/routes/user.routes")(app)
 require("./app/routes/solution_path.routes")(app)
 app.use(express.static(path.join(__dirname,'../client/build')));
-app.use('/path_results',express.static(path.join(__dirname,'../MAPF_frontend/public/path_results')));
-app.use('/path_results', serveIndex(path.join(__dirname,'../MAPF_frontend/public/path_results'), { icons: true }));
+app.use('/results',express.static(path.join(__dirname,'../client/public/results')));
+app.use('/results', serveIndex(path.join(__dirname,'../client/public/results'), { icons: true }));
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });

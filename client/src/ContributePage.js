@@ -344,6 +344,35 @@ export default function Contribute() {
             </Box>
             </Paper>
 
+            {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>*/}
+            {/*    <Toolbar*/}
+            {/*        sx={{*/}
+            {/*            pl: { sm: 2 },*/}
+            {/*            pr: { xs: 1, sm: 1 }*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <Typography*/}
+            {/*            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}*/}
+            {/*            variant="h6"*/}
+            {/*            component="div"*/}
+            {/*        >*/}
+            {/*           Report Issues or Bugs*/}
+            {/*        </Typography>*/}
+            {/*    </Toolbar>*/}
+            {/*    <Divider sx={{ borderBottomWidth: '3px' }} />*/}
+            {/*    <Box*/}
+            {/*        sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'*/}
+            {/*        }}>*/}
+            {/*        <Typography*/}
+            {/*            sx={{ fontSize: 16, flex: '1 1 100%' }}*/}
+            {/*            component="div"*/}
+            {/*            gutterBottom*/}
+            {/*        >*/}
+            {/*            To report an issue or bug, please submit it as an issue on our <a href="https://github.com/bshen95/MAPF-benchmark-web">Github</a>.*/}
+            {/*        </Typography>*/}
+            {/*    </Box>*/}
+            {/*</Paper>*/}
+
             <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5}}>
                 <Toolbar
                     sx={{
@@ -356,7 +385,7 @@ export default function Contribute() {
                         variant="h6"
                         component="div"
                     >
-                       Report Issues or Bugs
+                        Frequently Asked Questions (FAQ)
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
@@ -364,14 +393,85 @@ export default function Contribute() {
                     sx={{paddingTop: '15px',paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
                     <Typography
-                        sx={{ fontSize: 16, flex: '1 1 100%' }}
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
                         component="div"
                         gutterBottom
                     >
-                        To report an issue or bug, please submit it as an issue on our <a href="https://github.com/bshen95/MAPF-benchmark-web">Github</a>.
+                       Q1: I did not receive credit for all of my submitted results!
                     </Typography>
+                    <ul>
+                        <Typography
+                            sx={{fontSize: 16, flex: '1 1 100%' }}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            We validate all submissions for feasibility and reject any which are invalid.
+                            If you submit a best-known solution and the corresponding plan is invalid, we will not record any data for this problem.
+                        </Typography>
+                    </ul>
+                    <Typography
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        Q2: The number of claimed lower-bounds for my submission has gone down since it was accepted.
+                    </Typography>
+                    <ul>
+                        <Typography
+                            sx={{fontSize: 16, flex: '1 1 100%' }}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            We compare lower-bound claims against best-known solutions.
+                            If your lower-bound claim X is contradicted by a feasible solution with cost Y &lt; X ,
+                            your claim is invalid and will be removed. In case of such errors we remove all LB claims of the associated submission.
+                        </Typography>
+                    </ul>
+                    <Typography
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        Q3: Is there a convenient method to download all of this data?
+                    </Typography>
+                    <ul>
+                        <Typography
+                            sx={{fontSize: 16, flex: '1 1 100%' }}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            Yes! Please visit our download page at [link-goes-here].
+                        </Typography>
+                    </ul>
+                    <Typography
+                        sx={{ fontSize: 16, flex: '1 1 100%'}}
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                    >
+                        Q4: I found a problem with the data or the website.
+                    </Typography>
+                    <ul>
+                        <Typography
+                            sx={{fontSize: 16, flex: '1 1 100%' }}
+                            variant="h6"
+                            component="li"
+                            gutterBottom
+                        >
+                            Please raise an issue in our issue tracker on  <a href="https://github.com/bshen95/MAPF-benchmark-web">Github</a>.
+                            Describe the problem with as much detail as possible, and the steps leading up to the problem, so that we can reproduce it.
+
+                        </Typography>
+                    </ul>
                 </Box>
             </Paper>
+
             {/*<textarea ref={textareaRef} className="hidden-textarea" readOnly value={bibtexEntry} />*/}
 
 
