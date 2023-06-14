@@ -16,10 +16,11 @@ export default function SystemDemo() {
                 {/*    paddingTop:50*/}
 
                 {/*}}>*/}
-                    <video style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="600" controls>
+                    {/* <video style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="600" controls>
                         <source src= {require("./assets/videos/demo_video.mp4")} type="video/mp4" />
                         Your browser does not support the video tag.
-                    </video>
+                    </video> */}
+                    <iframe style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="720" src="https://www.youtube.com/embed/qtG6-h4FZxU" title="Tracking Progress in MAPF - ICAPS 2023 System Demonstration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
                 {/*</div>*/}
 
