@@ -109,7 +109,7 @@ export default function Contribute() {
                             gutterBottom
                         >
 
-                            If you are interested in submitting results for all maps:
+                            If you are interested in submitting results for a particular map:
                         </Typography>
                         <ul>
                             <Typography
