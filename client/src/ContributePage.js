@@ -118,7 +118,15 @@ export default function Contribute() {
                                 component="li"
                                 gutterBottom
                             >
-                                Please contact one of the organizers, and we will create an account for you to upload the files yourself.
+                                Please contact one of the organizers, and we will create an account for you.
+                            </Typography>
+                            <Typography
+                                sx={{fontSize: 16, flex: '1 1 100%' }}
+                                variant="h6"
+                                component="li"
+                                gutterBottom
+                            >
+                                Once you have an account, you can contribute/upload-yourself individual solutions.
                             </Typography>
                         </ul>
                         <Typography
@@ -127,7 +135,7 @@ export default function Contribute() {
                             component="li"
                             gutterBottom
                         >
-                            If you are interested in submitting results for all maps:
+                             If you want to contribute a large number of results:
                         </Typography>
                         <ul>
                             <Typography
@@ -136,7 +144,7 @@ export default function Contribute() {
                                 component="li"
                                 gutterBottom
                             >
-                                Due to the large size of the submission files, please contact one of the organizers, and we will get in touch with you.
+                             please contact us and we can organise an mass-upload facility.
                             </Typography>
                         </ul>
                     </ul>
