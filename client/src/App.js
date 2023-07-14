@@ -33,7 +33,22 @@ const theme = createTheme({
 
 export default function App() {
     const location = useLocation();
+    const [screenWidth, setScreenWidth] = React.useState(window.innerWidth);
 
+    React.useEffect(() => {
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    const fontSize = Math.max(screenWidth / 30, 40);
+    const fontSize2 = Math.max(screenWidth / 100, 13);
 
     return (
         // src={`${process.env.PUBLIC_URL}/mapf-svg/`+ row.map_name+`.svg`}
@@ -42,7 +57,7 @@ export default function App() {
         // }}>
         <ThemeProvider theme={theme}>
             <ConfirmProvider>
-          <div style={{minWidth : 600}}>
+          <div style={{minWidth : 620}}>
               < NaivgationBar/>
               <div style={{background: "grey", width: "100%", height: "400px",
                 justifyContent:"center",
@@ -51,13 +66,12 @@ export default function App() {
                 display :  location.pathname === "/visualization" ? "none" : ""
               }}>
                 <Typography
-                    variant="h2"
                     color="white"
-                    style={{paddingTop: "120px"}}
+                    style={{fontSize: `${fontSize}px`, paddingTop: "120px"}}
                 >
                     Tracking Progress in MAPF
                 </Typography>
-                <Typography variant="body1" color="white" opacity={0.8} mt={1} mb={3}>
+                <Typography style={{ fontSize: `${fontSize2}px`}} color="white" opacity={0.8} mt={1} mb={3}>
                   <i>A database for benchmark results in Multi-Agent Path Finding</i>
                 </Typography>
               </div>
