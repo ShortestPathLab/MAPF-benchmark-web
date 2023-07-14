@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import Divider from '@mui/material/Divider';
+import TableContainer from '@mui/material/TableContainer';
+
 export default function Contribute() {
     const item_width =300;
     return (
@@ -248,7 +250,18 @@ export default function Contribute() {
                 {/*    component="div"*/}
                 {/*    gutterBottom*/}
                 {/*>*/}
-                <Table>
+                <TableContainer sx = {{width : "100%"}}>
+                <Table sx={{ minWidth: 600, width : "100%"}}
+                       style={{ tableLayout: "auto" }}>
+                    <colgroup>
+                        <col style={{minWidth: "50px"}} width="10%" />
+                        <col style={{minWidth: "50px"}} width="10%" />
+                        <col style={{minWidth: "50px"}} width="10%" />
+                        <col style={{minWidth: "50px"}} width="10%" />
+                        <col style={{minWidth: "50px"}} width="10%" />
+                        <col style={{minWidth: "50px"}} width="10%" />
+                        <col style={{minWidth: "200px"}} width="40%" />
+                    </colgroup>
                     <TableHead>
                         <TableRow>
                             <TableCell>
@@ -349,6 +362,7 @@ export default function Contribute() {
                         </TableRow>
                     </TableBody>
                 </Table>
+                </TableContainer>
             </Box>
             </Paper>
 
