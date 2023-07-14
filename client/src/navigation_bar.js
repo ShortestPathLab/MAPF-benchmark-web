@@ -336,7 +336,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                       MAPF
+                    
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {/*<Button*/}
