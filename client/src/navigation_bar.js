@@ -287,7 +287,7 @@ function ResponsiveAppBar() {
                                     Paper
                                 </Button>
                             </MenuItem>
-                            <MenuItem key="AboutUs" onClick={() =>handleCloseNavMenu("AboutUS")}>
+                            <MenuItem key="AboutUs" onClick={() =>handleCloseNavMenu("AboutUs")}>
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
                                     startIcon={<PeopleIcon />}
