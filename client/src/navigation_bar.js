@@ -417,7 +417,8 @@ function ResponsiveAppBar() {
                     </Box>
 
                     
-                     <Box style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                     <Box sx={{ flexGrow: 1 }}></Box>
+                    <Box>
                         {/*<Tooltip title="Login">*/}
                             { login ?
                                 <Tooltip title={JSON.parse(localStorage.getItem('user')).username}>
