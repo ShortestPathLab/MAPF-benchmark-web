@@ -1,3 +1,3 @@
 module.exports = {
-    secret: "bezkoder-secret-key"
+    secret: process.env.AUTH_SECRET || "bezkoder-secret-key"
 };
