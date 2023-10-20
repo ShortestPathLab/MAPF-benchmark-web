@@ -468,7 +468,7 @@ export default function Contribute() {
                             component="li"
                             gutterBottom
                         >
-                            Yes! Please visit our <a href="http://tracker.pathfinding.ai/results">download page</a>.
+                            Yes! Please visit our <a href="http://tracker.pathfinding.ai/download">download page</a>.
                             All the zip files containing the solution plans can be easily downloaded using wget.
                         </Typography>
                     </ul>

@@ -54,9 +54,8 @@ require("./app/routes/user.routes")(app)
 require("./app/routes/solution_path.routes")(app)
 app.use(express.static(path.join(__dirname,'../client/build')));
 
-const publicDir = path.join(__dirname, '../client/public/results');
-app.use('/results',express.static(path.join(__dirname,'../client/public/results')));
-app.use('/results',serveIndex(path.join(__dirname,'../client/public/results'), {
+app.use('/download',express.static(path.join(__dirname,'../client/public/download')));
+app.use('/download',serveIndex(path.join(__dirname,'../client/public/download'), {
     icon : true,
     stylesheet: path.join(__dirname, "listing.css"),
     template: makeEntry,
@@ -71,6 +70,9 @@ function formatFileSize(bytes) {
     }
     return bytes.toFixed(2) + ' ' + units[i];
 }
+
+
+
 function makeEntry(info, callback) {
     const files = info.fileList.map(file => {
         const st = file.stat;
