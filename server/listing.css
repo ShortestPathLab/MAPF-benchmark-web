@@ -24,9 +24,14 @@
     padding-right: 10px; /* Add right padding for consistency */
 }
 
-.entry > a > .icon::before {
+.icon::before {
     font-family: "Font Awesome 6 Free";
-    content: "\f15b";
+    content: "\f15b"; /* Default icon */
     font-size: 20px;
     margin-right: 5px;
+}
+
+/* Custom icon for directories */
+.icon[data-type="dir"]::before {
+    content: "\f07b"; /* Your custom icon for directories */
 }
