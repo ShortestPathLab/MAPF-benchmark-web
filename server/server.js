@@ -3,9 +3,12 @@ const cors = require("cors");
 const path = require('path');
 const app = express();
 const serveIndex = require('serve-index');
+const fs = require('fs');
+const mime = require('mime-types');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '500mb' }));
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit: 500000 }));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit:
+        500000 }));
 
 // var corsOptions = {
 //   origin:
@@ -50,12 +53,6 @@ require("./app/routes/auth.routes")(app)
 require("./app/routes/user.routes")(app)
 require("./app/routes/solution_path.routes")(app)
 app.use(express.static(path.join(__dirname,'../client/build')));
-app.use('/results',express.static(path.join(__dirname,'../client/public/results')));
-app.use('/results', serveIndex(path.join(__dirname,'../client/public/results'), { icons: true }));
-
-
-
-
 
 const publicDir = path.join(__dirname, '../client/public/results');
 app.use('/results',express.static(path.join(__dirname,'../client/public/results')));
