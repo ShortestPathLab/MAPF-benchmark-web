@@ -306,10 +306,18 @@ const headCells = [
         alignment: 'center'
     },
     {
-        id: 'tool',
+        id: 'benchmarks',
         numeric: false,
         disablePadding: false,
-        label: 'Download',
+        label: 'Benchmarks',
+        sortable: false,
+        alignment: 'center'
+    },
+    {
+        id: 'results',
+        numeric: false,
+        disablePadding: false,
+        label: 'Results',
         sortable: false,
         alignment: 'center'
     },
@@ -534,6 +542,13 @@ export default function MapTable() {
         setQuery_id(object_id);
         setLoading(true);
         setCsvFilename(filename);
+        event.stopPropagation();
+    };
+
+    const navigateToDownload_benchmark =  (event, object_id,filename) => {
+        setQuery_id(object_id);
+        setBenchmarkLoading(true);
+        handleDownload(filename+'.zip');
         event.stopPropagation();
     };
 
@@ -1369,6 +1384,7 @@ export default function MapTable() {
                             <col style={{minWidth: "200px"}} width="20%" />
                             <col style={{minWidth: "100px"}} width="5%" />
                             <col style={{minWidth: "100px"}} width="5%" />
+                            <col style={{minWidth: "100px"}} width="5%" />
                         </colgroup>
                         <EnhancedTableHead
                             order={order}
@@ -1421,6 +1437,18 @@ export default function MapTable() {
                                             <TableCell align="center" >
                                                 <IconButton onClick={(event) =>handleMapDetailClickOpen(event,'paper', row)}>
                                                     <InfoIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                            <TableCell align="center" >
+                                                {/*<Button variant="contained" onClick={routeChange}>View</Button>*/}
+                                                {/*<Button variant="contained" onClick={() => navigateToInstance(row.id,row.type_id,row.scen_type)}>View</Button>*/}
+                                                {/*<IconButton onClick={(event) => navigateToInstances(event,row.id,row.map_name)}>*/}
+                                                {/*    <VisibilityIcon/>*/}
+                                                {/*</IconButton>*/}
+                                                <IconButton onClick={(event) =>
+                                                    navigateToDownload_benchmark(event, row.id,row.map_name)}
+                                                >
+                                                    {benchmarkLoading && row.id === query_id?  <CircularProgress size={24} />:<DownloadIcon/>}
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell align="center" >

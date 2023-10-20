@@ -369,7 +369,16 @@ function EnhancedTableHead(props) {
                     rowSpan= {2}
                     sx = {{backgroundColor: "black" , color : "white",fontWeight: 'bold'}}
                 >
-                    View / Download
+                    View
+                </TableCell>
+                <TableCell
+                    key={'download2'}
+                    align={'center'}
+                    padding={'normal'}
+                    rowSpan= {2}
+                    sx = {{backgroundColor: "black" , color : "white",fontWeight: 'bold'}}
+                >
+                    Results
                 </TableCell>
             </TableRow>
             <TableRow sx = {{backgroundColor: "black"}}>
@@ -1223,7 +1232,8 @@ export default function SolutionPage() {
                                 <col style={{minWidth: "150px"}} width="15%" />
                                 <col style={{minWidth: "100px"}} width="10%" />
                                 <col style={{minWidth: "100px"}} width="10%" />
-                                <col style={{minWidth: "200px"}} width="20%" />
+                                <col style={{minWidth: "150px"}} width="10%" />
+                                <col style={{minWidth: "150px"}} width="10%" />
                             </colgroup>
                             <EnhancedTableHead
                                 order={order}
@@ -1286,6 +1296,12 @@ export default function SolutionPage() {
                                                             <IconButton onClick={(event) => navigateToVisualization(event,row.solution_path_id,row.agents)}>
                                                                 <VisibilityIcon/>
                                                             </IconButton>
+                                                        </div>
+                                                    }
+                                                </TableCell>
+                                                <TableCell align="center" >
+                                                    { row.solution_cost === null ? null :
+                                                        <div>
                                                             <IconButton onClick= { (event) => navigateToDownload(event,row.id,row.agents)}>
                                                                 {loading && row.id === query_id?  <CircularProgress size={24} />:<DownloadIcon/>}
                                                             </IconButton>

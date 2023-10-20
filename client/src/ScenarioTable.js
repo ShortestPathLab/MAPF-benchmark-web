@@ -265,11 +265,18 @@ const headCells = [
         id: 'tool',
         numeric: false,
         disablePadding: false,
-        label: 'Download',
+        label: 'Benchmarks',
         sortable: false,
         alignment: 'center'
     },
-
+    {
+        id: 'tool2',
+        numeric: false,
+        disablePadding: false,
+        label: 'Results',
+        sortable: false,
+        alignment: 'center'
+    },
 ];
 
 // function checkSortable(head, order ){
@@ -404,6 +411,7 @@ export default function ScenarioTable() {
     const location = useLocation();
     const [csvFilename, setCsvFilename] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [loadingBenchmark, setLoadingBenchmark] = React.useState(false);
     const [query_id, setQuery_id] = React.useState('');
     const [rows, setRows] = React.useState([]);
     const [searched, setSearched] = React.useState("");
@@ -528,6 +536,30 @@ export default function ScenarioTable() {
         // state={instance_id : id}, replace: false});
     };
 
+    const handleDownload = async (fileName) => {
+        var filePath = require("./assets/scens/" + fileName);
+        await fetch(filePath)
+            .then(response => response.blob())
+            .then(async blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        setLoadingBenchmark(false);
+    };
+    const navigateToDownload_Benchmark =  (event, object_id,scen_type,type_id) => {
+        setQuery_id(object_id);
+        setLoadingBenchmark(true);
+        handleDownload (`${location.state.mapName}-${scen_type}-${type_id}.scen`);
+        event.stopPropagation();
+    };
 
     const navigateToDownload =  (event, object_id,scen_type,type_id) => {
         setQuery_id(object_id);
@@ -1212,7 +1244,8 @@ export default function ScenarioTable() {
                             <col style={{minWidth: "100px"}} width="10%" />
                             <col style={{minWidth: "200px"}} width="30%" />
                             <col style={{minWidth: "200px"}} width="30%" />
-                            <col style={{minWidth: "200px"}} width="10%" />
+                            <col style={{minWidth: "150px"}} width="5%" />
+                            <col style={{minWidth: "150px"}} width="5%" />
                         </colgroup>
                         <EnhancedTableHead
                             order={order}
@@ -1252,6 +1285,16 @@ export default function ScenarioTable() {
                                             <TableCell align="center" >
                                                 <BorderLinearProgress value={row.closed_percentage*100} />
                                                 {/*<ProgressBar animated now={row.solution_uploaded/row.problems*100} label={`${row.solution_uploaded/row.problems*100}%`} />*/}
+                                            </TableCell>
+                                            <TableCell align="center" >
+                                                {/*<Button variant="contained" onClick={routeChange}>View</Button>*/}
+                                                {/*<Button variant="contained" onClick={() => navigateToInstance(row.id,row.type_id,row.scen_type)}>View</Button>*/}
+                                                {/*<IconButton onClick={(event) => navigateToInstance(event, row.id,row.type_id,row.scen_type)}>*/}
+                                                {/*    <VisibilityIcon/>*/}
+                                                {/*</IconButton>*/}
+                                                <IconButton onClick={(event) => navigateToDownload_Benchmark(event, row.id,row.scen_type,row.type_id)}>
+                                                    {loadingBenchmark && row.id === query_id?  <CircularProgress size={24} />:<DownloadIcon/>}
+                                                </IconButton>
                                             </TableCell>
                                             <TableCell align="center" >
                                                 {/*<Button variant="contained" onClick={routeChange}>View</Button>*/}

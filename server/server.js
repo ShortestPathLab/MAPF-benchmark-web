@@ -52,6 +52,66 @@ require("./app/routes/solution_path.routes")(app)
 app.use(express.static(path.join(__dirname,'../client/build')));
 app.use('/results',express.static(path.join(__dirname,'../client/public/results')));
 app.use('/results', serveIndex(path.join(__dirname,'../client/public/results'), { icons: true }));
+
+
+
+
+
+const publicDir = path.join(__dirname, '../client/public/results');
+app.use('/results',express.static(path.join(__dirname,'../client/public/results')));
+app.use('/results',serveIndex(path.join(__dirname,'../client/public/results'), {
+    icon : true,
+    stylesheet: path.join(__dirname, "listing.css"),
+    template: makeEntry,
+}));
+
+function formatFileSize(bytes) {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let i = 0;
+    while (bytes >= 1024 && i < units.length - 1) {
+        bytes /= 1024;
+        i++;
+    }
+    return bytes.toFixed(2) + ' ' + units[i];
+}
+function makeEntry(info, callback) {
+    const files = info.fileList.map(file => {
+        const st = file.stat;
+        const typeClass = st.isDirectory() ? "dir" : "file";
+        const parts = info.directory.split('/').concat(file.name).map(function (c) { return encodeURIComponent(c); });
+        const url = path.normalize(parts.join('/')).split(path.sep).join('/');
+        const size = formatFileSize(st.size);
+        const date = st.mtime.toLocaleDateString();
+        const time = st.mtime.toLocaleTimeString();
+        const type = st.isDirectory() ? "dir" : (mime.lookup(file.name) || "");
+        return `
+      <div class="entry ${typeClass}">
+        <a href="${url}">
+          <span class="icon" data-type="${type}"></span>
+          <span class="name">${file.name}</span>
+          <span class="size">${size}</span>
+          <span class="date">${date}</span>
+          <span class="time">${time}</span>
+        </a>
+      </div>
+          `;
+    });
+
+    callback(null, `
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+          <style>
+      ${info.style}
+     </style>
+    <div class="directory">
+      <div class="filelist">
+        ${files.join("\n")}
+      </div>
+    </div>
+
+          `);
+}
+
+
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
