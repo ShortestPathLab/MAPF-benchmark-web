@@ -265,22 +265,22 @@ const headCells = [
         sortable: true,
         alignment: 'left'
     },
-    {
-        id: 'scens',
-        numeric: true,
-        disablePadding: false,
-        label: '#Scenarios',
-        sortable: true,
-        alignment: 'left'
-    },
-    {
-        id: 'instances',
-        numeric: true,
-        disablePadding: false,
-        label: '#Instances',
-        sortable: true,
-        alignment: 'left'
-    },
+    // {
+    //     id: 'scens',
+    //     numeric: true,
+    //     disablePadding: false,
+    //     label: '#Scenarios',
+    //     sortable: true,
+    //     alignment: 'left'
+    // },
+    // {
+    //     id: 'instances',
+    //     numeric: true,
+    //     disablePadding: false,
+    //     label: '#Instances',
+    //     sortable: true,
+    //     alignment: 'left'
+    // },
     {
         id: 'solved_percentage',
         numeric: true,
@@ -1377,8 +1377,8 @@ export default function MapTable() {
                             <col style={{minWidth: "160px"}} width="10%" />
                             <col style={{minWidth: "100px"}} width="10%" />
                             <col style={{minWidth: "100px"}} width="10%" />
-                            <col style={{minWidth: "100px"}} width="5%" />
-                            <col style={{minWidth: "100px"}} width="5%" />
+                            {/*<col style={{minWidth: "100px"}} width="5%" />*/}
+                            {/*<col style={{minWidth: "100px"}} width="5%" />*/}
                             <col style={{minWidth: "100px"}} width="10%" />
                             <col style={{minWidth: "200px"}} width="20%" />
                             <col style={{minWidth: "200px"}} width="20%" />
@@ -1424,8 +1424,8 @@ export default function MapTable() {
                                             </TableCell>
                                             <TableCell align="left"  >{row.map_size}</TableCell>
                                             <TableCell align="left" >{row.map_type}</TableCell>
-                                            <TableCell align="left" >{row.scens}</TableCell>
-                                            <TableCell align="left" >{row.instances}</TableCell>
+                                            {/*<TableCell align="left" >{row.scens}</TableCell>*/}
+                                            {/*<TableCell align="left" >{row.instances}</TableCell>*/}
                                             <TableCell align="center" >
                                                 <BorderLinearProgress value={row.solved_percentage*100} />
                                                 {/*<ProgressBar animated now={row.lower_bound_uploaded/row.problems*100} label={`${row.lower_bound_uploaded/row.problems*100}%`}  />*/}
@@ -1979,6 +1979,21 @@ export default function MapTable() {
                                         {benchmarkLoading?  <CircularProgress size={24} />:<DownloadIcon/>}
                                     </IconButton>
                                 </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }} >#Scenarios:</TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}> {mapdata.scens}</TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}> #Instances: </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}>
+                                    {mapdata.instances}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }}>  Snapshot Date: </TableCell>
+                                <TableCell style={{paddingRight:0,paddingLeft:0 }} colSpan={3}>
+                                    15 May 2023 08:42:36 UTC
+                                </TableCell>
+
                             </TableRow>
                             <TableRow>
                                 <TableCell style={{paddingRight:0,paddingLeft:0 }}>  Original Link: </TableCell>

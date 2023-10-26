@@ -27,6 +27,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import BackupIcon from '@mui/icons-material/Backup';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import {APIConfig} from "./config";
+import DownloadIcon from "@mui/icons-material/Download";
 const settings = ['Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -94,6 +95,9 @@ function ResponsiveAppBar() {
             navigate('/papers');
         }else if (page === 'Contribute'){
             navigate('/contributes');
+        }
+        else if (page === 'Download'){
+            navigate('/download');
         }
 
 
@@ -259,12 +263,12 @@ function ResponsiveAppBar() {
                             <MenuItem key="SystemDemo" onClick={() =>handleCloseNavMenu("SystemDemo")}>
                             <Button
                                 sx={{ color: 'black',textTransform: "none"}}
-                                startIcon={<PlayCircleOutlineIcon/>}
+                                startIcon={<ArticleIcon />}
                                 style={{ backgroundColor: 'transparent' }}
                                 disableElevation
                                 disableRipple
                             >
-                                System Demo
+                                Paper and Demo
                             </Button>
                             </MenuItem>
 
@@ -276,15 +280,26 @@ function ResponsiveAppBar() {
                             {/*        Summary*/}
                             {/*    </Button>*/}
                             {/*</MenuItem>*/}
-                            <MenuItem key="Paper" onClick={() =>handleCloseNavMenu("Paper")}>
+                            {/*<MenuItem key="Paper" onClick={() =>handleCloseNavMenu("Paper")}>*/}
+                            {/*    <Button*/}
+                            {/*        sx={{ color: 'black',textTransform: "none"}}*/}
+                            {/*        startIcon={<ArticleIcon/>}*/}
+                            {/*        style={{ backgroundColor: 'transparent' }}*/}
+                            {/*        disableElevation*/}
+                            {/*        disableRipple*/}
+                            {/*    >*/}
+                            {/*        Paper*/}
+                            {/*    </Button>*/}
+                            {/*</MenuItem>*/}
+                            <MenuItem key="Paper" onClick={() =>handleCloseNavMenu("Download")}>
                                 <Button
                                     sx={{ color: 'black',textTransform: "none"}}
-                                    startIcon={<ArticleIcon/>}
+                                    startIcon={<DownloadIcon/>}
                                     style={{ backgroundColor: 'transparent' }}
                                     disableElevation
                                     disableRipple
                                 >
-                                    Paper
+                                    Download
                                 </Button>
                             </MenuItem>
                             <MenuItem key="AboutUs" onClick={() =>handleCloseNavMenu("AboutUs")}>
@@ -386,17 +401,25 @@ function ResponsiveAppBar() {
                             key="SystemDemo"
                             onClick={() =>handleCloseNavMenu("SystemDemo")}
                             sx={{ my: 2, color: 'white',textTransform: "none"}}
-                            startIcon={<PlayCircleOutlineIcon/>}
-                        >
-                            System Demo
-                        </Button>
-                        <Button
-                            key="Paper"
-                            onClick={() =>handleCloseNavMenu("Paper")}
-                            sx={{ my: 2, color: 'white',textTransform: "none"}}
                             startIcon={<ArticleIcon />}
                         >
-                            Paper
+                            Paper and Demo
+                        </Button>
+                        {/*<Button*/}
+                        {/*    key="Paper"*/}
+                        {/*    onClick={() =>handleCloseNavMenu("Paper")}*/}
+                        {/*    sx={{ my: 2, color: 'white',textTransform: "none"}}*/}
+                        {/*    startIcon={<ArticleIcon />}*/}
+                        {/*>*/}
+                        {/*    Paper*/}
+                        {/*</Button>*/}
+                        <Button
+                            key="Download"
+                            onClick={() =>handleCloseNavMenu("Download")}
+                            sx={{ my: 2, color: 'white',textTransform: "none"}}
+                            startIcon={<DownloadIcon/>}
+                        >
+                            Download
                         </Button>
                         <Button
                             key="AboutUs"
