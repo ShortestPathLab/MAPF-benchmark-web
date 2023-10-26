@@ -6,6 +6,9 @@ const serveIndex = require('serve-index');
 const fs = require('fs');
 const mime = require('mime-types');
 var bodyParser = require('body-parser');
+var https = require('https');
+var http = require('http');
+
 app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, parameterLimit:
         500000 }));
@@ -41,6 +44,16 @@ db.mongoose
 // app.get("/", (req, res) => {
 //     res.json({ message: "Welcome to bezkoder application." });
 // });
+
+app.use(function(request, response, next) {
+
+  if (process.env.NODE_ENV != 'development' && !request.secure) {
+    if (!request.url.includes(".well-known"))
+     return response.redirect("https://" + request.headers.host + request.url);
+  }
+
+  next();
+})
 
 require("./app/routes/turorial.routes")(app);
 require("./app/routes/map.routes")(app);
@@ -123,10 +136,19 @@ if (process.env.NODE_ENV === 'development') {
         console.log(`Server is running on port ${PORT}.`);
     });
 } else {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}.`);
-    });
+
+  var privateKey  = fs.readFileSync("./credential/privkey.pem", 'utf8');
+  var certificate = fs.readFileSync("./credential/fullchain.pem", 'utf8');
+  var credentials = {key: privateKey, cert: certificate};
+  var httpsServer = https.createServer(credentials, app);
+
+  var https_port = 5443;
+  var http_port = 5000;
+  httpsServer.listen(https_port, () => console.log(`Listening on port ${https_port} for https`));
+
+  var httpServer = http.createServer(app);
+
+  httpServer.listen(http_port, () => console.log(`Listening on port ${http_port} for http`));
 }
 
 if (process.env.NODE_ENV === 'development') {
