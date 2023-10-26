@@ -97,7 +97,7 @@ function ResponsiveAppBar() {
             navigate('/contributes');
         }
         else if (page === 'Download'){
-            navigate('/download');
+            navigate('/download/');
         }
 
 
