@@ -86,44 +86,47 @@ export default function SystemDemo() {
                         variant="h6"
                         component="div"
                     >
-                        Papers and Resources
+                        Papers and Demo
                     </Typography>
                 </Toolbar>
                 <Divider sx={{ borderBottomWidth: '3px' }} />
                 <Box
                     sx={{ paddingTop: '15px', paddingLeft :'35px',paddingRight :'35px',paddingBottom :'35px'
                     }}>
-
                     <Typography
-                        sx={{fontSize: 16, flex: '1 1 100%' }}
+                        sx={{fontSize: 16, flex: '1 1 100%',paddingBottom : '15px' }}
                         component="div"
                     >
-                        This web platform is presented at ICAPS 2023 system demo track:
+                        This web platform is presented at ICAPS 2023 system demo track.
+                        That paper can be accessed <a href="https://icaps23.icaps-conference.org">here</a>.
+                        A full length manuscript is available from <a href="https://arxiv.org/abs/2305.08446">arXiv</a>.
+                            When using our website, please cite the following:
                     </Typography>
-                    <ul>
-                        <Typography
-                            sx={{fontSize: 16, flex: '1 1 100%'}}
-                            component="li"
-                        >
-                            The paper can be accessed at  <a href="https://icaps23.icaps-conference.org">here</a>.
-                        </Typography>
-                        <Typography
-                            sx={{ fontSize: 16, flex: '1 1 100%' }}
-                            component="li"
-                        >
-                            A demo video giving an overview of the system is also available at <a href="http://tracker.pathfinding.ai/systemDemo"> here</a>.
 
-                        </Typography>
-                    </ul>
+                    {/*<ul>*/}
+                    {/*    <Typography*/}
+                    {/*        sx={{fontSize: 16, flex: '1 1 100%'}}*/}
+                    {/*        component="li"*/}
+                    {/*    >*/}
+                    {/*        The paper can be accessed at  <a href="https://icaps23.icaps-conference.org">here</a>.*/}
+                    {/*    </Typography>*/}
+                    {/*    <Typography*/}
+                    {/*        sx={{ fontSize: 16, flex: '1 1 100%' }}*/}
+                    {/*        component="li"*/}
+                    {/*    >*/}
+                    {/*        A demo video giving an overview of the system is also available at <a href="http://tracker.pathfinding.ai/systemDemo"> here</a>.*/}
+
+                    {/*    </Typography>*/}
+                    {/*</ul>*/}
 
 
-                    <Typography
-                        sx={{ fontSize: 16, flex: '1 1 100%'}}
-                        variant="h6"
-                        component="div"
-                    >
-                        A full length manuscript is available at <a href="https://arxiv.org/abs/2305.08446">arXiv</a>. When using our website, please cite the following:
-                    </Typography>
+                    {/*<Typography*/}
+                    {/*    sx={{ fontSize: 16, flex: '1 1 100%'}}*/}
+                    {/*    variant="h6"*/}
+                    {/*    component="div"*/}
+                    {/*>*/}
+                    {/*    A full length manuscript is available at <a href="https://arxiv.org/abs/2305.08446">arXiv</a>. When using our website, please cite the following:*/}
+                    {/*</Typography>*/}
                     <div className="paper-content">
                         <div className="code-viewer">
                             <SyntaxHighlighter
@@ -143,39 +146,56 @@ export default function SystemDemo() {
                             </div>
                         </div>
                     </div>
-                </Box>
-            </Paper>
-            <Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5 }}>
-                <Toolbar
-                    sx={{
-                        pl: { sm: 2 },
-                        pr: { xs: 1, sm: 1 }
-                    }}
-                >
+
                     <Typography
-                        sx={{ flex: '1 1 100%',paddingLeft :'10px' }}
-                        variant="h6"
+                        sx={{fontSize: 16, flex: '1 1 100%', paddingTop : '15px',paddingBottom : '25px'}}
                         component="div"
                     >
-                        System Demo
+                        The following video demonstration gives an overview of our system:
                     </Typography>
-                </Toolbar>
-                <Divider sx={{ borderBottomWidth: '3px' }} />
-                {/*<div style={{width: "100%",   display: "grid",*/}
-                {/*    gridTemplateColumns: "repeat(auto-fill,minmax(320px, 1fr))",*/}
-                {/*    paddingTop:50*/}
+                    <iframe style={{
+                        paddingLeft: "5%",
+                        paddingRight: "5%",
+                        paddingBottom: "5%",
+                        borderRadius: 5
+                    }} width="90%" height="720" src="https://www.youtube.com/embed/qtG6-h4FZxU"
+                            title="Tracking Progress in MAPF - ICAPS 2023 System Demonstration" frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen></iframe>
 
-                {/*}}>*/}
-                    {/* <video style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="600" controls>
-                        <source src= {require("./assets/videos/demo_video.mp4")} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video> */}
-                    <iframe style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="720" src="https://www.youtube.com/embed/qtG6-h4FZxU" title="Tracking Progress in MAPF - ICAPS 2023 System Demonstration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-                {/*</div>*/}
-
-
+                </Box>
             </Paper>
+            {/*<Paper elevation={12} sx={{ width: '100%', mb: 2,borderRadius: 5 }}>*/}
+            {/*    <Toolbar*/}
+            {/*        sx={{*/}
+            {/*            pl: { sm: 2 },*/}
+            {/*            pr: { xs: 1, sm: 1 }*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <Typography*/}
+            {/*            sx={{ flex: '1 1 100%',paddingLeft :'10px' }}*/}
+            {/*            variant="h6"*/}
+            {/*            component="div"*/}
+            {/*        >*/}
+            {/*            System Demo*/}
+            {/*        </Typography>*/}
+            {/*    </Toolbar>*/}
+            {/*    <Divider sx={{ borderBottomWidth: '3px' }} />*/}
+            {/*    /!*<div style={{width: "100%",   display: "grid",*!/*/}
+            {/*    /!*    gridTemplateColumns: "repeat(auto-fill,minmax(320px, 1fr))",*!/*/}
+            {/*    /!*    paddingTop:50*!/*/}
+
+            {/*    /!*}}>*!/*/}
+            {/*        /!* <video style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="600" controls>*/}
+            {/*            <source src= {require("./assets/videos/demo_video.mp4")} type="video/mp4" />*/}
+            {/*            Your browser does not support the video tag.*/}
+            {/*        </video> *!/*/}
+            {/*        <iframe style = {{paddingTop: "5%", paddingLeft: "5%",paddingRight: "5%",paddingBottom: "5%",borderRadius: 5 }} width="90%" height="720" src="https://www.youtube.com/embed/qtG6-h4FZxU" title="Tracking Progress in MAPF - ICAPS 2023 System Demonstration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>*/}
+
+            {/*    /!*</div>*!/*/}
+
+
+            {/*</Paper>*/}
 
         </Box>
     );
