@@ -97,8 +97,8 @@ export default function SystemDemo() {
                         sx={{fontSize: 16, flex: '1 1 100%',paddingBottom : '15px' }}
                         component="div"
                     >
-                        This web platform is presented at ICAPS 2023 system demo track.
-                        That paper can be accessed <a href="https://icaps23.icaps-conference.org">here</a>.
+                        This web platform is presented at <a href="https://icaps23.icaps-conference.org">ICAPS 2023</a> system demo track.
+                        That paper can be accessed <a href="https://icaps23.icaps-conference.org/demos/papers/255_paper.pdf">here</a>.
                         A full length manuscript is available from <a href="https://arxiv.org/abs/2305.08446">arXiv</a>.
                             When using our website, please cite the following:
                     </Typography>
