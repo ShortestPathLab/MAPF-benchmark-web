@@ -42,7 +42,7 @@ export default function Download() {
                         component="div"
                         gutterBottom
                     >
-                        To download the benchmark scenarios, please visit  <a href="http://tracker.pathfinding.ai/quickDownload/benchmark">here</a>:
+                        To download the benchmark scenarios, please visit  <a href="http://tracker.pathfinding.ai/quickDownload/benchmarks/">here</a>:
                     </Typography>
 
                     <ul>
@@ -69,7 +69,7 @@ export default function Download() {
                         component="div"
                         gutterBottom
                     >
-                        To download the results, please visit <a href="http://tracker.pathfinding.ai/quickDownload/result">here</a>:
+                        To download the results, please visit <a href="http://tracker.pathfinding.ai/quickDownload/results/">here</a>:
                     </Typography>
                     <ul>
                         <Typography
