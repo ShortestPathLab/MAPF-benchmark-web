@@ -97,7 +97,8 @@ function ResponsiveAppBar() {
             navigate('/contributes');
         }
         else if (page === 'Download'){
-            window.location.href = 'http://tracker.pathfinding.ai/download';
+            navigate('/download');
+            // window.location.href = 'http://tracker.pathfinding.ai/download';
         }
 
 
