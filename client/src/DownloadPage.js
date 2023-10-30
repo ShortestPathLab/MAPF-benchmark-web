@@ -42,7 +42,10 @@ export default function Download() {
                         component="div"
                         gutterBottom
                     >
-                        To download the benchmark scenarios, please visit  <a href="http://tracker.pathfinding.ai/quickDownload/benchmarks/">here</a>:
+                        This page contains download links to all best-known results,
+                        and all corresponding benchmark problem instances,
+                        currently submitted to the MAPF Tracker. Results and benchmarks are offered as separate downloads,
+                        grouped by map, and in zip format.
                     </Typography>
 
                     <ul>
@@ -52,7 +55,7 @@ export default function Download() {
                             component="li"
                             gutterBottom
                         >
-                            Each [map name].zip contains all scenarios files utilized for evaluating the solvers within this web platform.
+                            To download results, please visit <a href="http://tracker.pathfinding.ai/quickDownload/results/">here</a>.
                         </Typography>
                         <Typography
                             sx={{ fontSize: 16, flex: '1 1 100%'}}
@@ -60,33 +63,7 @@ export default function Download() {
                             component="li"
                             gutterBottom
                         >
-                           The map file and the format of the scenarios files can be found in the <a href="https://movingai.com/benchmarks/mapf/index.html">MovingAI</a> repository.
-                        </Typography>
-                    </ul>
-                    <Typography
-                        sx={{ fontSize: 16, flex: '1 1 100%'}}
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                    >
-                        To download the results, please visit <a href="http://tracker.pathfinding.ai/quickDownload/results/">here</a>:
-                    </Typography>
-                    <ul>
-                        <Typography
-                            sx={{ fontSize: 16, flex: '1 1 100%'}}
-                            variant="h6"
-                            component="li"
-                            gutterBottom
-                        >
-                            Each [map name].zip contains a csv file which records the best known results that reported by all solvers.
-                        </Typography>
-                        <Typography
-                            sx={{ fontSize: 16, flex: '1 1 100%'}}
-                            variant="h6"
-                            component="li"
-                            gutterBottom
-                        >
-                            The format of the result files aligns with the submission file format, as illustrated below:
+                            To download benchmarks, please visit <a href="http://tracker.pathfinding.ai/quickDownload/benchmarks/">here</a>.
                         </Typography>
                     </ul>
                 </Box>
@@ -127,34 +104,17 @@ export default function Download() {
                     {/*    We support uploading .csv file*/}
                     {/*</Typography>*/}
                     <Typography
-                        sx={{ fontSize: 16, flex: '1 1 100%' }}
+                        sx={{ fontSize: 16, flex: '1 1 100%',paddingBottom :'20px' }}
                         component="div"
                         gutterBottom
                     >
-                        File header:
-                    </Typography>
-                    <Typography
-                        sx={{ fontSize: 16,paddingLeft :'15px',paddingBottom :'15px',flex: '1 1 100%'}}
-                        component="div"
-                        gutterBottom
-                    >
-                        map_name, scen_type, type_id, agents, lower_cost, solution_cost, solution_plan
-                    </Typography>
-                    <Typography
-                        sx={{ fontSize: 16, flex: '1 1 100%'}}
-                        component="div"
-                        gutterBottom
-                    >
-                        Solution Plan Format:
-                    </Typography>
-                    <Typography
-                        sx={{fontSize: 16, paddingLeft :'15px',paddingBottom :'15px', flex: '1 1 100%'}}
-                        component="div"
-                        gutterBottom
-                    >
-                        For each agent, we use a motion string to represent the path, where the symbol 'u', 'd', 'l' and 'r' represents moving up, down, left and right respectively,
-                        and 'w' represents waiting at its current location (eg., a path [(0,0) -> (0,1) -> (1,1) -> (2,1) -> (2,0) -> (2,0) -> (1,0)] is converted to a motion string  "urrdwl").
-                        We use "\n" to separate the paths between different agents.
+                        Each results archive (zip file) contains a single file,
+                        with comma separated values,
+                        which describes best known results for a single grid map.
+                        The first line of the file is a header, which gives column names.
+                        Each subsequent line gives the corresponding values for a single problem instance.
+                        Where a best-known solution is available, we also give the corresponding plan.
+                        Further details about the solution plan format are available <a href="http://tracker.pathfinding.ai/contributes">here</a>.
                     </Typography>
                     <Typography
                         sx={{ fontSize: 16,flex: '1 1 100%'}}
