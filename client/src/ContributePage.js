@@ -468,8 +468,10 @@ export default function Contribute() {
                             component="li"
                             gutterBottom
                         >
-                            Yes! Please visit our <a href="http://tracker.pathfinding.ai/download">download page</a>.
-                            All the zip files containing the solution plans can be easily downloaded using wget.
+                            Yes! Please visit our <a href="http://tracker.pathfinding.ai/quickDownload">download page</a>.
+                            The benchmark folder comprises snapshot files of all scenarios from the MovingAI repository,
+                            while the result folder houses solution plans from the best-known solution.
+                            You can conveniently download all the ZIP files using the wget command.
                         </Typography>
                     </ul>
                     <Typography

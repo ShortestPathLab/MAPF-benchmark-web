@@ -67,8 +67,8 @@ require("./app/routes/user.routes")(app)
 require("./app/routes/solution_path.routes")(app)
 app.use(express.static(path.join(__dirname,'../client/build')));
 
-app.use('/download',express.static(path.join(__dirname,'../client/public/download')));
-app.use('/download',serveIndex(path.join(__dirname,'../client/public/download'), {
+app.use('/quickDownload',express.static(path.join(__dirname,'../client/public/download')));
+app.use('/quickDownload',serveIndex(path.join(__dirname,'../client/public/download'), {
     icon : true,
     stylesheet: path.join(__dirname, "listing.css"),
     template: makeEntry,
