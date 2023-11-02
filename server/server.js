@@ -137,8 +137,8 @@ if (process.env.NODE_ENV === 'development') {
     });
 } else {
 
-  var privateKey  = fs.readFileSync("./credential/privkey.pem", 'utf8');
-  var certificate = fs.readFileSync("./credential/fullchain.pem", 'utf8');
+  var privateKey  = fs.readFileSync("./credential/tracker.pathfinding.ai/privkey.pem", 'utf8');
+  var certificate = fs.readFileSync("./credential/tracker.pathfinding.ai/fullchain.pem", 'utf8');
   var credentials = {key: privateKey, cert: certificate};
   var httpsServer = https.createServer(credentials, app);
 
